@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>稅費試算系統 | 宇陞地政士事務所</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --brown-dark: #3D2F2A; --brown-mid: #5C4A43; --brown-light: #8B7B75;
+  --cream: #F0EDE6; --cream-dark: #E5E0D8; --cream-darker: #D8D2C8;
+  --white: #FAF8F5; --text-dark: #2A1F1B; --text-mid: #5C4A43; --text-light: #8B7B75;
+}
+html { scroll-behavior: smooth; }
+body { font-family: 'Noto Sans TC', sans-serif; background: var(--cream); color: var(--text-dark); font-weight: 300; -webkit-font-smoothing: antialiased; }
+
+/* TOP BAR */
+.tax-header {
+  background: var(--brown-dark);
+  padding: 1rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 10;
+}
+.tax-header-logo {
+  display: flex; align-items: center; gap: 0.8rem;
+  text-decoration: none;
+}
+.tax-header-logo svg { width: 32px; height: 32px; }
+.tax-header-title {
+  font-family: 'AR Gyokaisho','Noto Serif TC',serif;
+  font-size: 0.9rem; letter-spacing: 0.2em; color: var(--cream); font-weight: 400;
+}
+.tax-header-back {
+  font-size: 0.75rem; letter-spacing: 0.15em; color: rgba(240,237,230,0.6);
+  text-decoration: none; cursor: pointer; background: none; border: none;
+  transition: color 0.2s;
+}
+.tax-header-back:hover { color: var(--cream); }
+
+/* MAIN */
+.tax-main { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+
+.tax-page-title {
+  font-family: 'AR Gyokaisho','Noto Serif TC',serif;
+  font-size: 1.4rem; letter-spacing: 0.25em; color: var(--brown-dark);
+  margin-bottom: 0.4rem;
+}
+.tax-page-sub {
+  font-family: 'Cormorant Garamond',serif; font-style: italic;
+  font-size: 0.75rem; letter-spacing: 0.2em; color: var(--text-light);
+  margin-bottom: 2rem;
+}
+
+/* TABS */
+.calc-tabs {
+  display: flex; border-bottom: 0.5px solid var(--cream-darker);
+  overflow-x: auto; margin-bottom: 0;
+}
+.calc-tab {
+  padding: 0.9rem 1.2rem; font-size: 0.8rem; letter-spacing: 0.1em;
+  color: var(--text-light); cursor: pointer; border-bottom: 2px solid transparent;
+  white-space: nowrap; transition: all 0.2s; font-family: 'Noto Sans TC',sans-serif;
+  background: none; border-top: none; border-left: none; border-right: none;
+}
+.calc-tab:hover { color: var(--brown-dark); }
+.calc-tab.active { color: var(--brown-dark); border-bottom-color: var(--brown-dark); font-weight: 500; }
+
+/* BODY */
+.calc-body { padding: 2rem 0; }
+.calc-section { display: none; }
+.calc-section.active { display: block; }
+.calc-desc {
+  font-size: 0.8rem; color: var(--text-light); line-height: 1.8; letter-spacing: 0.05em;
+  margin-bottom: 1.5rem; padding: 1rem 1.2rem; background: var(--white);
+  border-radius: 2px; border-left: 2px solid var(--brown-light);
+}
+.calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem; }
+.calc-field { display: flex; flex-direction: column; gap: 0.4rem; }
+.calc-label { font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-mid); }
+.calc-label span { font-size: 0.6rem; color: var(--text-light); margin-left: 0.3rem; }
+.calc-input, .calc-select {
+  background: var(--white); border: 0.5px solid var(--cream-darker);
+  color: var(--text-dark); padding: 0.7rem 0.9rem; font-size: 0.85rem;
+  font-family: 'Noto Sans TC',sans-serif; outline: none; border-radius: 2px;
+  transition: border-color 0.2s; width: 100%;
+}
+.calc-input:focus, .calc-select:focus { border-color: var(--brown-light); }
+.calc-btn {
+  background: var(--brown-dark); color: var(--cream); border: none;
+  padding: 0.9rem 2rem; font-size: 0.8rem; letter-spacing: 0.15em;
+  font-family: 'Noto Sans TC',sans-serif; cursor: pointer; border-radius: 2px;
+  transition: background 0.2s; margin-top: 0.5rem; width: 100%;
+}
+.calc-btn:hover { background: var(--brown-mid); }
+.calc-result {
+  margin-top: 1.5rem; padding: 1.5rem; background: var(--brown-dark);
+  border-radius: 2px; display: none;
+}
+.calc-result.show { display: block; }
+.calc-result-title {
+  font-size: 0.65rem; letter-spacing: 0.3em; color: rgba(240,237,230,0.4);
+  font-family: 'Cormorant Garamond',serif; font-style: italic; margin-bottom: 1rem;
+}
+.calc-result-rows { display: flex; flex-direction: column; gap: 0.6rem; }
+.calc-result-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
+.calc-result-key { font-size: 0.8rem; color: rgba(240,237,230,0.6); letter-spacing: 0.05em; }
+.calc-result-val { font-size: 0.9rem; color: var(--cream); font-family: 'Noto Serif TC',serif; letter-spacing: 0.05em; }
+.calc-result-total { border-top: 0.5px solid rgba(240,237,230,0.15); padding-top: 0.8rem; margin-top: 0.4rem; }
+.calc-result-total .calc-result-key { color: rgba(240,237,230,0.8); font-size: 0.85rem; }
+.calc-result-total .calc-result-val { font-size: 1.1rem; font-weight: 500; }
+.calc-note { font-size: 0.65rem; color: rgba(240,237,230,0.35); margin-top: 1rem; line-height: 1.8; }
+
+@media (max-width: 640px) {
+  .tax-main { padding: 1.5rem 1rem 3rem; }
+  .calc-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="tax-header">
+  <a class="tax-header-logo" href="index.html">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+      <path fill="#F0EDE6" d="M388,643.87C489.86,643.87 591.21,643.87 692.57,643.87C692.84,644.5 693.11,645.14 693.37,645.77C674.9,672.66 652.1,695.06 623.71,711.75C595.24,728.48 564.56,738.66 531.73,740.98C440.32,747.42 367.8,698.47 335.63,644.69C344.48,643.14 353.04,644.2 361.51,643.99C370.17,643.77 378.84,643.89 388,643.87Z"/>
+      <path fill="#F0EDE6" d="M710.46,475.49C693.65,415.1 657.79,370.59 602,342.83C571.95,327.88 539.78,321.83 506.14,323C413.64,326.21 335.03,392.45 315.39,484.5C307.79,520.11 310.14,555.34 321.61,589.92C323.64,596.03 323.67,595.93 330.1,594.1C367.57,583.42 400.3,564.53 427.91,537.06C458.19,506.93 476.6,470.72 482.48,428.3C483.88,418.22 484,408.05 483.89,397.89C483.8,389.25 483.78,389.24 492.08,386.33C493.47,385.84 494.91,385.5 496.23,385.12C498.25,387.03 497.95,389.3 498,391.4C499.47,446.26 484.1,495.47 447.44,536.89C416.99,571.31 379,594.27 334.92,607.21C319.24,611.82 303.29,615.11 287.05,616.98C286.55,617.04 286.05,617.1 285.56,617.15C277.49,617.91 274.49,613.85 277.28,606.06C278.09,603.79 279.85,603.9 281.69,603.66C288.94,602.7 296.2,601.76 303.43,600.61C309.81,599.6 309.94,599.28 308.09,593.31C300.85,569.9 297.12,545.97 297.75,521.46C299.08,469.03 316.9,422.86 351.14,383.14C375.36,355.04 405,334.61 439.87,321.97C471.38,310.55 503.85,307.06 537.2,310.49C569.74,313.83 600.18,323.49 627.6,341.24C679.66,374.95 713.43,421.76 725.91,482.98C733.51,520.28 731.02,557.16 719.4,593.41C717.51,599.29 717.67,599.73 724.02,600.79C730.74,601.92 737.5,602.91 744.28,603.58C750.9,604.24 748.47,609.15 748.87,612.68C749.3,616.42 747.31,617.63 743.74,617.35C729.76,616.28 716.07,613.62 702.48,610.31C664.44,601.04 630.11,584.21 600.46,558.63C565.62,528.58 542.14,491.39 532.49,446.02C528.59,427.69 527.1,409.14 527.71,390.41C527.83,386.81 528.56,385.18 532.73,386.45C542.15,389.32 541.66,389.14 541.57,399.07C541.34,427.2 546.25,454.37 557.92,480.16C572.58,512.54 595.07,538.41 623.6,559.22C645.91,575.49 670.47,587.14 697.04,594.6C703.05,596.28 703.69,596.04 705.72,590.06C718.43,552.48 719.61,514.39 710.46,475.49Z"/>
+      <path fill="#F0EDE6" d="M592.32,566.67C626.85,596.4 666.7,614.29 710.66,623.63C721.73,625.98 732.92,627.75 744.22,628.47C748.19,628.72 749.58,630.32 749.22,634.05C749.1,635.37 749.11,636.72 749.21,638.04C749.47,641.51 748.05,642.72 744.5,642.48C729.18,641.45 714.11,638.81 699.23,635.25C634.55,619.8 581.49,586.5 542.53,532.07C530.75,515.61 521.8,497.53 515.58,478.19C515.06,476.57 515.15,474.44 512.99,473.68C510.97,474.26 510.85,476.11 510.36,477.61C497.47,517.41 473.8,549.88 442.43,577.02C400.03,613.69 350.1,633.19 295.17,641.08C290.56,641.74 285.88,641.85 281.26,642.38C277.89,642.77 276.94,641.26 276.82,638.12C276.47,629 276.59,628.9 286.8,627.87C332.76,623.23 375.16,608.59 413.15,582.07C445.13,559.73 470.67,531.66 487.82,496.31C498.47,474.36 504.65,451.15 507.71,427.05C509.41,413.68 510.67,400.25 510.75,386.74C510.76,385.2 510.31,382.88 512.66,382.8C515.01,382.71 514.79,385.09 514.84,386.59C515.22,398.73 515.76,410.85 517.24,422.94C522.77,468.02 538.36,508.73 568.7,543.16C575.98,551.43 583.68,559.26 592.32,566.67Z"/>
+    </svg>
+    <span class="tax-header-title">宇陞地政士事務所</span>
+  </a>
+  <button class="tax-header-back" onclick="window.close()">✕ 關閉</button>
+</header>
+
+<main class="tax-main">
+  <h1 class="tax-page-title">稅 費 試 算 系 統</h1>
+  <p class="tax-page-sub">Tax Estimation System — 依財政部規定計算，結果僅供參考</p>
+
+  <div class="calc-tabs">
+    <button class="calc-tab active" onclick="switchTab('tuzeng')">土地增值稅</button>
+    <button class="calc-tab" onclick="switchTab('qiyue')">契稅</button>
+    <button class="calc-tab" onclick="switchTab('fangdi')">房地合一稅</button>
+    <button class="calc-tab" onclick="switchTab('zengyou')">贈與稅</button>
+    <button class="calc-tab" onclick="switchTab('yichan')">遺產稅</button>
+  </div>
+  <div class="calc-body">
+
+
+      <!-- 土地增值稅 -->
+      <div class="calc-section active" id="tab-tuzeng">
+        <div class="calc-desc">
+          土地增值稅由<strong>原土地所有權人（出售人）</strong>繳納，按土地漲價總數額累進課稅。<br><br>
+          <strong>計算公式：</strong>漲價總數額 ＝（本次公告現值 − 前次現值 × 物價指數調整）× 移轉面積<br>
+          一般用地：漲價未達 100% 稅率 <strong>20%</strong>；達 100%～200% 稅率 <strong>30%</strong>；超過 200% 稅率 <strong>40%</strong><br>
+          自用住宅優惠稅率 <strong>10%</strong>（都市土地限 300㎡，非都市土地限 700㎡，超過部分按一般稅率）<br>
+          持有年限滿20年起可享減徵優惠；重劃區土地另有減徵稅率。<br><br>
+          ⚠️ 本試算結果僅供概算參考，實際應納稅額以主管機關核定為準。<br>
+          <span style="font-size:0.65rem;opacity:0.7;">以上計算方式參照財政部土地稅法及相關規定，如有疑義請洽當地稅捐稽徵機關。</span>
+        </div>
+        <div class="calc-grid">
+          <div class="calc-field">
+            <label class="calc-label">土地宗地總面積<span>平方公尺</span></label>
+            <input type="number" class="calc-input" id="t-area" placeholder="例：150">
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">移轉或設典範圍<span>分子 / 分母</span></label>
+            <div style="display:flex;gap:0.4rem;align-items:center;">
+              <input type="number" class="calc-input" id="t-frac-num" placeholder="分子" min="1" value="1" style="flex:1;">
+              <span style="color:var(--text-mid);font-size:1.2rem;flex-shrink:0;padding:0 0.2rem;">/</span>
+              <input type="number" class="calc-input" id="t-frac-den" placeholder="分母" min="1" value="1" style="flex:1;">
+            </div>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">本次公告現值<span>元/每平方公尺</span></label>
+            <input type="number" class="calc-input" id="t-curr" placeholder="例：50000">
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">原規定地價或前次移轉現值<span>元/每平方公尺</span></label>
+            <input type="number" class="calc-input" id="t-prev" placeholder="例：30000">
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">前次移轉年期<span>民國年/月</span></label>
+            <div style="display:flex;gap:0.4rem;align-items:center;">
+              <select class="calc-select" id="t-prev-year" style="flex:2;">
+                <option value="">選擇年</option>
+                <option value="114">114 年</option><option value="113">113 年</option><option value="112">112 年</option><option value="111">111 年</option><option value="110">110 年</option><option value="109">109 年</option><option value="108">108 年</option><option value="107">107 年</option><option value="106">106 年</option><option value="105">105 年</option><option value="104">104 年</option><option value="103">103 年</option><option value="102">102 年</option><option value="101">101 年</option><option value="100">100 年</option><option value="99">99 年</option><option value="98">98 年</option><option value="97">97 年</option><option value="96">96 年</option><option value="95">95 年</option><option value="94">94 年</option><option value="93">93 年</option><option value="92">92 年</option><option value="91">91 年</option><option value="90">90 年</option><option value="89">89 年</option><option value="88">88 年</option><option value="87">87 年</option><option value="86">86 年</option><option value="85">85 年</option><option value="84">84 年</option><option value="83">83 年</option><option value="82">82 年</option><option value="81">81 年</option><option value="80">80 年</option><option value="79">79 年</option><option value="78">78 年</option><option value="77">77 年</option><option value="76">76 年</option><option value="75">75 年</option><option value="74">74 年</option><option value="73">73 年</option><option value="72">72 年</option><option value="71">71 年</option><option value="70">70 年</option><option value="69">69 年</option><option value="68">68 年</option><option value="67">67 年</option><option value="66">66 年</option><option value="65">65 年</option><option value="64">64 年</option><option value="63">63 年</option><option value="62">62 年</option><option value="61">61 年</option><option value="60">60 年</option><option value="59">59 年</option><option value="58">58 年</option><option value="57">57 年</option><option value="56">56 年</option><option value="55">55 年</option><option value="54">54 年</option><option value="53">53 年</option><option value="52">52 年</option><option value="51">51 年</option><option value="50">50 年</option><option value="49">49 年</option><option value="48">48 年</option><option value="47">47 年</option><option value="46">46 年</option><option value="45">45 年</option><option value="44">44 年</option><option value="43">43 年</option><option value="42">42 年</option><option value="41">41 年</option><option value="40">40 年</option>
+              </select>
+              <span style="color:var(--text-mid);flex-shrink:0;">/</span>
+              <select class="calc-select" id="t-prev-month" style="flex:1;">
+                <option value="">月</option>
+                <option value="01">1 月</option><option value="02">2 月</option><option value="03">3 月</option><option value="04">4 月</option><option value="05">5 月</option><option value="06">6 月</option><option value="07">7 月</option><option value="08">8 月</option><option value="09">9 月</option><option value="10">10 月</option><option value="11">11 月</option><option value="12">12 月</option>
+              </select>
+            </div>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">消費者物價總指數<span>%</span>
+              <a href="https://www.stat.gov.tw/cp.aspx?n=2665" target="_blank" style="font-size:0.6rem;color:var(--brown-light);margin-left:0.4rem;text-decoration:underline;">指數查詢 ↗</a>
+            </label>
+            <input type="number" class="calc-input" id="t-cpi" placeholder="例：110.10（若低於100以100計）" step="0.01">
+            <span style="font-size:0.65rem;color:var(--text-mid);margin-top:0.2rem;">請下載「各年月為基期之消費者物價總指數－稅務專用」</span>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">持有年限</label>
+            <div style="display:flex;flex-direction:column;gap:0.4rem;margin-top:0.2rem;">
+              <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-mid);cursor:pointer;"><input type="radio" name="t-years" value="0" checked> 20 年以下</label>
+              <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-mid);cursor:pointer;"><input type="radio" name="t-years" value="0.2"> 20（含）～29 年　減徵 20%</label>
+              <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-mid);cursor:pointer;"><input type="radio" name="t-years" value="0.3"> 30（含）～39 年　減徵 30%</label>
+              <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-mid);cursor:pointer;"><input type="radio" name="t-years" value="0.4"> 40 年以上　　　　減徵 40%</label>
+            </div>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">稅額類別</label>
+            <select class="calc-select" id="t-landtype">
+              <option value="nonurban">非都市土地</option>
+              <option value="urban">都市土地</option>
+            </select>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">重劃後減徵稅率<span>%（無重劃填 0）</span></label>
+            <input type="number" class="calc-input" id="t-redux" placeholder="0" value="0" min="0" max="100" step="1">
+          </div>
+
+        </div>
+        <button class="calc-btn" onclick="calcTuzeng()" style="margin-bottom:0;">土地增值稅估算</button>
+        <div class="calc-result" id="t-result">
+          <div class="calc-result-title">試算結果 — Estimation Result</div>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">實際移轉面積</span><span class="calc-result-val" id="t-r-realarea">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">前次現值（物價指數調整後）</span><span class="calc-result-val" id="t-r-adjusted">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">土地漲價總數額</span><span class="calc-result-val" id="t-r-rise">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">漲價倍數</span><span class="calc-result-val" id="t-r-ratio">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">一般稅額</span><span class="calc-result-val" id="t-r-general-tax">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">超額一般稅額（超限面積）</span><span class="calc-result-val" id="t-r-over-tax">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">自用住宅稅額</span><span class="calc-result-val" id="t-r-selfuse-tax">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">持有年限減徵</span><span class="calc-result-val" id="t-r-year-redux">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">重劃後減徵</span><span class="calc-result-val" id="t-r-redux">—</span></div>
+            <div class="calc-result-row calc-result-total"><span class="calc-result-key">應繳土地增值稅合計（概估）</span><span class="calc-result-val" id="t-r-tax">—</span></div>
+          </div>
+          <div class="calc-note">※ 自用住宅用地優惠稅率：都市土地以 300 平方公尺為限，非都市土地以 700 平方公尺為限，超過部分按一般用地稅率累進課徵。持有年限滿20年以上依法減徵，物價指數若低於100以100計。本表估算之稅額，係依土地稅法及相關規定估算，僅供概算之用，實際應納稅額仍應以申報時核定之發單資料為準。相關規定參照財政部稅務入口網公告內容。</div>
+        </div>
+      </div>
+
+      <!-- 契稅 -->
+      <div class="calc-section" id="tab-qiyue">
+        <div class="calc-desc">
+          <strong>計算公式：</strong>申報契稅金額（房屋現值）× 契稅種類適用稅率 ＝ 應納稅額<br><br>
+          依契稅條例第十三條規定，契價以當地不動產評價委員會評定之<strong>標準價格</strong>為準。但依第十一條取得不動產之移轉價格低於評定標準價格者，從其移轉價格。<br><br>
+          ⚠️ 本試算結果僅供概算參考，實際應納稅額以申報時主管機關核定之發單資料為準。<br>
+          <span style="font-size:0.65rem;opacity:0.7;">以上計算方式參照財政部契稅條例及相關規定，如有疑義請洽當地稅捐稽徵機關。</span>
+        </div>
+        <div class="calc-grid">
+          <div class="calc-field">
+            <label class="calc-label">移轉類型</label>
+            <select class="calc-select" id="q-type">
+              <option value="0.06">買賣（6%）— 納稅義務人：買受人</option>
+              <option value="0.06">贈與（6%）— 納稅義務人：受贈人</option>
+              <option value="0.04">典權（4%）— 納稅義務人：典權人</option>
+              <option value="0.02">交換（2%）— 納稅義務人：交換人</option>
+              <option value="0.02">分割（2%）— 納稅義務人：分割人</option>
+              <option value="0.06">占有（6%）— 納稅義務人：占有人</option>
+            </select>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">房屋評定現值（契價）<span>元</span></label>
+            <input type="number" class="calc-input" id="q-price" placeholder="例：2000000">
+          </div>
+        </div>
+        <button class="calc-btn" onclick="calcQiyue()" style="margin-bottom:0;">契稅估算</button>
+        <div class="calc-result" id="q-result">
+          <div class="calc-result-title">試算結果 — Estimation Result</div>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">房屋評定現值</span><span class="calc-result-val" id="q-r-price">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">適用稅率</span><span class="calc-result-val" id="q-r-rate">—</span></div>
+            <div class="calc-result-row calc-result-total"><span class="calc-result-key">應繳契稅（概估）</span><span class="calc-result-val" id="q-r-tax">—</span></div>
+          </div>
+          <div class="calc-note">※ 契稅申報以房屋評定現值（契價）為準，非買賣成交價。本表估算之稅額，係依契稅條例及其相關規定之計算公式估算，僅供概算之用，實際應納稅額仍應以申報時核定之發單資料為準。相關規定參照財政部稅務入口網公告內容。</div>
+        </div>
+      </div>
+
+      <!-- 房地合一稅 -->
+      <div class="calc-section" id="tab-fangdi">
+        <div class="calc-desc">
+          <strong>房地合一稅 2.0</strong>（110年7月1日起適用）：個人出售105年1月1日以後取得之房地，依持有期間課徵所得稅。<br><br>
+          <strong>計算公式：</strong><br>
+          ① 房地成交價額 − 可減除項目（取得房地價款＋必要費用＋改良土地費用＋移轉費用）＝ 房地交易所得額<br>
+          ② 房地交易所得額 − 3年內交易損失 − 土地漲價總數額 ＝ 課稅所得（負數以0計）<br>
+          ③ 課稅所得 × 適用稅率 ＝ 應納稅額<br>
+          ④ 應納稅額 − 重購扣抵稅額〔應納稅額 × 重購價額 ÷ 出售成交價額〕＝ 本次應自行繳納稅額<br><br>
+          ⚠️ 本試算結果僅供概算參考，實際應納稅額以國稅局核定為準。<br>
+          <span style="font-size:0.65rem;opacity:0.7;">以上計算方式參照財政部房地合一所得稅相關規定，如有疑義請洽轄區國稅局。</span>
+        </div>
+
+        <!-- 一、日期 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">一、取得與交易日期</div>
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">取得日期<span>民國年 / 月 / 日</span></label>
+              <div style="display:flex;gap:0.3rem;align-items:center;">
+                <select class="calc-select" id="f-acq-y" style="flex:2;">
+                  <option value="">年</option>
+                  <option value="115">115</option><option value="114">114</option><option value="113">113</option><option value="112">112</option><option value="111">111</option><option value="110">110</option><option value="109">109</option><option value="108">108</option><option value="107">107</option><option value="106">106</option><option value="105">105</option><option value="104">104</option><option value="103">103</option><option value="102">102</option><option value="101">101</option><option value="100">100</option><option value="99">99</option><option value="98">98</option><option value="97">97</option><option value="96">96</option><option value="95">95</option><option value="94">94</option><option value="93">93</option><option value="92">92</option><option value="91">91</option><option value="90">90</option><option value="89">89</option><option value="88">88</option><option value="87">87</option><option value="86">86</option><option value="85">85</option><option value="84">84</option><option value="83">83</option><option value="82">82</option><option value="81">81</option><option value="80">80</option>
+                </select>
+                <span style="color:var(--text-mid);flex-shrink:0;font-size:0.75rem;">年</span>
+                <select class="calc-select" id="f-acq-m" style="flex:1;">
+                  <option value="">月</option>
+                  <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                </select>
+                <span style="color:var(--text-mid);flex-shrink:0;font-size:0.75rem;">月</span>
+                <select class="calc-select" id="f-acq-d" style="flex:1;">
+                  <option value="">日</option>
+                  <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option>
+                </select>
+                <span style="color:var(--text-mid);flex-shrink:0;font-size:0.75rem;">日</span>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">交易日期<span>民國年 / 月 / 日</span></label>
+              <div style="display:flex;gap:0.3rem;align-items:center;">
+                <select class="calc-select" id="f-sell-y" style="flex:2;">
+                  <option value="">年</option>
+                  <option value="115">115</option><option value="114">114</option><option value="113">113</option><option value="112">112</option><option value="111">111</option><option value="110">110</option><option value="109">109</option><option value="108">108</option><option value="107">107</option><option value="106">106</option><option value="105">105</option>
+                </select>
+                <span style="color:var(--text-mid);flex-shrink:0;font-size:0.75rem;">年</span>
+                <select class="calc-select" id="f-sell-m" style="flex:1;">
+                  <option value="">月</option>
+                  <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                </select>
+                <span style="color:var(--text-mid);flex-shrink:0;font-size:0.75rem;">月</span>
+                <select class="calc-select" id="f-sell-d" style="flex:1;">
+                  <option value="">日</option>
+                  <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option>
+                </select>
+                <span style="color:var(--text-mid);flex-shrink:0;font-size:0.75rem;">日</span>
+              </div>
+            </div>
+          </div>
+          <div id="f-regime-box" style="display:none;padding:0.7rem 1rem;background:var(--cream);border-left:2px solid var(--brown-light);border-radius:2px;margin-top:0.6rem;font-size:0.78rem;color:var(--text-mid);letter-spacing:0.04em;line-height:1.8;"></div>
+        </div>
+
+        <!-- 二、身分 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">二、持有者身分與房地類別</div>
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">持有者身分</label>
+              <select class="calc-select" id="f-identity">
+                <option value="person">境內居住個人</option>
+                <option value="company">境內法人（營利事業）</option>
+                <option value="foreign">非境內居住者或境外營利事業</option>
+              </select>
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">房地類別</label>
+              <select class="calc-select" id="f-category">
+                <option value="general">一般房地</option>
+                <option value="selfuse">自住房地（本人/配偶/未成年子女設籍且住滿6年）</option>
+                <option value="involuntary">非自願因素（離婚/工作調動/非自願離職等）</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- 三、取得成本 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">三、取得房地價款</div>
+          <div style="display:flex;gap:1.5rem;margin-bottom:0.7rem;">
+            <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:var(--text-mid);cursor:pointer;">
+              <input type="radio" name="f-acq-type" value="purchase" checked onclick="toggleAcqType()"> 出價取得（買入）
+            </label>
+            <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:var(--text-mid);cursor:pointer;">
+              <input type="radio" name="f-acq-type" value="inherit" onclick="toggleAcqType()"> 繼承或受贈取得
+            </label>
+          </div>
+          <div id="f-purchase-block" class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">實際取得房地價款<span>元</span></label>
+              <input type="number" class="calc-input" id="f-cost-purchase" placeholder="例：8,000,000">
+            </div>
+          </div>
+          <div id="f-inherit-block" style="display:none;" class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">取得時土地公告現值<span>元</span></label>
+              <input type="number" class="calc-input" id="f-cost-land" placeholder="例：3,000,000" oninput="calcInheritCost()">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">取得時房屋評定現值<span>元</span></label>
+              <input type="number" class="calc-input" id="f-cost-house" placeholder="例：500,000" oninput="calcInheritCost()">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">消費者物價總指數<span>%</span></label>
+              <input type="number" class="calc-input" id="f-cost-cpi" placeholder="例：110.10" step="0.01" oninput="calcInheritCost()">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">推算取得成本<span>（自動計算）</span></label>
+              <div id="f-inherit-cost-result" style="padding:0.7rem 0.9rem;background:var(--cream-dark);border-radius:2px;font-size:0.85rem;color:var(--brown-dark);">— 元</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 四、可減除項目 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">四、可減除項目（取得成本以外）</div>
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">取得房地達可供使用狀態前支付之必要費用<span>元（契稅、印花稅、代書費、規費等）</span></label>
+              <input type="number" class="calc-input" id="f-nec" placeholder="例：200,000">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">地方稅稽徵機關核准減除之改良土地費用<span>元（無則填0）</span></label>
+              <input type="number" class="calc-input" id="f-improve" placeholder="0" value="0">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">移轉費用<span>元（仲介費、廣告費等；未提憑證得按成交價3%）</span></label>
+              <input type="number" class="calc-input" id="f-sfee" placeholder="例：360,000" oninput="updateSfeeHint()">
+              <span id="f-sfee-hint" style="font-size:0.62rem;color:var(--brown-light);margin-top:0.2rem;display:none;"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 五、交易收入與第二層扣除 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">五、交易收入與課稅所得調整項目</div>
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">房地成交價額<span>元</span></label>
+              <input type="number" class="calc-input" id="f-income" placeholder="例：12,000,000" oninput="updateSfeeHint()">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">交易日前3年內房地交易損失<span>元（無則填0）</span></label>
+              <input type="number" class="calc-input" id="f-loss" placeholder="0" value="0">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">土地漲價總數額<span>元（可從土增稅結果帶入）</span></label>
+              <div style="display:flex;gap:0.4rem;">
+                <input type="number" class="calc-input" id="f-lvt" placeholder="例：1,903,519" style="flex:1;">
+                <button onclick="importFromLVT()" style="background:var(--cream-darker);border:0.5px solid var(--cream-darker);color:var(--brown-dark);padding:0 0.7rem;border-radius:2px;cursor:pointer;font-size:0.68rem;white-space:nowrap;letter-spacing:0.04em;">帶入土增稅</button>
+              </div>
+              <span style="font-size:0.62rem;color:var(--text-light);margin-top:0.2rem;">請填入漲價總數額（非稅額）</span>
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">重購自住房地價額<span>元（無則填0）</span></label>
+              <input type="number" class="calc-input" id="f-repurchase" placeholder="0" value="0">
+              <span style="font-size:0.62rem;color:var(--text-light);margin-top:0.2rem;">扣抵稅額 ＝ 應納稅額 × 重購價額 ÷ 出售成交價額</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 估算按鈕 -->
+        <button class="calc-btn" onclick="calcFangdi()" style="margin-bottom:0;">房地合一稅估算</button>
+
+        <!-- 結果 -->
+        <div class="calc-result" id="f-result">
+          <div class="calc-result-title">試算結果 — Estimation Result</div>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">適用制度</span><span class="calc-result-val" id="f-r-regime">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">持有期間</span><span class="calc-result-val" id="f-r-period">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">適用稅率</span><span class="calc-result-val" id="f-r-rate">—</span></div>
+          </div>
+          <div style="border-top:0.5px solid rgba(240,237,230,0.15);margin:0.8rem 0;"></div>
+          <div style="font-size:0.62rem;letter-spacing:0.2em;color:rgba(240,237,230,0.4);margin-bottom:0.5rem;font-family:'Cormorant Garamond',serif;font-style:italic;">① 房地交易所得額</div>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">房地成交價額</span><span class="calc-result-val" id="f-r-income">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：取得房地價款</span><span class="calc-result-val" id="f-r-cost-base">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：必要費用</span><span class="calc-result-val" id="f-r-nec">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：改良土地費用</span><span class="calc-result-val" id="f-r-improve">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：移轉費用</span><span class="calc-result-val" id="f-r-sfee">—</span></div>
+            <div class="calc-result-row calc-result-total" style="border-top:0.5px solid rgba(240,237,230,0.15);padding-top:0.6rem;margin-top:0.2rem;">
+              <span class="calc-result-key">房地交易所得額</span><span class="calc-result-val" id="f-r-gain">—</span>
+            </div>
+          </div>
+          <div style="border-top:0.5px solid rgba(240,237,230,0.15);margin:0.8rem 0;"></div>
+          <div style="font-size:0.62rem;letter-spacing:0.2em;color:rgba(240,237,230,0.4);margin-bottom:0.5rem;font-family:'Cormorant Garamond',serif;font-style:italic;">② 課稅所得</div>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">　減：3年內交易損失</span><span class="calc-result-val" id="f-r-loss">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：土地漲價總數額</span><span class="calc-result-val" id="f-r-lvt">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：自住免稅額（上限400萬）</span><span class="calc-result-val" id="f-r-exempt">—</span></div>
+            <div class="calc-result-row calc-result-total" style="border-top:0.5px solid rgba(240,237,230,0.15);padding-top:0.6rem;margin-top:0.2rem;">
+              <span class="calc-result-key">課稅所得額</span><span class="calc-result-val" id="f-r-taxable">—</span>
+            </div>
+          </div>
+          <div style="border-top:0.5px solid rgba(240,237,230,0.15);margin:0.8rem 0;"></div>
+          <div style="font-size:0.62rem;letter-spacing:0.2em;color:rgba(240,237,230,0.4);margin-bottom:0.5rem;font-family:'Cormorant Garamond',serif;font-style:italic;">③④ 應納稅額與重購扣抵</div>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">應納稅額</span><span class="calc-result-val" id="f-r-tax-before">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：重購自住扣抵稅額</span><span class="calc-result-val" id="f-r-repurchase">—</span></div>
+            <div class="calc-result-row calc-result-total">
+              <span class="calc-result-key">本次應自行繳納稅額（概估）</span><span class="calc-result-val" id="f-r-tax">—</span>
+            </div>
+          </div>
+          <div class="calc-note">※ 自住房地10%優惠稅率需同時符合：①出售前1年內無出租、無供營業；②本人或配偶、未成年子女辦竣戶籍登記；③持有並居住滿6年；④每10年限適用一次，免稅額上限400萬元。土地漲價總數額欄位請填入土地增值稅申報之漲價總數額（非稅額）。繼承、受贈取得成本以取得時公告現值及評定現值乘以物價指數推算。本表估算之稅額，係依所得稅法及相關規定估算，僅供概算之用，實際應納稅額仍應以申報時國稅局核定為準。相關規定參照財政部稅務入口網公告內容。</div>
+        </div>
+      </div>
+      <!-- 贈與稅 -->
+      <div class="calc-section" id="tab-zengyou">
+        <div class="calc-desc">
+          贈與稅由<strong>贈與人</strong>繳納。每人每年免稅額 <strong>244 萬元</strong>（113年起適用）。<br>
+          課稅級距（114年起）：贈與淨額 2,811 萬以下 10%；2,811 萬～5,621 萬 15%；5,621 萬以上 20%。
+        </div>
+        <div class="calc-grid">
+          <div class="calc-field">
+            <label class="calc-label">本年度贈與總額<span>元</span></label>
+            <input type="number" class="calc-input" id="z-total" placeholder="例：5000000" oninput="calcZengyou()">
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">本年度已用免稅額<span>元（未用填0）</span></label>
+            <input type="number" class="calc-input" id="z-used" placeholder="0" oninput="calcZengyou()">
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">扣除額（負擔贈與等）<span>元</span></label>
+            <input type="number" class="calc-input" id="z-deduct" placeholder="0" oninput="calcZengyou()">
+          </div>
+        </div>
+        <div class="calc-result" id="z-result">
+          <div class="calc-result-title">試算結果 — Estimation Result</div>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">贈與總額</span><span class="calc-result-val" id="z-r-total">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">免稅額（剩餘）</span><span class="calc-result-val" id="z-r-exempt">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">課稅贈與淨額</span><span class="calc-result-val" id="z-r-net">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">適用稅率</span><span class="calc-result-val" id="z-r-rate">—</span></div>
+            <div class="calc-result-row calc-result-total"><span class="calc-result-key">應繳贈與稅（概估）</span><span class="calc-result-val" id="z-r-tax">—</span></div>
+          </div>
+          <div class="calc-note">※ 114年課稅級距：贈與淨額 2,811 萬元以下稅率 10%，超過 2,811 萬至 5,621 萬稅率 15%，超過 5,621 萬稅率 20%。免稅額每人每年 244 萬元，配偶贈與免稅。實際稅額以國稅局核定為準。</div>
+        </div>
+      </div>
+
+      <!-- 遺產稅 -->
+      <div class="calc-section" id="tab-yichan">
+        <div class="calc-desc">
+          遺產稅免稅額 <strong>1,333 萬元</strong>。課稅級距（114年起）：遺產淨額 5,621 萬以下 10%；5,621 萬～1 億 1,242 萬 15%；超過 1 億 1,242 萬 20%。
+        </div>
+        <div class="calc-grid">
+          <div class="calc-field">
+            <label class="calc-label">遺產總額<span>元</span></label>
+            <input type="number" class="calc-input" id="y-total" placeholder="例：30000000" oninput="calcYichan()">
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">配偶扣除額<span>元（有配偶填 5,530,000）</span></label>
+            <input type="number" class="calc-input" id="y-spouse" placeholder="0" oninput="calcYichan()">
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">直系血親卑親屬扣除額<span>元（每人 560,000）</span></label>
+            <input type="number" class="calc-input" id="y-child" placeholder="0" oninput="calcYichan()">
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">父母扣除額<span>元（每人 1,380,000）</span></label>
+            <input type="number" class="calc-input" id="y-parent" placeholder="0" oninput="calcYichan()">
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">喪葬費扣除額<span>元（定額 1,380,000）</span></label>
+            <input type="number" class="calc-input" id="y-funeral" value="1380000" oninput="calcYichan()">
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">其他扣除額（殘障、重病等）<span>元</span></label>
+            <input type="number" class="calc-input" id="y-other" placeholder="0" oninput="calcYichan()">
+          </div>
+        </div>
+        <div class="calc-result" id="y-result">
+          <div class="calc-result-title">試算結果 — Estimation Result</div>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">遺產總額</span><span class="calc-result-val" id="y-r-total">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">免稅額</span><span class="calc-result-val" id="y-r-exempt">1,333 萬元</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">各項扣除額合計</span><span class="calc-result-val" id="y-r-deduct">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">課稅遺產淨額</span><span class="calc-result-val" id="y-r-net">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">適用稅率</span><span class="calc-result-val" id="y-r-rate">—</span></div>
+            <div class="calc-result-row calc-result-total"><span class="calc-result-key">應繳遺產稅（概估）</span><span class="calc-result-val" id="y-r-tax">—</span></div>
+          </div>
+          <div class="calc-note">※ 114年課稅級距：遺產淨額 5,621 萬元以下稅率 10%，超過 5,621 萬至 1 億 1,242 萬稅率 15%，超過 1 億 1,242 萬稅率 20%。免稅額 1,333 萬元，配偶扣除額 553 萬元，直系血親卑親屬每人 56 萬元，父母每人 138 萬元，喪葬費 138 萬元。實際稅額以國稅局核定為準。</div>
+        </div>
+      </div>
+
+    
+  </div>
+</main>
+
+<script>
+function fmt(n) { return Math.round(n).toLocaleString('zh-TW') + ' 元'; }
+function v(id) { var el = document.getElementById(id); return el ? (parseFloat(el.value) || 0) : 0; }
+function set(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; }
+function showResult(id) { var el = document.getElementById(id); if (el) el.classList.add('show'); }
+
+function switchTab(name) {
+  document.querySelectorAll('.calc-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.calc-section').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('tab-' + name).classList.add('active');
+  document.querySelectorAll('.calc-tab').forEach(function(t) {
+    if (t.getAttribute('onclick') && t.getAttribute('onclick').indexOf("'" + name + "'") >= 0) {
+      t.classList.add('active');
+    }
+  });
+}
+
+function fmt(n) { return Math.round(n).toLocaleString('zh-TW') + ' 元'; }
+function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
+function set(id, val) { document.getElementById(id).textContent = val; }
+function showResult(id) { document.getElementById(id).classList.add('show'); }
+
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in-section').forEach(function(el) { observer.observe(el); });
+</script>
+</body>
+</html>
