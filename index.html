@@ -9,127 +9,47 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
-  --brown-dark: #3D2F2A;
-  --brown-mid: #5C4A43;
-  --brown-light: #8B7B75;
-  --cream: #F0EDE6;
-  --cream-dark: #E5E0D8;
-  --cream-darker: #D8D2C8;
-  --white: #FAF8F5;
-  --text-dark: #2A1F1B;
-  --text-mid: #5C4A43;
-  --text-light: #8B7B75;
+  --brown-dark: #3D2F2A; --brown-mid: #5C4A43; --brown-light: #8B7B75;
+  --cream: #F0EDE6; --cream-dark: #E5E0D8; --cream-darker: #D8D2C8;
+  --white: #FAF8F5; --text-dark: #2A1F1B; --text-mid: #5C4A43; --text-light: #8B7B75;
 }
-
 html { scroll-behavior: smooth; }
 body { font-family: 'Noto Sans TC', sans-serif; background: var(--cream); color: var(--text-dark); font-weight: 300; overflow-x: hidden; }
 
-/* NAV */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  padding: 1.2rem 4rem;
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(240,237,230,0.92); backdrop-filter: blur(12px);
-  border-bottom: 0.5px solid rgba(61,47,42,0.12);
-  transition: all 0.3s ease;
-}
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.2rem 4rem; display: flex; align-items: center; justify-content: space-between; background: rgba(240,237,230,0.92); backdrop-filter: blur(12px); border-bottom: 0.5px solid rgba(61,47,42,0.12); transition: all 0.3s ease; }
 .nav-logo { display: flex; align-items: center; gap: 0.8rem; text-decoration: none; }
 .nav-logo svg { width: 36px; height: 36px; }
-.nav-logo-text {
-  font-family: 'AR Gyokaisho','AR GYOUKAISHOtc-UT','Noto Serif TC',serif;
-  font-size: 1rem; font-weight: 400; color: var(--brown-dark); letter-spacing: 0.15em;
-}
+.nav-logo-text { font-family: 'AR Gyokaisho','AR GYOUKAISHOtc-UT','Noto Serif TC',serif; font-size: 1rem; font-weight: 400; color: var(--brown-dark); letter-spacing: 0.15em; }
 .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
-.nav-links a {
-  font-size: 0.8rem; letter-spacing: 0.12em; color: var(--text-mid);
-  text-decoration: none; transition: color 0.2s; font-weight: 400;
-}
+.nav-links a { font-size: 0.8rem; letter-spacing: 0.12em; color: var(--text-mid); text-decoration: none; transition: color 0.2s; font-weight: 400; }
 .nav-links a:hover { color: var(--brown-dark); }
-.nav-calc {
-  background: var(--cream-darker) !important; color: var(--brown-dark) !important;
-  padding: 0.5rem 1.1rem; border-radius: 2px;
-  border: 0.5px solid var(--brown-light) !important;
-  font-size: 0.75rem !important; letter-spacing: 0.1em !important;
-  cursor: pointer !important; transition: all 0.2s !important;
-}
+.nav-calc { background: var(--cream-darker) !important; color: var(--brown-dark) !important; padding: 0.5rem 1.1rem; border-radius: 2px; border: 0.5px solid var(--brown-light) !important; font-size: 0.75rem !important; letter-spacing: 0.1em !important; cursor: pointer !important; transition: all 0.2s !important; }
 .nav-calc:hover { background: var(--brown-dark) !important; color: var(--cream) !important; }
-.nav-cta {
-  background: var(--brown-dark) !important; color: var(--cream) !important;
-  padding: 0.5rem 1.2rem; border-radius: 2px;
-  font-size: 0.75rem !important; letter-spacing: 0.12em !important;
-  transition: background 0.2s !important;
-}
+.nav-cta { background: var(--brown-dark) !important; color: var(--cream) !important; padding: 0.5rem 1.2rem; border-radius: 2px; font-size: 0.75rem !important; letter-spacing: 0.12em !important; transition: background 0.2s !important; }
 .nav-cta:hover { background: var(--brown-mid) !important; }
 
-/* HERO */
-.hero {
-  min-height: 100vh; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center; padding: 8rem 2rem 4rem; position: relative; overflow: hidden;
-}
-.hero::before {
-  content:''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(61,47,42,0.04) 0%, transparent 70%);
-  pointer-events: none;
-}
+.hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 8rem 2rem 4rem; position: relative; overflow: hidden; }
+.hero::before { content:''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(61,47,42,0.04) 0%, transparent 70%); pointer-events: none; }
 .hero-logo { width: 100px; height: 100px; margin: 0 auto 2rem; opacity: 0; animation: fadeUp 1s ease 0.2s forwards; }
-.hero-title {
-  font-family: 'AR Gyokaisho','AR GYOUKAISHOtc-UT','Noto Serif TC',serif;
-  font-size: clamp(2rem,5vw,3.2rem); font-weight: 400; letter-spacing: 0.4em;
-  color: var(--brown-dark); line-height: 1.4; margin-bottom: 1.5rem;
-  opacity: 0; animation: fadeUp 1s ease 0.4s forwards;
-}
-.hero-en {
-  font-family: 'Cormorant Garamond',serif; font-size: 0.75rem;
-  letter-spacing: 0.3em; color: var(--text-light); margin-bottom: 3rem;
-  opacity: 0; animation: fadeUp 1s ease 0.5s forwards;
-}
-.hero-divider {
-  width: 40px; height: 0.5px; background: var(--brown-light); margin: 0 auto 3rem;
-  opacity: 0; animation: fadeUp 1s ease 0.6s forwards;
-}
-.hero-tagline {
-  font-family: 'Noto Serif TC',serif; font-size: clamp(1rem,2.5vw,1.4rem);
-  font-weight: 300; color: var(--text-mid); letter-spacing: 0.1em; line-height: 2;
-  max-width: 500px; opacity: 0; animation: fadeUp 1s ease 0.7s forwards;
-}
-.hero-cta-group {
-  display: flex; gap: 1rem; margin-top: 3rem; flex-wrap: wrap; justify-content: center;
-  opacity: 0; animation: fadeUp 1s ease 0.9s forwards;
-}
-.btn-primary {
-  background: var(--brown-dark); color: var(--cream);
-  padding: 0.9rem 2.5rem; font-size: 0.8rem; letter-spacing: 0.2em;
-  font-family: 'Noto Sans TC',sans-serif; border: none; cursor: pointer;
-  text-decoration: none; display: inline-block;
-  transition: background 0.2s, transform 0.2s; border-radius: 2px;
-}
+.hero-title { font-family: 'AR Gyokaisho','AR GYOUKAISHOtc-UT','Noto Serif TC',serif; font-size: clamp(2rem,5vw,3.2rem); font-weight: 400; letter-spacing: 0.4em; color: var(--brown-dark); line-height: 1.4; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 1s ease 0.4s forwards; }
+.hero-en { font-family: 'Cormorant Garamond',serif; font-size: 0.75rem; letter-spacing: 0.3em; color: var(--text-light); margin-bottom: 3rem; opacity: 0; animation: fadeUp 1s ease 0.5s forwards; }
+.hero-divider { width: 40px; height: 0.5px; background: var(--brown-light); margin: 0 auto 3rem; opacity: 0; animation: fadeUp 1s ease 0.6s forwards; }
+.hero-tagline { font-family: 'Noto Serif TC',serif; font-size: clamp(1rem,2.5vw,1.4rem); font-weight: 300; color: var(--text-mid); letter-spacing: 0.1em; line-height: 2; max-width: 500px; opacity: 0; animation: fadeUp 1s ease 0.7s forwards; }
+.hero-cta-group { display: flex; gap: 1rem; margin-top: 3rem; flex-wrap: wrap; justify-content: center; opacity: 0; animation: fadeUp 1s ease 0.9s forwards; }
+.btn-primary { background: var(--brown-dark); color: var(--cream); padding: 0.9rem 2.5rem; font-size: 0.8rem; letter-spacing: 0.2em; font-family: 'Noto Sans TC',sans-serif; border: none; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s, transform 0.2s; border-radius: 2px; }
 .btn-primary:hover { background: var(--brown-mid); transform: translateY(-1px); }
-.btn-outline {
-  background: transparent; color: var(--brown-dark);
-  padding: 0.9rem 2.5rem; font-size: 0.8rem; letter-spacing: 0.2em;
-  font-family: 'Noto Sans TC',sans-serif; border: 0.5px solid var(--brown-dark);
-  cursor: pointer; text-decoration: none; display: inline-block;
-  transition: all 0.2s; border-radius: 2px;
-}
+.btn-outline { background: transparent; color: var(--brown-dark); padding: 0.9rem 2.5rem; font-size: 0.8rem; letter-spacing: 0.2em; font-family: 'Noto Sans TC',sans-serif; border: 0.5px solid var(--brown-dark); cursor: pointer; text-decoration: none; display: inline-block; transition: all 0.2s; border-radius: 2px; }
 .btn-outline:hover { background: var(--brown-dark); color: var(--cream); }
-.hero-scroll {
-  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-  opacity: 0; animation: fadeIn 1s ease 1.5s forwards;
-}
+.hero-scroll { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; opacity: 0; animation: fadeIn 1s ease 1.5s forwards; }
 .hero-scroll span { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--text-light); font-family: 'Cormorant Garamond',serif; font-style: italic; }
 .scroll-line { width: 0.5px; height: 40px; background: linear-gradient(to bottom,var(--brown-light),transparent); animation: scrollPulse 2s ease infinite; }
 
-/* SECTIONS */
 section { padding: 6rem 4rem; }
 .section-label { font-family: 'Cormorant Garamond',serif; font-size: 0.7rem; letter-spacing: 0.4em; color: var(--text-light); font-style: italic; margin-bottom: 0.5rem; text-align: center; }
 .section-title { font-family: 'AR Gyokaisho','AR GYOUKAISHOtc-UT','Noto Serif TC',serif; font-size: clamp(1.6rem,3vw,2.2rem); font-weight: 400; letter-spacing: 0.25em; color: var(--brown-dark); text-align: center; margin-bottom: 1rem; }
 .section-divider { width: 30px; height: 0.5px; background: var(--brown-light); margin: 0 auto 4rem; }
 
-/* ABOUT */
 .about { background: var(--white); }
 .about-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
 .about-left h3 { font-family: 'AR Gyokaisho','AR GYOUKAISHOtc-UT','Noto Serif TC',serif; font-size: 1.1rem; font-weight: 400; letter-spacing: 0.2em; color: var(--brown-dark); margin-bottom: 1.5rem; }
@@ -140,7 +60,6 @@ section { padding: 6rem 4rem; }
 .about-card-value { font-family: 'Noto Serif TC',serif; font-size: 0.95rem; letter-spacing: 0.1em; color: var(--brown-dark); }
 .about-card-sub { font-size: 0.75rem; color: var(--text-light); margin-top: 0.2rem; letter-spacing: 0.05em; }
 
-/* SERVICES */
 .services { background: var(--cream); }
 .services-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--cream-darker); border: 0.5px solid var(--cream-darker); }
 .service-item { background: var(--cream); padding: 2rem 1rem; text-align: center; transition: background 0.3s; cursor: default; }
@@ -154,7 +73,6 @@ section { padding: 6rem 4rem; }
 .service-other .service-en { color: rgba(240,237,230,0.5); }
 .service-other:hover { background: var(--brown-mid); }
 
-/* PROCESS */
 .process { background: var(--white); }
 .process-steps { max-width: 800px; margin: 0 auto; display: flex; align-items: flex-start; position: relative; }
 .process-step { flex: 1; text-align: center; padding: 0 1rem; position: relative; }
@@ -163,12 +81,19 @@ section { padding: 6rem 4rem; }
 .step-name { font-family: 'Noto Serif TC',serif; font-size: 0.85rem; letter-spacing: 0.15em; color: var(--brown-dark); margin-bottom: 0.5rem; }
 .step-desc { font-size: 0.75rem; color: var(--text-light); line-height: 1.8; letter-spacing: 0.05em; }
 
-/* FAQ */
 .faq { background: var(--cream); }
 .faq-placeholder { max-width: 680px; margin: 0 auto; padding: 3rem; text-align: center; border: 0.5px dashed var(--cream-darker); border-radius: 2px; }
 .faq-placeholder p { font-size: 0.8rem; color: var(--text-light); letter-spacing: 0.1em; }
+.faq-list { max-width: 680px; margin: 0 auto; }
+.faq-item { border-top: 0.5px solid var(--cream-darker); }
+.faq-item:last-child { border-bottom: 0.5px solid var(--cream-darker); }
+.faq-q { display: flex; align-items: center; justify-content: space-between; padding: 1.5rem 0; cursor: pointer; gap: 1rem; }
+.faq-q-text { font-family: 'Noto Serif TC',serif; font-size: 0.9rem; letter-spacing: 0.08em; color: var(--brown-dark); font-weight: 400; }
+.faq-icon { width: 20px; height: 20px; flex-shrink: 0; border: 0.5px solid var(--brown-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.3s; color: var(--brown-dark); font-size: 0.7rem; }
+.faq-item.open .faq-icon { background: var(--brown-dark); border-color: var(--brown-dark); color: var(--cream); transform: rotate(45deg); }
+.faq-a { font-size: 0.85rem; line-height: 2; color: var(--text-mid); letter-spacing: 0.05em; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+.faq-item.open .faq-a { max-height: 300px; padding-bottom: 1.5rem; }
 
-/* CONTACT */
 .contact { background: var(--brown-dark); color: var(--cream); }
 .contact .section-label { color: rgba(240,237,230,0.4); }
 .contact .section-title { color: var(--cream); }
@@ -183,89 +108,46 @@ section { padding: 6rem 4rem; }
 .form-row { display: flex; gap: 0.8rem; }
 .form-group { flex: 1; display: flex; flex-direction: column; gap: 0.4rem; }
 .form-label { font-size: 0.65rem; letter-spacing: 0.25em; color: rgba(240,237,230,0.5); }
-.form-input, .form-textarea, .form-select {
-  background: rgba(240,237,230,0.06); border: 0.5px solid rgba(240,237,230,0.2);
-  color: var(--cream); padding: 0.8rem 1rem; font-size: 0.85rem;
-  font-family: 'Noto Sans TC',sans-serif; letter-spacing: 0.05em; outline: none;
-  border-radius: 2px; transition: border-color 0.2s; width: 100%;
-}
+.form-input, .form-textarea, .form-select { background: rgba(240,237,230,0.06); border: 0.5px solid rgba(240,237,230,0.2); color: var(--cream); padding: 0.8rem 1rem; font-size: 0.85rem; font-family: 'Noto Sans TC',sans-serif; letter-spacing: 0.05em; outline: none; border-radius: 2px; transition: border-color 0.2s; width: 100%; }
 .form-input::placeholder, .form-textarea::placeholder { color: rgba(240,237,230,0.25); }
 .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: rgba(240,237,230,0.5); }
 .form-textarea { resize: none; height: 100px; }
 .form-select option { background: var(--brown-dark); color: var(--cream); }
-.form-submit {
-  background: var(--cream); color: var(--brown-dark); border: none;
-  padding: 1rem 2rem; font-size: 0.8rem; letter-spacing: 0.2em;
-  font-family: 'Noto Sans TC',sans-serif; cursor: pointer; border-radius: 2px;
-  transition: background 0.2s, transform 0.2s; margin-top: 0.5rem; font-weight: 400;
-}
+.form-submit { background: var(--cream); color: var(--brown-dark); border: none; padding: 1rem 2rem; font-size: 0.8rem; letter-spacing: 0.2em; font-family: 'Noto Sans TC',sans-serif; cursor: pointer; border-radius: 2px; transition: background 0.2s, transform 0.2s; margin-top: 0.5rem; font-weight: 400; }
 .form-submit:hover { background: var(--cream-dark); transform: translateY(-1px); }
 
-/* FOOTER */
 footer { background: #2A1F1B; padding: 3rem 4rem; text-align: center; }
 .footer-logo-text { font-family: 'AR Gyokaisho','AR GYOUKAISHOtc-UT','Noto Serif TC',serif; font-size: 0.85rem; letter-spacing: 0.3em; color: rgba(240,237,230,0.4); margin-bottom: 1rem; }
 .footer-cert { font-size: 0.65rem; letter-spacing: 0.1em; color: rgba(240,237,230,0.2); margin-bottom: 0.5rem; }
 .footer-copy { font-size: 0.6rem; letter-spacing: 0.15em; color: rgba(240,237,230,0.15); }
 
-/* ===== TAX CALCULATOR MODAL ===== */
-.calc-overlay {
-  display: none; position: fixed; inset: 0; z-index: 999;
-  background: rgba(42,31,27,0.75); backdrop-filter: blur(6px);
-}
+/* TAX CALCULATOR */
+.calc-overlay { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(42,31,27,0.75); backdrop-filter: blur(6px); }
 .calc-overlay.open { display: flex; align-items: stretch; }
-.calc-panel {
-  background: var(--white); width: 100%; max-width: 820px;
-  margin-left: auto; display: flex; flex-direction: column;
-  box-shadow: -8px 0 40px rgba(42,31,27,0.15);
-  animation: slideIn 0.35s ease;
-}
+.calc-panel { background: var(--white); width: 100%; max-width: 820px; margin-left: auto; display: flex; flex-direction: column; box-shadow: -8px 0 40px rgba(42,31,27,0.15); animation: slideIn 0.35s ease; }
 @keyframes slideIn { from { transform: translateX(60px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-.calc-header {
-  padding: 2rem 2.5rem 1.5rem;
-  border-bottom: 0.5px solid var(--cream-darker);
-  display: flex; align-items: center; justify-content: space-between;
-  background: var(--white);
-  flex-shrink: 0;
-}
-.calc-header-left {}
+.calc-header { padding: 2rem 2.5rem 1.5rem; border-bottom: 0.5px solid var(--cream-darker); display: flex; align-items: center; justify-content: space-between; background: var(--white); flex-shrink: 0; }
 .calc-header-title { font-family: 'AR Gyokaisho','AR GYOUKAISHOtc-UT','Noto Serif TC',serif; font-size: 1.3rem; letter-spacing: 0.2em; color: var(--brown-dark); }
 .calc-header-sub { font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-light); margin-top: 0.2rem; font-family: 'Cormorant Garamond',serif; font-style: italic; }
 .calc-close { width: 36px; height: 36px; border: 0.5px solid var(--cream-darker); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1rem; color: var(--text-light); transition: all 0.2s; background: none; }
 .calc-close:hover { background: var(--brown-dark); color: var(--cream); border-color: var(--brown-dark); }
-
 .calc-tabs { display: flex; border-bottom: 0.5px solid var(--cream-darker); padding: 0 2.5rem; flex-shrink: 0; overflow-x: auto; }
 .calc-tab { padding: 0.9rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; color: var(--text-light); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all 0.2s; font-family: 'Noto Sans TC',sans-serif; background: none; border-top: none; border-left: none; border-right: none; }
 .calc-tab:hover { color: var(--brown-dark); }
 .calc-tab.active { color: var(--brown-dark); border-bottom-color: var(--brown-dark); font-weight: 500; }
-
 .calc-body { flex: 1; overflow-y: auto; padding: 2rem 2.5rem; }
 .calc-section { display: none; }
 .calc-section.active { display: block; }
-
 .calc-desc { font-size: 0.8rem; color: var(--text-light); line-height: 1.8; letter-spacing: 0.05em; margin-bottom: 1.5rem; padding: 1rem 1.2rem; background: var(--cream); border-radius: 2px; border-left: 2px solid var(--brown-light); }
 .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem; }
-.calc-grid.single { grid-template-columns: 1fr; }
 .calc-field { display: flex; flex-direction: column; gap: 0.4rem; }
 .calc-label { font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-mid); }
 .calc-label span { font-size: 0.6rem; color: var(--text-light); margin-left: 0.3rem; }
-.calc-input, .calc-select {
-  background: var(--white); border: 0.5px solid var(--cream-darker);
-  color: var(--text-dark); padding: 0.7rem 0.9rem; font-size: 0.85rem;
-  font-family: 'Noto Sans TC',sans-serif; outline: none; border-radius: 2px;
-  transition: border-color 0.2s; width: 100%;
-}
+.calc-input, .calc-select { background: var(--white); border: 0.5px solid var(--cream-darker); color: var(--text-dark); padding: 0.7rem 0.9rem; font-size: 0.85rem; font-family: 'Noto Sans TC',sans-serif; outline: none; border-radius: 2px; transition: border-color 0.2s; width: 100%; }
 .calc-input:focus, .calc-select:focus { border-color: var(--brown-light); }
-.calc-btn {
-  background: var(--brown-dark); color: var(--cream); border: none;
-  padding: 0.9rem 2rem; font-size: 0.8rem; letter-spacing: 0.15em;
-  font-family: 'Noto Sans TC',sans-serif; cursor: pointer; border-radius: 2px;
-  transition: background 0.2s; margin-top: 0.5rem; width: 100%;
-}
+.calc-btn { background: var(--brown-dark); color: var(--cream); border: none; padding: 0.9rem 2rem; font-size: 0.8rem; letter-spacing: 0.15em; font-family: 'Noto Sans TC',sans-serif; cursor: pointer; border-radius: 2px; transition: background 0.2s; margin-top: 0.5rem; width: 100%; }
 .calc-btn:hover { background: var(--brown-mid); }
-.calc-result {
-  margin-top: 1.5rem; padding: 1.5rem; background: var(--brown-dark);
-  border-radius: 2px; display: none;
-}
+.calc-result { margin-top: 1.5rem; padding: 1.5rem; background: var(--brown-dark); border-radius: 2px; display: none; }
 .calc-result.show { display: block; }
 .calc-result-title { font-size: 0.65rem; letter-spacing: 0.3em; color: rgba(240,237,230,0.4); font-family: 'Cormorant Garamond',serif; font-style: italic; margin-bottom: 1rem; }
 .calc-result-rows { display: flex; flex-direction: column; gap: 0.6rem; }
@@ -276,15 +158,12 @@ footer { background: #2A1F1B; padding: 3rem 4rem; text-align: center; }
 .calc-result-total .calc-result-key { color: rgba(240,237,230,0.8); font-size: 0.85rem; }
 .calc-result-total .calc-result-val { font-size: 1.1rem; font-weight: 500; }
 .calc-note { font-size: 0.65rem; color: rgba(240,237,230,0.35); margin-top: 1rem; line-height: 1.8; }
-.calc-divider { border: none; border-top: 0.5px solid var(--cream-darker); margin: 1.2rem 0; }
 
-/* ANIMATIONS */
 @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
 @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 @keyframes scrollPulse { 0%,100%{opacity:0.3;} 50%{opacity:1;} }
 .fade-in-section { opacity:0; transform:translateY(24px); transition:opacity 0.8s ease,transform 0.8s ease; }
 .fade-in-section.visible { opacity:1; transform:translateY(0); }
-
 .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; }
 .hamburger span { display:block; width:22px; height:0.5px; background:var(--brown-dark); }
 
@@ -312,46 +191,141 @@ footer { background: #2A1F1B; padding: 3rem 4rem; text-align: center; }
 <div class="calc-overlay" id="calcOverlay" onclick="closeCalcOutside(event)">
   <div class="calc-panel" id="calcPanel">
     <div class="calc-header">
-      <div class="calc-header-left">
+      <div>
         <div class="calc-header-title">稅 費 試 算 系 統</div>
         <div class="calc-header-sub">Tax Estimation System — 依財政部規定計算，結果僅供參考</div>
       </div>
       <button class="calc-close" onclick="closeCalc()">✕</button>
     </div>
-
     <div class="calc-tabs">
-      <button class="calc-tab active" onclick="switchTab('qiyue')">契稅</button>
-      <button class="calc-tab" onclick="switchTab('tuzeng')">土地增值稅</button>
+      <button class="calc-tab active" onclick="switchTab('tuzeng')">土地增值稅</button>
+      <button class="calc-tab" onclick="switchTab('qiyue')">契稅</button>
       <button class="calc-tab" onclick="switchTab('fangdi')">房地合一稅</button>
       <button class="calc-tab" onclick="switchTab('zengyou')">贈與稅</button>
       <button class="calc-tab" onclick="switchTab('yichan')">遺產稅</button>
     </div>
-
     <div class="calc-body">
 
-      <!-- 契稅 -->
-      <div class="calc-section active" id="tab-qiyue">
+      <!-- 土地增值稅 -->
+      <div class="calc-section active" id="tab-tuzeng">
         <div class="calc-desc">
-          契稅由房屋<strong>買受人（新所有權人）</strong>繳納，稅率依移轉類型而異。<br>
-          計算基礎為<strong>房屋評定現值（契價）</strong>，非買賣成交價。
+          土地增值稅由<strong>原土地所有權人（出售人）</strong>繳納，按土地漲價總數額累進課稅。<br><br>
+          <strong>計算公式：</strong>漲價總數額 ＝（本次公告現值 − 前次現值 × 物價指數調整）× 移轉面積<br>
+          一般用地：漲價未達 100% 稅率 <strong>20%</strong>；達 100%～200% 稅率 <strong>30%</strong>；超過 200% 稅率 <strong>40%</strong><br>
+          自用住宅優惠稅率 <strong>10%</strong>（都市土地限 300㎡，非都市土地限 700㎡，超過部分按一般稅率）<br>
+          持有年限滿20年起可享減徵優惠；重劃區土地另有減徵稅率。<br><br>
+          ⚠️ 本試算結果僅供概算參考，實際應納稅額以主管機關核定為準。<br>
+          <span style="font-size:0.65rem;opacity:0.7;">以上計算方式參照財政部土地稅法及相關規定，如有疑義請洽當地稅捐稽徵機關。</span>
+        </div>
+        <div class="calc-grid">
+          <div class="calc-field">
+            <label class="calc-label">土地宗地總面積<span>平方公尺</span></label>
+            <input type="number" class="calc-input" id="t-area" placeholder="例：150">
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">移轉或設典範圍<span>分子 / 分母</span></label>
+            <div style="display:flex;gap:0.4rem;align-items:center;">
+              <input type="number" class="calc-input" id="t-frac-num" placeholder="分子" min="1" value="1" style="flex:1;">
+              <span style="color:var(--text-mid);font-size:1.2rem;flex-shrink:0;padding:0 0.2rem;">/</span>
+              <input type="number" class="calc-input" id="t-frac-den" placeholder="分母" min="1" value="1" style="flex:1;">
+            </div>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">本次公告現值<span>元/每平方公尺</span></label>
+            <input type="number" class="calc-input" id="t-curr" placeholder="例：50000">
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">原規定地價或前次移轉現值<span>元/每平方公尺</span></label>
+            <input type="number" class="calc-input" id="t-prev" placeholder="例：30000">
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">前次移轉年期<span>民國年/月</span></label>
+            <div style="display:flex;gap:0.4rem;align-items:center;">
+              <select class="calc-select" id="t-prev-year" style="flex:2;">
+                <option value="">選擇年</option>
+                <option value="114">114 年</option><option value="113">113 年</option><option value="112">112 年</option><option value="111">111 年</option><option value="110">110 年</option><option value="109">109 年</option><option value="108">108 年</option><option value="107">107 年</option><option value="106">106 年</option><option value="105">105 年</option><option value="104">104 年</option><option value="103">103 年</option><option value="102">102 年</option><option value="101">101 年</option><option value="100">100 年</option><option value="99">99 年</option><option value="98">98 年</option><option value="97">97 年</option><option value="96">96 年</option><option value="95">95 年</option><option value="94">94 年</option><option value="93">93 年</option><option value="92">92 年</option><option value="91">91 年</option><option value="90">90 年</option><option value="89">89 年</option><option value="88">88 年</option><option value="87">87 年</option><option value="86">86 年</option><option value="85">85 年</option><option value="84">84 年</option><option value="83">83 年</option><option value="82">82 年</option><option value="81">81 年</option><option value="80">80 年</option><option value="79">79 年</option><option value="78">78 年</option><option value="77">77 年</option><option value="76">76 年</option><option value="75">75 年</option><option value="74">74 年</option><option value="73">73 年</option><option value="72">72 年</option><option value="71">71 年</option><option value="70">70 年</option><option value="69">69 年</option><option value="68">68 年</option><option value="67">67 年</option><option value="66">66 年</option><option value="65">65 年</option><option value="64">64 年</option><option value="63">63 年</option><option value="62">62 年</option><option value="61">61 年</option><option value="60">60 年</option><option value="59">59 年</option><option value="58">58 年</option><option value="57">57 年</option><option value="56">56 年</option><option value="55">55 年</option><option value="54">54 年</option><option value="53">53 年</option><option value="52">52 年</option><option value="51">51 年</option><option value="50">50 年</option><option value="49">49 年</option><option value="48">48 年</option><option value="47">47 年</option><option value="46">46 年</option><option value="45">45 年</option><option value="44">44 年</option><option value="43">43 年</option><option value="42">42 年</option><option value="41">41 年</option><option value="40">40 年</option>
+              </select>
+              <span style="color:var(--text-mid);flex-shrink:0;">/</span>
+              <select class="calc-select" id="t-prev-month" style="flex:1;">
+                <option value="">月</option>
+                <option value="01">1 月</option><option value="02">2 月</option><option value="03">3 月</option><option value="04">4 月</option><option value="05">5 月</option><option value="06">6 月</option><option value="07">7 月</option><option value="08">8 月</option><option value="09">9 月</option><option value="10">10 月</option><option value="11">11 月</option><option value="12">12 月</option>
+              </select>
+            </div>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">消費者物價總指數<span>%</span>
+              <a href="https://www.stat.gov.tw/cp.aspx?n=2665" target="_blank" style="font-size:0.6rem;color:var(--brown-light);margin-left:0.4rem;text-decoration:underline;">指數查詢 ↗</a>
+            </label>
+            <input type="number" class="calc-input" id="t-cpi" placeholder="例：110.10（若低於100以100計）" step="0.01">
+            <span style="font-size:0.65rem;color:var(--text-mid);margin-top:0.2rem;">請下載「各年月為基期之消費者物價總指數－稅務專用」</span>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">持有年限</label>
+            <div style="display:flex;flex-direction:column;gap:0.4rem;margin-top:0.2rem;">
+              <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-mid);cursor:pointer;"><input type="radio" name="t-years" value="0" checked> 20 年以下</label>
+              <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-mid);cursor:pointer;"><input type="radio" name="t-years" value="0.2"> 20（含）～29 年　減徵 20%</label>
+              <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-mid);cursor:pointer;"><input type="radio" name="t-years" value="0.3"> 30（含）～39 年　減徵 30%</label>
+              <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-mid);cursor:pointer;"><input type="radio" name="t-years" value="0.4"> 40 年以上　　　　減徵 40%</label>
+            </div>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">稅額類別</label>
+            <select class="calc-select" id="t-landtype">
+              <option value="nonurban">非都市土地</option>
+              <option value="urban">都市土地</option>
+            </select>
+          </div>
+          <div class="calc-field">
+            <label class="calc-label">重劃後減徵稅率<span>%（無重劃填 0）</span></label>
+            <input type="number" class="calc-input" id="t-redux" placeholder="0" value="0" min="0" max="100" step="1">
+          </div>
+
+        </div>
+        <button class="calc-btn" onclick="calcTuzeng()" style="margin-bottom:0;">土地增值稅估算</button>
+        <div class="calc-result" id="t-result">
+          <div class="calc-result-title">試算結果 — Estimation Result</div>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">實際移轉面積</span><span class="calc-result-val" id="t-r-realarea">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">前次現值（物價指數調整後）</span><span class="calc-result-val" id="t-r-adjusted">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">土地漲價總數額</span><span class="calc-result-val" id="t-r-rise">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">漲價倍數</span><span class="calc-result-val" id="t-r-ratio">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">一般稅額</span><span class="calc-result-val" id="t-r-general-tax">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">超額一般稅額（超限面積）</span><span class="calc-result-val" id="t-r-over-tax">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">自用住宅稅額</span><span class="calc-result-val" id="t-r-selfuse-tax">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">持有年限減徵</span><span class="calc-result-val" id="t-r-year-redux">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">重劃後減徵</span><span class="calc-result-val" id="t-r-redux">—</span></div>
+            <div class="calc-result-row calc-result-total"><span class="calc-result-key">應繳土地增值稅合計（概估）</span><span class="calc-result-val" id="t-r-tax">—</span></div>
+          </div>
+          <div class="calc-note">※ 自用住宅用地優惠稅率：都市土地以 300 平方公尺為限，非都市土地以 700 平方公尺為限，超過部分按一般用地稅率累進課徵。持有年限滿20年以上依法減徵，物價指數若低於100以100計。本表估算之稅額，係依土地稅法及相關規定估算，僅供概算之用，實際應納稅額仍應以申報時核定之發單資料為準。相關規定參照財政部稅務入口網公告內容。</div>
+        </div>
+      </div>
+
+      <!-- 契稅 -->
+      <div class="calc-section" id="tab-qiyue">
+        <div class="calc-desc">
+          <strong>計算公式：</strong>申報契稅金額（房屋現值）× 契稅種類適用稅率 ＝ 應納稅額<br><br>
+          依契稅條例第十三條規定，契價以當地不動產評價委員會評定之<strong>標準價格</strong>為準。但依第十一條取得不動產之移轉價格低於評定標準價格者，從其移轉價格。<br><br>
+          ⚠️ 本試算結果僅供概算參考，實際應納稅額以申報時主管機關核定之發單資料為準。<br>
+          <span style="font-size:0.65rem;opacity:0.7;">以上計算方式參照財政部契稅條例及相關規定，如有疑義請洽當地稅捐稽徵機關。</span>
         </div>
         <div class="calc-grid">
           <div class="calc-field">
             <label class="calc-label">移轉類型</label>
-            <select class="calc-select" id="q-type" onchange="calcQiyue()">
-              <option value="0.06">買賣（6%）</option>
-              <option value="0.02">贈與（2%）</option>
-              <option value="0.02">繼承（2%）</option>
-              <option value="0.04">交換（4%）</option>
-              <option value="0.02">分割（2%）</option>
-              <option value="0.03">占有（3%）</option>
+            <select class="calc-select" id="q-type">
+              <option value="0.06">買賣（6%）— 納稅義務人：買受人</option>
+              <option value="0.06">贈與（6%）— 納稅義務人：受贈人</option>
+              <option value="0.04">典權（4%）— 納稅義務人：典權人</option>
+              <option value="0.02">交換（2%）— 納稅義務人：交換人</option>
+              <option value="0.02">分割（2%）— 納稅義務人：分割人</option>
+              <option value="0.06">占有（6%）— 納稅義務人：占有人</option>
             </select>
           </div>
           <div class="calc-field">
             <label class="calc-label">房屋評定現值（契價）<span>元</span></label>
-            <input type="number" class="calc-input" id="q-price" placeholder="例：2000000" oninput="calcQiyue()">
+            <input type="number" class="calc-input" id="q-price" placeholder="例：2000000">
           </div>
         </div>
+        <button class="calc-btn" onclick="calcQiyue()" style="margin-bottom:0;">契稅估算</button>
         <div class="calc-result" id="q-result">
           <div class="calc-result-title">試算結果 — Estimation Result</div>
           <div class="calc-result-rows">
@@ -359,99 +333,224 @@ footer { background: #2A1F1B; padding: 3rem 4rem; text-align: center; }
             <div class="calc-result-row"><span class="calc-result-key">適用稅率</span><span class="calc-result-val" id="q-r-rate">—</span></div>
             <div class="calc-result-row calc-result-total"><span class="calc-result-key">應繳契稅（概估）</span><span class="calc-result-val" id="q-r-tax">—</span></div>
           </div>
-          <div class="calc-note">※ 契稅申報以房屋評定現值為準，非買賣成交價。實際稅額以地方稅務機關核定為準。</div>
-        </div>
-      </div>
-
-      <!-- 土地增值稅 -->
-      <div class="calc-section" id="tab-tuzeng">
-        <div class="calc-desc">
-          土地增值稅由<strong>原土地所有權人（出售人）</strong>繳納。<br>
-          按土地漲價總數額累進課稅，自用住宅用地可申請<strong>優惠稅率 10%</strong>（一生一次或一生一屋）。
-        </div>
-        <div class="calc-grid">
-          <div class="calc-field">
-            <label class="calc-label">前次移轉現值（或規定地價）<span>元/㎡</span></label>
-            <input type="number" class="calc-input" id="t-prev" placeholder="例：10000" oninput="calcTuzeng()">
-          </div>
-          <div class="calc-field">
-            <label class="calc-label">本次申報移轉現值<span>元/㎡</span></label>
-            <input type="number" class="calc-input" id="t-curr" placeholder="例：18000" oninput="calcTuzeng()">
-          </div>
-          <div class="calc-field">
-            <label class="calc-label">土地面積<span>㎡</span></label>
-            <input type="number" class="calc-input" id="t-area" placeholder="例：50" oninput="calcTuzeng()">
-          </div>
-          <div class="calc-field">
-            <label class="calc-label">用地類型</label>
-            <select class="calc-select" id="t-type" onchange="calcTuzeng()">
-              <option value="general">一般用地（累進稅率）</option>
-              <option value="selfuse">自用住宅用地（優惠稅率 10%）</option>
-            </select>
-          </div>
-        </div>
-        <div class="calc-result" id="t-result">
-          <div class="calc-result-title">試算結果 — Estimation Result</div>
-          <div class="calc-result-rows">
-            <div class="calc-result-row"><span class="calc-result-key">土地漲價總數額</span><span class="calc-result-val" id="t-r-rise">—</span></div>
-            <div class="calc-result-row"><span class="calc-result-key">漲價倍數</span><span class="calc-result-val" id="t-r-ratio">—</span></div>
-            <div class="calc-result-row"><span class="calc-result-key">適用稅率</span><span class="calc-result-val" id="t-r-rate">—</span></div>
-            <div class="calc-result-row calc-result-total"><span class="calc-result-key">應繳土地增值稅（概估）</span><span class="calc-result-val" id="t-r-tax">—</span></div>
-          </div>
-          <div class="calc-note">※ 此為簡化計算，未含物價指數調整。實際稅額以地方稅捐稽徵機關核定為準。自用住宅優惠稅率有持有條件限制，請向地政士確認資格。</div>
+          <div class="calc-note">※ 契稅申報以房屋評定現值（契價）為準，非買賣成交價。本表估算之稅額，係依契稅條例及其相關規定之計算公式估算，僅供概算之用，實際應納稅額仍應以申報時核定之發單資料為準。相關規定參照財政部稅務入口網公告內容。</div>
         </div>
       </div>
 
       <!-- 房地合一稅 -->
       <div class="calc-section" id="tab-fangdi">
         <div class="calc-desc">
-          <strong>房地合一稅 2.0</strong>（110年7月1日起適用）：個人出售 105 年 1 月 1 日以後取得之房地，依持有期間課稅。<br>
-          計算公式：<strong>（售價 − 成本 − 費用 − 已納土地增值稅）× 稅率</strong>
+          <strong>房地合一稅 2.0</strong>（110年7月1日起適用）：個人出售105年1月1日以後取得之房地，依持有期間課徵所得稅。<br><br>
+          <strong>計算公式：</strong><br>
+          ① 房地成交價額 − 可減除項目（取得房地價款＋必要費用＋改良土地費用＋移轉費用）＝ 房地交易所得額<br>
+          ② 房地交易所得額 − 3年內交易損失 − 土地漲價總數額 ＝ 課稅所得（負數以0計）<br>
+          ③ 課稅所得 × 適用稅率 ＝ 應納稅額<br>
+          ④ 應納稅額 − 重購扣抵稅額〔應納稅額 × 重購價額 ÷ 出售成交價額〕＝ 本次應自行繳納稅額<br><br>
+          ⚠️ 本試算結果僅供概算參考，實際應納稅額以國稅局核定為準。<br>
+          <span style="font-size:0.65rem;opacity:0.7;">以上計算方式參照財政部房地合一所得稅相關規定，如有疑義請洽轄區國稅局。</span>
         </div>
-        <div class="calc-grid">
-          <div class="calc-field">
-            <label class="calc-label">成交售價<span>元</span></label>
-            <input type="number" class="calc-input" id="f-sell" placeholder="例：12000000" oninput="calcFangdi()">
+
+        <!-- 一、日期 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">一、取得與交易日期</div>
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">取得日期<span>民國年 / 月 / 日</span></label>
+              <div style="display:flex;gap:0.3rem;align-items:center;">
+                <select class="calc-select" id="f-acq-y" style="flex:2;">
+                  <option value="">年</option>
+                  <option value="115">115</option><option value="114">114</option><option value="113">113</option><option value="112">112</option><option value="111">111</option><option value="110">110</option><option value="109">109</option><option value="108">108</option><option value="107">107</option><option value="106">106</option><option value="105">105</option><option value="104">104</option><option value="103">103</option><option value="102">102</option><option value="101">101</option><option value="100">100</option><option value="99">99</option><option value="98">98</option><option value="97">97</option><option value="96">96</option><option value="95">95</option><option value="94">94</option><option value="93">93</option><option value="92">92</option><option value="91">91</option><option value="90">90</option><option value="89">89</option><option value="88">88</option><option value="87">87</option><option value="86">86</option><option value="85">85</option><option value="84">84</option><option value="83">83</option><option value="82">82</option><option value="81">81</option><option value="80">80</option>
+                </select>
+                <span style="color:var(--text-mid);flex-shrink:0;font-size:0.75rem;">年</span>
+                <select class="calc-select" id="f-acq-m" style="flex:1;">
+                  <option value="">月</option>
+                  <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                </select>
+                <span style="color:var(--text-mid);flex-shrink:0;font-size:0.75rem;">月</span>
+                <select class="calc-select" id="f-acq-d" style="flex:1;">
+                  <option value="">日</option>
+                  <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option>
+                </select>
+                <span style="color:var(--text-mid);flex-shrink:0;font-size:0.75rem;">日</span>
+              </div>
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">交易日期<span>民國年 / 月 / 日</span></label>
+              <div style="display:flex;gap:0.3rem;align-items:center;">
+                <select class="calc-select" id="f-sell-y" style="flex:2;">
+                  <option value="">年</option>
+                  <option value="115">115</option><option value="114">114</option><option value="113">113</option><option value="112">112</option><option value="111">111</option><option value="110">110</option><option value="109">109</option><option value="108">108</option><option value="107">107</option><option value="106">106</option><option value="105">105</option>
+                </select>
+                <span style="color:var(--text-mid);flex-shrink:0;font-size:0.75rem;">年</span>
+                <select class="calc-select" id="f-sell-m" style="flex:1;">
+                  <option value="">月</option>
+                  <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                </select>
+                <span style="color:var(--text-mid);flex-shrink:0;font-size:0.75rem;">月</span>
+                <select class="calc-select" id="f-sell-d" style="flex:1;">
+                  <option value="">日</option>
+                  <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option>
+                </select>
+                <span style="color:var(--text-mid);flex-shrink:0;font-size:0.75rem;">日</span>
+              </div>
+            </div>
           </div>
-          <div class="calc-field">
-            <label class="calc-label">取得成本（買入價 + 相關費用）<span>元</span></label>
-            <input type="number" class="calc-input" id="f-cost" placeholder="例：9000000" oninput="calcFangdi()">
-          </div>
-          <div class="calc-field">
-            <label class="calc-label">移轉費用（仲介費、代書費等）<span>元</span></label>
-            <input type="number" class="calc-input" id="f-fee" placeholder="例：300000" oninput="calcFangdi()">
-          </div>
-          <div class="calc-field">
-            <label class="calc-label">已繳土地增值稅<span>元</span></label>
-            <input type="number" class="calc-input" id="f-lvt" placeholder="例：0" oninput="calcFangdi()">
-          </div>
-          <div class="calc-field">
-            <label class="calc-label">持有期間</label>
-            <select class="calc-select" id="f-hold" onchange="calcFangdi()">
-              <option value="0.45">未滿 2 年（45%）</option>
-              <option value="0.35">2 年以上未滿 5 年（35%）</option>
-              <option value="0.20">5 年以上未滿 10 年（20%）</option>
-              <option value="0.15">10 年以上（15%）</option>
-              <option value="0.10">自住房地（符合條件，10%）</option>
-            </select>
-          </div>
-          <div class="calc-field">
-            <label class="calc-label">自住免稅額（自住房地適用）<span>元</span></label>
-            <input type="number" class="calc-input" id="f-exempt" placeholder="自住400萬，非自住填0" oninput="calcFangdi()">
+          <div id="f-regime-box" style="display:none;padding:0.7rem 1rem;background:var(--cream);border-left:2px solid var(--brown-light);border-radius:2px;margin-top:0.6rem;font-size:0.78rem;color:var(--text-mid);letter-spacing:0.04em;line-height:1.8;"></div>
+        </div>
+
+        <!-- 二、身分 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">二、持有者身分與房地類別</div>
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">持有者身分</label>
+              <select class="calc-select" id="f-identity">
+                <option value="person">境內居住個人</option>
+                <option value="company">境內法人（營利事業）</option>
+                <option value="foreign">非境內居住者或境外營利事業</option>
+              </select>
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">房地類別</label>
+              <select class="calc-select" id="f-category">
+                <option value="general">一般房地</option>
+                <option value="selfuse">自住房地（本人/配偶/未成年子女設籍且住滿6年）</option>
+                <option value="involuntary">非自願因素（離婚/工作調動/非自願離職等）</option>
+              </select>
+            </div>
           </div>
         </div>
+
+        <!-- 三、取得成本 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">三、取得房地價款</div>
+          <div style="display:flex;gap:1.5rem;margin-bottom:0.7rem;">
+            <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:var(--text-mid);cursor:pointer;">
+              <input type="radio" name="f-acq-type" value="purchase" checked onclick="toggleAcqType()"> 出價取得（買入）
+            </label>
+            <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:var(--text-mid);cursor:pointer;">
+              <input type="radio" name="f-acq-type" value="inherit" onclick="toggleAcqType()"> 繼承或受贈取得
+            </label>
+          </div>
+          <div id="f-purchase-block" class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">實際取得房地價款<span>元</span></label>
+              <input type="number" class="calc-input" id="f-cost-purchase" placeholder="例：8,000,000">
+            </div>
+          </div>
+          <div id="f-inherit-block" style="display:none;" class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">取得時土地公告現值<span>元</span></label>
+              <input type="number" class="calc-input" id="f-cost-land" placeholder="例：3,000,000" oninput="calcInheritCost()">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">取得時房屋評定現值<span>元</span></label>
+              <input type="number" class="calc-input" id="f-cost-house" placeholder="例：500,000" oninput="calcInheritCost()">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">消費者物價總指數<span>%</span></label>
+              <input type="number" class="calc-input" id="f-cost-cpi" placeholder="例：110.10" step="0.01" oninput="calcInheritCost()">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">推算取得成本<span>（自動計算）</span></label>
+              <div id="f-inherit-cost-result" style="padding:0.7rem 0.9rem;background:var(--cream-dark);border-radius:2px;font-size:0.85rem;color:var(--brown-dark);">— 元</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 四、可減除項目 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">四、可減除項目（取得成本以外）</div>
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">取得房地達可供使用狀態前支付之必要費用<span>元（契稅、印花稅、代書費、規費等）</span></label>
+              <input type="number" class="calc-input" id="f-nec" placeholder="例：200,000">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">地方稅稽徵機關核准減除之改良土地費用<span>元（無則填0）</span></label>
+              <input type="number" class="calc-input" id="f-improve" placeholder="0" value="0">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">移轉費用<span>元（仲介費、廣告費等；未提憑證得按成交價3%）</span></label>
+              <input type="number" class="calc-input" id="f-sfee" placeholder="例：360,000" oninput="updateSfeeHint()">
+              <span id="f-sfee-hint" style="font-size:0.62rem;color:var(--brown-light);margin-top:0.2rem;display:none;"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 五、交易收入與第二層扣除 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">五、交易收入與課稅所得調整項目</div>
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">房地成交價額<span>元</span></label>
+              <input type="number" class="calc-input" id="f-income" placeholder="例：12,000,000" oninput="updateSfeeHint()">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">交易日前3年內房地交易損失<span>元（無則填0）</span></label>
+              <input type="number" class="calc-input" id="f-loss" placeholder="0" value="0">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">土地漲價總數額<span>元（可從土增稅結果帶入）</span></label>
+              <div style="display:flex;gap:0.4rem;">
+                <input type="number" class="calc-input" id="f-lvt" placeholder="例：1,903,519" style="flex:1;">
+                <button onclick="importFromLVT()" style="background:var(--cream-darker);border:0.5px solid var(--cream-darker);color:var(--brown-dark);padding:0 0.7rem;border-radius:2px;cursor:pointer;font-size:0.68rem;white-space:nowrap;letter-spacing:0.04em;">帶入土增稅</button>
+              </div>
+              <span style="font-size:0.62rem;color:var(--text-light);margin-top:0.2rem;">請填入漲價總數額（非稅額）</span>
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">重購自住房地價額<span>元（無則填0）</span></label>
+              <input type="number" class="calc-input" id="f-repurchase" placeholder="0" value="0">
+              <span style="font-size:0.62rem;color:var(--text-light);margin-top:0.2rem;">扣抵稅額 ＝ 應納稅額 × 重購價額 ÷ 出售成交價額</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 估算按鈕 -->
+        <button class="calc-btn" onclick="calcFangdi()" style="margin-bottom:0;">房地合一稅估算</button>
+
+        <!-- 結果 -->
         <div class="calc-result" id="f-result">
           <div class="calc-result-title">試算結果 — Estimation Result</div>
           <div class="calc-result-rows">
-            <div class="calc-result-row"><span class="calc-result-key">交易所得額</span><span class="calc-result-val" id="f-r-income">—</span></div>
-            <div class="calc-result-row"><span class="calc-result-key">課稅所得額（扣除免稅後）</span><span class="calc-result-val" id="f-r-taxable">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">適用制度</span><span class="calc-result-val" id="f-r-regime">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">持有期間</span><span class="calc-result-val" id="f-r-period">—</span></div>
             <div class="calc-result-row"><span class="calc-result-key">適用稅率</span><span class="calc-result-val" id="f-r-rate">—</span></div>
-            <div class="calc-result-row calc-result-total"><span class="calc-result-key">應繳房地合一稅（概估）</span><span class="calc-result-val" id="f-r-tax">—</span></div>
           </div>
-          <div class="calc-note">※ 自住房地 10% 稅率需符合：出售前 1 年無出租、無供營業；本人或配偶、未成年子女設籍；持有且住滿 6 年；每 10 年只能申請一次。免稅額上限 400 萬元，所得超過 400 萬元部分仍需課稅。實際稅額以國稅局核定為準。</div>
+          <div style="border-top:0.5px solid rgba(240,237,230,0.15);margin:0.8rem 0;"></div>
+          <div style="font-size:0.62rem;letter-spacing:0.2em;color:rgba(240,237,230,0.4);margin-bottom:0.5rem;font-family:'Cormorant Garamond',serif;font-style:italic;">① 房地交易所得額</div>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">房地成交價額</span><span class="calc-result-val" id="f-r-income">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：取得房地價款</span><span class="calc-result-val" id="f-r-cost-base">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：必要費用</span><span class="calc-result-val" id="f-r-nec">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：改良土地費用</span><span class="calc-result-val" id="f-r-improve">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：移轉費用</span><span class="calc-result-val" id="f-r-sfee">—</span></div>
+            <div class="calc-result-row calc-result-total" style="border-top:0.5px solid rgba(240,237,230,0.15);padding-top:0.6rem;margin-top:0.2rem;">
+              <span class="calc-result-key">房地交易所得額</span><span class="calc-result-val" id="f-r-gain">—</span>
+            </div>
+          </div>
+          <div style="border-top:0.5px solid rgba(240,237,230,0.15);margin:0.8rem 0;"></div>
+          <div style="font-size:0.62rem;letter-spacing:0.2em;color:rgba(240,237,230,0.4);margin-bottom:0.5rem;font-family:'Cormorant Garamond',serif;font-style:italic;">② 課稅所得</div>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">　減：3年內交易損失</span><span class="calc-result-val" id="f-r-loss">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：土地漲價總數額</span><span class="calc-result-val" id="f-r-lvt">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：自住免稅額（上限400萬）</span><span class="calc-result-val" id="f-r-exempt">—</span></div>
+            <div class="calc-result-row calc-result-total" style="border-top:0.5px solid rgba(240,237,230,0.15);padding-top:0.6rem;margin-top:0.2rem;">
+              <span class="calc-result-key">課稅所得額</span><span class="calc-result-val" id="f-r-taxable">—</span>
+            </div>
+          </div>
+          <div style="border-top:0.5px solid rgba(240,237,230,0.15);margin:0.8rem 0;"></div>
+          <div style="font-size:0.62rem;letter-spacing:0.2em;color:rgba(240,237,230,0.4);margin-bottom:0.5rem;font-family:'Cormorant Garamond',serif;font-style:italic;">③④ 應納稅額與重購扣抵</div>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">應納稅額</span><span class="calc-result-val" id="f-r-tax-before">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：重購自住扣抵稅額</span><span class="calc-result-val" id="f-r-repurchase">—</span></div>
+            <div class="calc-result-row calc-result-total">
+              <span class="calc-result-key">本次應自行繳納稅額（概估）</span><span class="calc-result-val" id="f-r-tax">—</span>
+            </div>
+          </div>
+          <div class="calc-note">※ 自住房地10%優惠稅率需同時符合：①出售前1年內無出租、無供營業；②本人或配偶、未成年子女辦竣戶籍登記；③持有並居住滿6年；④每10年限適用一次，免稅額上限400萬元。土地漲價總數額欄位請填入土地增值稅申報之漲價總數額（非稅額）。繼承、受贈取得成本以取得時公告現值及評定現值乘以物價指數推算。本表估算之稅額，係依所得稅法及相關規定估算，僅供概算之用，實際應納稅額仍應以申報時國稅局核定為準。相關規定參照財政部稅務入口網公告內容。</div>
         </div>
       </div>
-
       <!-- 贈與稅 -->
       <div class="calc-section" id="tab-zengyou">
         <div class="calc-desc">
@@ -520,7 +619,7 @@ footer { background: #2A1F1B; padding: 3rem 4rem; text-align: center; }
           <div class="calc-result-title">試算結果 — Estimation Result</div>
           <div class="calc-result-rows">
             <div class="calc-result-row"><span class="calc-result-key">遺產總額</span><span class="calc-result-val" id="y-r-total">—</span></div>
-            <div class="calc-result-row"><span class="calc-result-key">免稅額</span><span class="calc-result-val" id="y-r-exempt">— 1,333 萬元</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">免稅額</span><span class="calc-result-val" id="y-r-exempt">1,333 萬元</span></div>
             <div class="calc-result-row"><span class="calc-result-key">各項扣除額合計</span><span class="calc-result-val" id="y-r-deduct">—</span></div>
             <div class="calc-result-row"><span class="calc-result-key">課稅遺產淨額</span><span class="calc-result-val" id="y-r-net">—</span></div>
             <div class="calc-result-row"><span class="calc-result-key">適用稅率</span><span class="calc-result-val" id="y-r-rate">—</span></div>
@@ -530,10 +629,9 @@ footer { background: #2A1F1B; padding: 3rem 4rem; text-align: center; }
         </div>
       </div>
 
-    </div><!-- end calc-body -->
-  </div><!-- end calc-panel -->
-</div><!-- end calc-overlay -->
-
+    </div>
+  </div>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -631,7 +729,7 @@ footer { background: #2A1F1B; padding: 3rem 4rem; text-align: center; }
   </div>
 </section>
 
-<!-- FAQ（暫時空白） -->
+<!-- FAQ -->
 <section class="faq" id="faq">
   <div class="fade-in-section">
     <p class="section-label">FAQ</p>
@@ -685,85 +783,325 @@ footer { background: #2A1F1B; padding: 3rem 4rem; text-align: center; }
 </footer>
 
 <script>
-// ── UTILITIES ──
 function fmt(n) { return Math.round(n).toLocaleString('zh-TW') + ' 元'; }
 function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
 function set(id, val) { document.getElementById(id).textContent = val; }
 function showResult(id) { document.getElementById(id).classList.add('show'); }
 
-// ── CALCULATOR MODAL ──
-function openCalc(e) { if(e) e.preventDefault(); document.getElementById('calcOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeCalc() { document.getElementById('calcOverlay').classList.remove('open'); document.body.style.overflow=''; }
-function closeCalcOutside(e) { if(e.target === document.getElementById('calcOverlay')) closeCalc(); }
-document.addEventListener('keydown', e => { if(e.key==='Escape') closeCalc(); });
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in-section').forEach(function(el) { observer.observe(el); });
 
-function switchTab(name) {
-  document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.calc-section').forEach(s => s.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('tab-'+name).classList.add('active');
+function toggleMenu() {
+  var links = document.querySelector('.nav-links');
+  if (links.style.display === 'flex') {
+    links.style.display = 'none';
+  } else {
+    links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:rgba(240,237,230,0.98);padding:1.5rem 2rem;gap:1.5rem;border-bottom:0.5px solid rgba(61,47,42,0.12);z-index:99;backdrop-filter:blur(12px);';
+  }
 }
 
-// ── 契稅 ──
+window.addEventListener('scroll', function() {
+  document.querySelector('nav').style.boxShadow = window.scrollY > 50 ? '0 1px 20px rgba(61,47,42,0.08)' : 'none';
+});
+
+function submitForm() {
+  alert('感謝您的諮詢！我們將於上班時間內盡快與您聯繫。\n\n如需緊急聯繫，請致電 0988-119-532。');
+}
+
+function toggleFaq(el) {
+  var item = el.parentElement;
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+  if (!isOpen) item.classList.add('open');
+}
+
+function openCalc(e) {
+  if (e) e.preventDefault();
+  document.getElementById('calcOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCalc() {
+  document.getElementById('calcOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeCalcOutside(e) {
+  if (e.target === document.getElementById('calcOverlay')) closeCalc();
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeCalc(); });
+
+function switchTab(name) {
+  document.querySelectorAll('.calc-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('.calc-section').forEach(function(s) { s.classList.remove('active'); });
+  event.target.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
 function calcQiyue() {
-  const price = v('q-price');
-  const rate = parseFloat(document.getElementById('q-type').value);
+  var price = v('q-price');
+  var rate = parseFloat(document.getElementById('q-type').value);
   if (!price) return;
-  const tax = price * rate;
+  var tax = price * rate;
   set('q-r-price', fmt(price));
-  set('q-r-rate', (rate*100).toFixed(0) + '%');
+  set('q-r-rate', (rate * 100).toFixed(0) + '%');
   set('q-r-tax', fmt(tax));
   showResult('q-result');
 }
 
-// ── 土地增值稅 ──
 function calcTuzeng() {
-  const prev = v('t-prev'), curr = v('t-curr'), area = v('t-area');
-  const type = document.getElementById('t-type').value;
-  if (!prev || !curr || !area || curr <= prev) return;
-  const rise = (curr - prev) * area;
-  const ratio = ((curr - prev) / prev) * 100;
-  let rate, tax;
-  if (type === 'selfuse') {
-    rate = '10%（自用優惠）';
-    tax = rise * 0.10;
-  } else {
-    if (ratio < 100) { rate = '20%'; tax = rise * 0.20; }
-    else if (ratio < 200) { rate = '30%'; tax = rise * 0.30; }
-    else { rate = '40%'; tax = rise * 0.40; }
+  var area = v('t-area');
+  var fracNum = v('t-frac-num') || 1;
+  var fracDen = v('t-frac-den') || 1;
+  var curr = v('t-curr');
+  var prev = v('t-prev');
+  var cpi = v('t-cpi');
+  var redux = v('t-redux') || 0;
+  var landtype = document.getElementById('t-landtype').value;
+  var yearsEl = document.querySelector('input[name="t-years"]:checked');
+  var yearReduxRate = yearsEl ? parseFloat(yearsEl.value) : 0;
+  if (!area || !curr || !prev) return;
+
+  var transferArea = area * (fracNum / fracDen);
+  var cpiAdj = cpi > 0 ? Math.max(cpi, 100) : 100;
+  var prevAdjusted = prev * (cpiAdj / 100);
+  var cpiNote = cpi > 0 ? '' : '（未輸入，以100計）';
+  var rise = (curr - prevAdjusted) * transferArea;
+
+  function generalTax(riseAmt, baseAmt) {
+    var t1 = Math.min(riseAmt, baseAmt);
+    var rem1 = riseAmt - t1;
+    var t2 = Math.min(rem1, baseAmt);
+    var t3 = rem1 - t2;
+    return Math.floor(t1 * 0.20) + Math.ceil(t2 * 0.30) + Math.floor(t3 * 0.40);
   }
-  set('t-r-rise', fmt(rise));
-  set('t-r-ratio', ratio.toFixed(1) + '%');
-  set('t-r-rate', rate);
-  set('t-r-tax', fmt(tax));
+
+  var selfuseLimit = landtype === 'urban' ? 300 : 700;
+  var selfuseArea = Math.min(transferArea, selfuseLimit);
+  var overArea = Math.max(0, transferArea - selfuseLimit);
+  var generalTaxAmt = 0, overTaxAmt = 0, selfuseTaxAmt = 0;
+
+  if (rise <= 0) {
+    set('t-r-realarea', transferArea.toFixed(2) + ' ㎡');
+    set('t-r-adjusted', Math.floor(prevAdjusted).toLocaleString() + ' 元/㎡' + cpiNote);
+    set('t-r-rise', '0 元（無漲價，不課稅）');
+    set('t-r-ratio', '0%');
+    set('t-r-general-tax', '0 元');
+    set('t-r-over-tax', '—');
+    set('t-r-selfuse-tax', '0 元');
+    set('t-r-year-redux', '—');
+    set('t-r-redux', '—');
+    set('t-r-tax', '0 元');
+    showResult('t-result');
+    return;
+  }
+
+  var ratio = ((curr - prevAdjusted) / prevAdjusted) * 100;
+  var baseAll = prevAdjusted * transferArea;
+  generalTaxAmt = generalTax(rise, baseAll);
+
+  if (overArea > 0) {
+    var overRise = (curr - prevAdjusted) * overArea;
+    var overBase = prevAdjusted * overArea;
+    overTaxAmt = overRise > 0 ? generalTax(overRise, overBase) : 0;
+  }
+
+  var selfuseRise = (curr - prevAdjusted) * selfuseArea;
+  selfuseTaxAmt = selfuseRise > 0 ? Math.round(selfuseRise * 0.10) : 0;
+
+  var yearReduxAmt = Math.floor(generalTaxAmt * yearReduxRate);
+  var reduxAmt = Math.floor(generalTaxAmt * (redux / 100));
+  var totalGeneral = Math.max(0, generalTaxAmt - yearReduxAmt - reduxAmt);
+  var totalSelfuse = Math.max(0, selfuseTaxAmt + overTaxAmt - Math.floor((selfuseTaxAmt + overTaxAmt) * (redux / 100)));
+
+  set('t-r-realarea', transferArea.toFixed(2) + ' ㎡' + (fracNum != 1 || fracDen != 1 ? '（持分 ' + Math.floor(fracNum) + '/' + Math.floor(fracDen) + '）' : ''));
+  set('t-r-adjusted', Math.floor(prevAdjusted).toLocaleString() + ' 元/㎡' + (cpiNote ? '　' + cpiNote : ''));
+  set('t-r-rise', Math.floor(rise).toLocaleString() + ' 元');
+  set('t-r-ratio', ratio.toFixed(2) + '%');
+  set('t-r-general-tax', generalTaxAmt.toLocaleString() + ' 元（全部面積一般累進）');
+  set('t-r-over-tax', overArea > 0 ? overTaxAmt.toLocaleString() + ' 元（超限 ' + overArea.toFixed(2) + ' ㎡）' : '無超限面積');
+  set('t-r-selfuse-tax', selfuseTaxAmt.toLocaleString() + ' 元（' + selfuseArea.toFixed(2) + ' ㎡ × 10%）');
+  set('t-r-year-redux', yearReduxRate > 0 ? '－' + yearReduxAmt.toLocaleString() + ' 元（減徵 ' + (yearReduxRate * 100).toFixed(0) + '%）' : '無（持有未滿20年）');
+  set('t-r-redux', redux > 0 ? '－' + reduxAmt.toLocaleString() + ' 元（重劃減徵 ' + redux + '%）' : '無');
+  set('t-r-tax', '一般用地：' + totalGeneral.toLocaleString() + ' 元　／　自用住宅：' + totalSelfuse.toLocaleString() + ' 元');
   showResult('t-result');
 }
 
-// ── 房地合一稅 ──
+function toggleAcqType() {
+  var val = document.querySelector('input[name="f-acq-type"]:checked').value;
+  document.getElementById('f-purchase-block').style.display = val === 'purchase' ? '' : 'none';
+  document.getElementById('f-inherit-block').style.display  = val === 'inherit'  ? '' : 'none';
+}
+
+function calcInheritCost() {
+  var land  = parseFloat(document.getElementById('f-cost-land').value)  || 0;
+  var house = parseFloat(document.getElementById('f-cost-house').value) || 0;
+  var cpi   = parseFloat(document.getElementById('f-cost-cpi').value)   || 0;
+  var el = document.getElementById('f-inherit-cost-result');
+  if (land > 0 || house > 0) {
+    var cpiAdj = cpi > 0 ? cpi / 100 : 1;
+    var total = Math.floor((land + house) * cpiAdj);
+    el.textContent = total.toLocaleString() + ' 元';
+  } else {
+    el.textContent = '— 元';
+  }
+}
+
+function updateSfeeHint() {
+  var income = parseFloat(document.getElementById('f-income').value) || 0;
+  var hint = document.getElementById('f-sfee-hint');
+  if (income > 0) {
+    hint.style.display = 'block';
+    hint.textContent = '※ 成交價 3% = ' + Math.floor(income * 0.03).toLocaleString() + ' 元';
+  }
+}
+
 function calcFangdi() {
-  const sell = v('f-sell'), cost = v('f-cost'), fee = v('f-fee'), lvt = v('f-lvt'), exempt = v('f-exempt');
-  const rate = parseFloat(document.getElementById('f-hold').value);
-  if (!sell || !cost) return;
-  const income = sell - cost - fee - lvt;
-  const taxable = Math.max(0, income - exempt);
-  const tax = Math.max(0, taxable * rate);
-  set('f-r-income', fmt(income));
-  set('f-r-taxable', fmt(taxable));
-  set('f-r-rate', (rate*100).toFixed(0) + '%');
-  set('f-r-tax', fmt(tax));
+  var acqY  = parseInt(document.getElementById('f-acq-y').value)  || 0;
+  var acqM  = parseInt(document.getElementById('f-acq-m').value)  || 0;
+  var acqD  = parseInt(document.getElementById('f-acq-d').value)  || 1;
+  var sellY = parseInt(document.getElementById('f-sell-y').value) || 0;
+  var sellM = parseInt(document.getElementById('f-sell-m').value) || 0;
+  var sellD = parseInt(document.getElementById('f-sell-d').value) || 1;
+  var identity   = document.getElementById('f-identity').value;
+  var category   = document.getElementById('f-category').value;
+  var acqType    = document.querySelector('input[name="f-acq-type"]:checked').value;
+  var income     = parseFloat(document.getElementById('f-income').value)     || 0;
+  var nec        = parseFloat(document.getElementById('f-nec').value)        || 0;
+  var improve    = parseFloat(document.getElementById('f-improve').value)    || 0;
+  var sfee       = parseFloat(document.getElementById('f-sfee').value)       || 0;
+  var lvt        = parseFloat(document.getElementById('f-lvt').value)        || 0;
+  var loss       = parseFloat(document.getElementById('f-loss').value)       || 0;
+  var repurchase = parseFloat(document.getElementById('f-repurchase').value) || 0;
+
+  // 取得房地價款
+  var costBase = 0;
+  if (acqType === 'purchase') {
+    costBase = parseFloat(document.getElementById('f-cost-purchase').value) || 0;
+  } else {
+    var land  = parseFloat(document.getElementById('f-cost-land').value)  || 0;
+    var house = parseFloat(document.getElementById('f-cost-house').value) || 0;
+    var cpi   = parseFloat(document.getElementById('f-cost-cpi').value)   || 0;
+    var cpiAdj = cpi > 0 ? cpi / 100 : 1;
+    costBase = (land + house) * cpiAdj;
+  }
+
+  // 持有期間
+  var regime = '', holdMonths = 0, rateNum = 0, rateLabel = '';
+  var regimeBox = document.getElementById('f-regime-box');
+  if (acqY && sellY) {
+    var acqDate  = new Date(acqY  + 1911, acqM  - 1, acqD);
+    var sellDate = new Date(sellY + 1911, sellM - 1, sellD);
+    holdMonths = (sellDate.getFullYear() - acqDate.getFullYear()) * 12
+               + (sellDate.getMonth() - acqDate.getMonth());
+    if (sellDate.getDate() < acqDate.getDate()) holdMonths -= 1;
+    var holdY    = Math.floor(holdMonths / 12);
+    var holdMrem = holdMonths % 12;
+    var acq105   = new Date(2016, 0, 1);
+    regime = acqDate >= acq105
+      ? '新制（房地合一稅 2.0，110年7月1日起）'
+      : '舊制（財產交易所得稅，請洽國稅局）';
+    regimeBox.style.display = 'block';
+    regimeBox.innerHTML = '適用制度：<strong>' + regime + '</strong><br>持有期間：約 '
+      + holdY + ' 年 ' + holdMrem + ' 個月';
+  }
+
+  if (!income) return;
+
+  // 稅率判斷
+  if (category === 'selfuse' && identity === 'person') {
+    rateNum = 0.10; rateLabel = '10%（自住房地優惠）';
+  } else if (category === 'involuntary' && identity === 'person') {
+    if      (holdMonths <= 24)  { rateNum = 0.20; rateLabel = '20%（非自願，2年以內）'; }
+    else if (holdMonths <= 60)  { rateNum = 0.20; rateLabel = '20%（非自願，2~5年）'; }
+    else if (holdMonths <= 120) { rateNum = 0.15; rateLabel = '15%（非自願，5~10年）'; }
+    else                        { rateNum = 0.10; rateLabel = '10%（非自願，10年以上）'; }
+  } else if (identity === 'person') {
+    if      (holdMonths <= 24)  { rateNum = 0.45; rateLabel = '45%（個人，2年以內）'; }
+    else if (holdMonths <= 60)  { rateNum = 0.35; rateLabel = '35%（個人，2年以上未逾5年）'; }
+    else if (holdMonths <= 120) { rateNum = 0.20; rateLabel = '20%（個人，5年以上未逾10年）'; }
+    else                        { rateNum = 0.15; rateLabel = '15%（個人，超過10年）'; }
+  } else if (identity === 'company') {
+    if      (holdMonths <= 24)  { rateNum = 0.45; rateLabel = '45%（法人，2年以內）'; }
+    else if (holdMonths <= 60)  { rateNum = 0.35; rateLabel = '35%（法人，2年以上未逾5年）'; }
+    else                        { rateNum = 0.20; rateLabel = '20%（法人，5年以上）'; }
+  } else {
+    if      (holdMonths <= 24)  { rateNum = 0.45; rateLabel = '45%（境外，2年以內）'; }
+    else                        { rateNum = 0.35; rateLabel = '35%（境外，2年以上）'; }
+  }
+
+  // ① 房地交易所得額 = 成交價 - (取得成本 + 必要費用 + 改良費用 + 移轉費用)
+  var totalDeduct1 = costBase + nec + improve + sfee;
+  var gain = income - totalDeduct1;
+
+  // 自住免稅額（上限400萬，個人自住）
+  var exemptAmt = 0;
+  if (category === 'selfuse' && identity === 'person' && gain > 0) {
+    exemptAmt = Math.min(gain, 4000000);
+  }
+
+  // ② 課稅所得 = 所得額 - 損失 - 土地漲價總數額 - 自住免稅額（負數以0計）
+  var taxable = Math.max(0, gain - loss - lvt - exemptAmt);
+
+  // ③ 應納稅額
+  var taxBefore = Math.floor(taxable * rateNum);
+
+  // ④ 重購扣抵
+  var repurchaseDeduct = 0;
+  if (repurchase > 0 && income > 0 && taxBefore > 0) {
+    repurchaseDeduct = Math.min(taxBefore, Math.floor(taxBefore * repurchase / income));
+  }
+  var taxFinal = Math.max(0, taxBefore - repurchaseDeduct);
+
+  // 顯示結果
+  set('f-r-regime',     regime || '請輸入取得及交易日期');
+  set('f-r-period',     holdMonths > 0 ? Math.floor(holdMonths/12) + ' 年 ' + (holdMonths%12) + ' 個月' : '—');
+  set('f-r-rate',       rateLabel || '—');
+  set('f-r-income',     income.toLocaleString() + ' 元');
+  set('f-r-cost-base',  Math.floor(costBase).toLocaleString() + ' 元');
+  set('f-r-nec',        nec > 0     ? nec.toLocaleString()     + ' 元' : '0 元');
+  set('f-r-improve',    improve > 0 ? improve.toLocaleString() + ' 元' : '0 元');
+  set('f-r-sfee',       sfee > 0    ? sfee.toLocaleString()    + ' 元' : '0 元');
+  set('f-r-gain',       gain < 0
+    ? '損失 ' + Math.abs(gain).toLocaleString() + ' 元'
+    : gain.toLocaleString() + ' 元');
+  set('f-r-loss',       loss > 0 ? loss.toLocaleString() + ' 元' : '0 元');
+  set('f-r-lvt',        lvt  > 0 ? lvt.toLocaleString()  + ' 元' : '0 元');
+  set('f-r-exempt',     exemptAmt > 0 ? exemptAmt.toLocaleString() + ' 元' : '不適用');
+  set('f-r-taxable',    taxable.toLocaleString() + ' 元');
+  set('f-r-tax-before', taxBefore.toLocaleString() + ' 元');
+  set('f-r-repurchase', repurchaseDeduct > 0 ? repurchaseDeduct.toLocaleString() + ' 元' : '無');
+  set('f-r-tax',        taxFinal.toLocaleString() + ' 元');
   showResult('f-result');
 }
 
-// ── 贈與稅（114年級距）──
+function importFromLVT() {
+  var el = document.getElementById('t-r-rise');
+  if (!el || el.textContent === '—') {
+    alert('請先完成土地增值稅估算，再使用帶入功能。');
+    return;
+  }
+  var txt = el.textContent.replace(/[^0-9]/g, '');
+  var val = parseInt(txt) || 0;
+  if (val > 0) {
+    document.getElementById('f-lvt').value = val;
+    alert('土地漲價總數額 ' + val.toLocaleString() + ' 元 已帶入。');
+  } else {
+    alert('無法自動帶入，請手動輸入土地漲價總數額。');
+  }
+}
+
 function calcZengyou() {
-  const total = v('z-total'), used = v('z-used'), deduct = v('z-deduct');
-  const exemptLeft = Math.max(0, 2440000 - used);
-  const net = Math.max(0, total - exemptLeft - deduct);
-  let tax = 0, rate = '';
+  var total = v('z-total');
+  var used = v('z-used');
+  var deduct = v('z-deduct');
+  var exemptLeft = Math.max(0, 2440000 - used);
+  var net = Math.max(0, total - exemptLeft - deduct);
+  var tax = 0, rate = '';
   if (net <= 0) { rate = '免稅'; }
   else if (net <= 28110000) { tax = net * 0.10; rate = '10%'; }
-  else if (net <= 56210000) { tax = 28110000*0.10 + (net-28110000)*0.15; rate = '10% / 15%'; }
-  else { tax = 28110000*0.10 + 28100000*0.15 + (net-56210000)*0.20; rate = '10% / 15% / 20%'; }
+  else if (net <= 56210000) { tax = 28110000 * 0.10 + (net - 28110000) * 0.15; rate = '10% / 15%'; }
+  else { tax = 28110000 * 0.10 + 28100000 * 0.15 + (net - 56210000) * 0.20; rate = '10% / 15% / 20%'; }
   set('z-r-total', fmt(total));
   set('z-r-exempt', fmt(exemptLeft));
   set('z-r-net', fmt(net));
@@ -772,17 +1110,16 @@ function calcZengyou() {
   showResult('z-result');
 }
 
-// ── 遺產稅（114年級距）──
 function calcYichan() {
-  const total = v('y-total');
-  const deductSum = v('y-spouse') + v('y-child') + v('y-parent') + v('y-funeral') + v('y-other');
-  const exempt = 13330000;
-  const net = Math.max(0, total - exempt - deductSum);
-  let tax = 0, rate = '';
+  var total = v('y-total');
+  var deductSum = v('y-spouse') + v('y-child') + v('y-parent') + v('y-funeral') + v('y-other');
+  var exempt = 13330000;
+  var net = Math.max(0, total - exempt - deductSum);
+  var tax = 0, rate = '';
   if (net <= 0) { rate = '免稅'; }
   else if (net <= 56210000) { tax = net * 0.10; rate = '10%'; }
-  else if (net <= 112420000) { tax = 56210000*0.10 + (net-56210000)*0.15; rate = '10% / 15%'; }
-  else { tax = 56210000*0.10 + 56210000*0.15 + (net-112420000)*0.20; rate = '10% / 15% / 20%'; }
+  else if (net <= 112420000) { tax = 56210000 * 0.10 + (net - 56210000) * 0.15; rate = '10% / 15%'; }
+  else { tax = 56210000 * 0.10 + 56210000 * 0.15 + (net - 112420000) * 0.20; rate = '10% / 15% / 20%'; }
   if (!total) return;
   set('y-r-total', fmt(total));
   set('y-r-deduct', fmt(deductSum));
@@ -791,23 +1128,6 @@ function calcYichan() {
   set('y-r-tax', net <= 0 ? '0 元（免稅）' : fmt(tax));
   showResult('y-result');
 }
-
-// ── PAGE ──
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade-in-section').forEach(el => observer.observe(el));
-
-function submitForm() { alert('感謝您的諮詢！我們將於上班時間內盡快與您聯繫。\n\n如需緊急聯繫，請致電 0988-119-532。'); }
-
-function toggleMenu() {
-  const links = document.querySelector('.nav-links');
-  if (links.style.display === 'flex') { links.style.display = 'none'; }
-  else { links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:rgba(240,237,230,0.98);padding:1.5rem 2rem;gap:1.5rem;border-bottom:0.5px solid rgba(61,47,42,0.12);z-index:99;backdrop-filter:blur(12px);'; }
-}
-window.addEventListener('scroll', () => {
-  document.querySelector('nav').style.boxShadow = window.scrollY > 50 ? '0 1px 20px rgba(61,47,42,0.08)' : 'none';
-});
 </script>
 </body>
 </html>
