@@ -600,6 +600,297 @@ var observer = new IntersectionObserver(function(entries) {
   entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
 document.querySelectorAll('.fade-in-section').forEach(function(el) { observer.observe(el); });
+
+function calcQiyue() {
+  var price = v('q-price');
+  var rate = parseFloat(document.getElementById('q-type').value);
+  if (!price) return;
+  var tax = price * rate;
+  set('q-r-price', fmt(price));
+  set('q-r-rate', (rate * 100).toFixed(0) + '%');
+  set('q-r-tax', fmt(tax));
+  showResult('q-result');
+}
+
+function calcTuzeng() {
+  var area = v('t-area');
+  var fracNum = v('t-frac-num') || 1;
+  var fracDen = v('t-frac-den') || 1;
+  var curr = v('t-curr');
+  var prev = v('t-prev');
+  var cpi = v('t-cpi');
+  var redux = v('t-redux') || 0;
+  var landtype = document.getElementById('t-landtype').value;
+  var yearsEl = document.querySelector('input[name="t-years"]:checked');
+  var yearReduxRate = yearsEl ? parseFloat(yearsEl.value) : 0;
+  if (!area || !curr || !prev) return;
+
+  var transferArea = area * (fracNum / fracDen);
+  var cpiAdj = cpi > 0 ? Math.max(cpi, 100) : 100;
+  var prevAdjusted = prev * (cpiAdj / 100);
+  var cpiNote = cpi > 0 ? '' : '（未輸入，以100計）';
+  var rise = (curr - prevAdjusted) * transferArea;
+
+  function generalTax(riseAmt, baseAmt) {
+    var t1 = Math.min(riseAmt, baseAmt);
+    var rem1 = riseAmt - t1;
+    var t2 = Math.min(rem1, baseAmt);
+    var t3 = rem1 - t2;
+    return Math.floor(t1 * 0.20) + Math.ceil(t2 * 0.30) + Math.floor(t3 * 0.40);
+  }
+
+  var selfuseLimit = landtype === 'urban' ? 300 : 700;
+  var selfuseArea = Math.min(transferArea, selfuseLimit);
+  var overArea = Math.max(0, transferArea - selfuseLimit);
+  var generalTaxAmt = 0, overTaxAmt = 0, selfuseTaxAmt = 0;
+
+  if (rise <= 0) {
+    set('t-r-realarea', transferArea.toFixed(2) + ' ㎡');
+    set('t-r-adjusted', Math.floor(prevAdjusted).toLocaleString() + ' 元/㎡' + cpiNote);
+    set('t-r-rise', '0 元（無漲價，不課稅）');
+    set('t-r-ratio', '0%');
+    set('t-r-general-tax', '0 元');
+    set('t-r-over-tax', '—');
+    set('t-r-selfuse-tax', '0 元');
+    set('t-r-year-redux', '—');
+    set('t-r-redux', '—');
+    set('t-r-tax', '0 元');
+    showResult('t-result');
+    return;
+  }
+
+  var ratio = ((curr - prevAdjusted) / prevAdjusted) * 100;
+  var baseAll = prevAdjusted * transferArea;
+  generalTaxAmt = generalTax(rise, baseAll);
+
+  if (overArea > 0) {
+    var overRise = (curr - prevAdjusted) * overArea;
+    var overBase = prevAdjusted * overArea;
+    overTaxAmt = overRise > 0 ? generalTax(overRise, overBase) : 0;
+  }
+
+  var selfuseRise = (curr - prevAdjusted) * selfuseArea;
+  selfuseTaxAmt = selfuseRise > 0 ? Math.round(selfuseRise * 0.10) : 0;
+
+  var yearReduxAmt = Math.floor(generalTaxAmt * yearReduxRate);
+  var reduxAmt = Math.floor(generalTaxAmt * (redux / 100));
+  var totalGeneral = Math.max(0, generalTaxAmt - yearReduxAmt - reduxAmt);
+  var totalSelfuse = Math.max(0, selfuseTaxAmt + overTaxAmt - Math.floor((selfuseTaxAmt + overTaxAmt) * (redux / 100)));
+
+  set('t-r-realarea', transferArea.toFixed(2) + ' ㎡' + (fracNum != 1 || fracDen != 1 ? '（持分 ' + Math.floor(fracNum) + '/' + Math.floor(fracDen) + '）' : ''));
+  set('t-r-adjusted', Math.floor(prevAdjusted).toLocaleString() + ' 元/㎡' + (cpiNote ? '　' + cpiNote : ''));
+  set('t-r-rise', Math.floor(rise).toLocaleString() + ' 元');
+  set('t-r-ratio', ratio.toFixed(2) + '%');
+  set('t-r-general-tax', generalTaxAmt.toLocaleString() + ' 元（全部面積一般累進）');
+  set('t-r-over-tax', overArea > 0 ? overTaxAmt.toLocaleString() + ' 元（超限 ' + overArea.toFixed(2) + ' ㎡）' : '無超限面積');
+  set('t-r-selfuse-tax', selfuseTaxAmt.toLocaleString() + ' 元（' + selfuseArea.toFixed(2) + ' ㎡ × 10%）');
+  set('t-r-year-redux', yearReduxRate > 0 ? '－' + yearReduxAmt.toLocaleString() + ' 元（減徵 ' + (yearReduxRate * 100).toFixed(0) + '%）' : '無（持有未滿20年）');
+  set('t-r-redux', redux > 0 ? '－' + reduxAmt.toLocaleString() + ' 元（重劃減徵 ' + redux + '%）' : '無');
+  set('t-r-tax', '一般用地：' + totalGeneral.toLocaleString() + ' 元　／　自用住宅：' + totalSelfuse.toLocaleString() + ' 元');
+  showResult('t-result');
+}
+
+function toggleAcqType() {
+  var val = document.querySelector('input[name="f-acq-type"]:checked').value;
+  document.getElementById('f-purchase-block').style.display = val === 'purchase' ? '' : 'none';
+  document.getElementById('f-inherit-block').style.display  = val === 'inherit'  ? '' : 'none';
+}
+
+function calcInheritCost() {
+  var land  = parseFloat(document.getElementById('f-cost-land').value)  || 0;
+  var house = parseFloat(document.getElementById('f-cost-house').value) || 0;
+  var cpi   = parseFloat(document.getElementById('f-cost-cpi').value)   || 0;
+  var el = document.getElementById('f-inherit-cost-result');
+  if (land > 0 || house > 0) {
+    var cpiAdj = cpi > 0 ? cpi / 100 : 1;
+    var total = Math.floor((land + house) * cpiAdj);
+    el.textContent = total.toLocaleString() + ' 元';
+  } else {
+    el.textContent = '— 元';
+  }
+}
+
+function updateSfeeHint() {
+  var income = parseFloat(document.getElementById('f-income').value) || 0;
+  var hint = document.getElementById('f-sfee-hint');
+  if (income > 0) {
+    hint.style.display = 'block';
+    hint.textContent = '※ 成交價 3% = ' + Math.floor(income * 0.03).toLocaleString() + ' 元';
+  }
+}
+
+function calcFangdi() {
+  var acqY  = parseInt(document.getElementById('f-acq-y').value)  || 0;
+  var acqM  = parseInt(document.getElementById('f-acq-m').value)  || 0;
+  var acqD  = parseInt(document.getElementById('f-acq-d').value)  || 1;
+  var sellY = parseInt(document.getElementById('f-sell-y').value) || 0;
+  var sellM = parseInt(document.getElementById('f-sell-m').value) || 0;
+  var sellD = parseInt(document.getElementById('f-sell-d').value) || 1;
+  var identity   = document.getElementById('f-identity').value;
+  var category   = document.getElementById('f-category').value;
+  var acqType    = document.querySelector('input[name="f-acq-type"]:checked').value;
+  var income     = parseFloat(document.getElementById('f-income').value)     || 0;
+  var nec        = parseFloat(document.getElementById('f-nec').value)        || 0;
+  var improve    = parseFloat(document.getElementById('f-improve').value)    || 0;
+  var sfee       = parseFloat(document.getElementById('f-sfee').value)       || 0;
+  var lvt        = parseFloat(document.getElementById('f-lvt').value)        || 0;
+  var loss       = parseFloat(document.getElementById('f-loss').value)       || 0;
+  var repurchase = parseFloat(document.getElementById('f-repurchase').value) || 0;
+
+  // 取得房地價款
+  var costBase = 0;
+  if (acqType === 'purchase') {
+    costBase = parseFloat(document.getElementById('f-cost-purchase').value) || 0;
+  } else {
+    var land  = parseFloat(document.getElementById('f-cost-land').value)  || 0;
+    var house = parseFloat(document.getElementById('f-cost-house').value) || 0;
+    var cpi   = parseFloat(document.getElementById('f-cost-cpi').value)   || 0;
+    var cpiAdj = cpi > 0 ? cpi / 100 : 1;
+    costBase = (land + house) * cpiAdj;
+  }
+
+  // 持有期間
+  var regime = '', holdMonths = 0, rateNum = 0, rateLabel = '';
+  var regimeBox = document.getElementById('f-regime-box');
+  if (acqY && sellY) {
+    var acqDate  = new Date(acqY  + 1911, acqM  - 1, acqD);
+    var sellDate = new Date(sellY + 1911, sellM - 1, sellD);
+    holdMonths = (sellDate.getFullYear() - acqDate.getFullYear()) * 12
+               + (sellDate.getMonth() - acqDate.getMonth());
+    if (sellDate.getDate() < acqDate.getDate()) holdMonths -= 1;
+    var holdY    = Math.floor(holdMonths / 12);
+    var holdMrem = holdMonths % 12;
+    var acq105   = new Date(2016, 0, 1);
+    regime = acqDate >= acq105
+      ? '新制（房地合一稅 2.0，110年7月1日起）'
+      : '舊制（財產交易所得稅，請洽國稅局）';
+    regimeBox.style.display = 'block';
+    regimeBox.innerHTML = '適用制度：<strong>' + regime + '</strong><br>持有期間：約 '
+      + holdY + ' 年 ' + holdMrem + ' 個月';
+  }
+
+  if (!income) return;
+
+  // 稅率判斷
+  if (category === 'selfuse' && identity === 'person') {
+    rateNum = 0.10; rateLabel = '10%（自住房地優惠）';
+  } else if (category === 'involuntary' && identity === 'person') {
+    if      (holdMonths <= 24)  { rateNum = 0.20; rateLabel = '20%（非自願，2年以內）'; }
+    else if (holdMonths <= 60)  { rateNum = 0.20; rateLabel = '20%（非自願，2~5年）'; }
+    else if (holdMonths <= 120) { rateNum = 0.15; rateLabel = '15%（非自願，5~10年）'; }
+    else                        { rateNum = 0.10; rateLabel = '10%（非自願，10年以上）'; }
+  } else if (identity === 'person') {
+    if      (holdMonths <= 24)  { rateNum = 0.45; rateLabel = '45%（個人，2年以內）'; }
+    else if (holdMonths <= 60)  { rateNum = 0.35; rateLabel = '35%（個人，2年以上未逾5年）'; }
+    else if (holdMonths <= 120) { rateNum = 0.20; rateLabel = '20%（個人，5年以上未逾10年）'; }
+    else                        { rateNum = 0.15; rateLabel = '15%（個人，超過10年）'; }
+  } else if (identity === 'company') {
+    if      (holdMonths <= 24)  { rateNum = 0.45; rateLabel = '45%（法人，2年以內）'; }
+    else if (holdMonths <= 60)  { rateNum = 0.35; rateLabel = '35%（法人，2年以上未逾5年）'; }
+    else                        { rateNum = 0.20; rateLabel = '20%（法人，5年以上）'; }
+  } else {
+    if      (holdMonths <= 24)  { rateNum = 0.45; rateLabel = '45%（境外，2年以內）'; }
+    else                        { rateNum = 0.35; rateLabel = '35%（境外，2年以上）'; }
+  }
+
+  // ① 房地交易所得額 = 成交價 - (取得成本 + 必要費用 + 改良費用 + 移轉費用)
+  var totalDeduct1 = costBase + nec + improve + sfee;
+  var gain = income - totalDeduct1;
+
+  // 自住免稅額（上限400萬，個人自住）
+  var exemptAmt = 0;
+  if (category === 'selfuse' && identity === 'person' && gain > 0) {
+    exemptAmt = Math.min(gain, 4000000);
+  }
+
+  // ② 課稅所得 = 所得額 - 損失 - 土地漲價總數額 - 自住免稅額（負數以0計）
+  var taxable = Math.max(0, gain - loss - lvt - exemptAmt);
+
+  // ③ 應納稅額
+  var taxBefore = Math.floor(taxable * rateNum);
+
+  // ④ 重購扣抵
+  var repurchaseDeduct = 0;
+  if (repurchase > 0 && income > 0 && taxBefore > 0) {
+    repurchaseDeduct = Math.min(taxBefore, Math.floor(taxBefore * repurchase / income));
+  }
+  var taxFinal = Math.max(0, taxBefore - repurchaseDeduct);
+
+  // 顯示結果
+  set('f-r-regime',     regime || '請輸入取得及交易日期');
+  set('f-r-period',     holdMonths > 0 ? Math.floor(holdMonths/12) + ' 年 ' + (holdMonths%12) + ' 個月' : '—');
+  set('f-r-rate',       rateLabel || '—');
+  set('f-r-income',     income.toLocaleString() + ' 元');
+  set('f-r-cost-base',  Math.floor(costBase).toLocaleString() + ' 元');
+  set('f-r-nec',        nec > 0     ? nec.toLocaleString()     + ' 元' : '0 元');
+  set('f-r-improve',    improve > 0 ? improve.toLocaleString() + ' 元' : '0 元');
+  set('f-r-sfee',       sfee > 0    ? sfee.toLocaleString()    + ' 元' : '0 元');
+  set('f-r-gain',       gain < 0
+    ? '損失 ' + Math.abs(gain).toLocaleString() + ' 元'
+    : gain.toLocaleString() + ' 元');
+  set('f-r-loss',       loss > 0 ? loss.toLocaleString() + ' 元' : '0 元');
+  set('f-r-lvt',        lvt  > 0 ? lvt.toLocaleString()  + ' 元' : '0 元');
+  set('f-r-exempt',     exemptAmt > 0 ? exemptAmt.toLocaleString() + ' 元' : '不適用');
+  set('f-r-taxable',    taxable.toLocaleString() + ' 元');
+  set('f-r-tax-before', taxBefore.toLocaleString() + ' 元');
+  set('f-r-repurchase', repurchaseDeduct > 0 ? repurchaseDeduct.toLocaleString() + ' 元' : '無');
+  set('f-r-tax',        taxFinal.toLocaleString() + ' 元');
+  showResult('f-result');
+}
+
+function importFromLVT() {
+  var el = document.getElementById('t-r-rise');
+  if (!el || el.textContent === '—') {
+    alert('請先完成土地增值稅估算，再使用帶入功能。');
+    return;
+  }
+  var txt = el.textContent.replace(/[^0-9]/g, '');
+  var val = parseInt(txt) || 0;
+  if (val > 0) {
+    document.getElementById('f-lvt').value = val;
+    alert('土地漲價總數額 ' + val.toLocaleString() + ' 元 已帶入。');
+  } else {
+    alert('無法自動帶入，請手動輸入土地漲價總數額。');
+  }
+}
+
+function calcZengyou() {
+  var total = v('z-total');
+  var used = v('z-used');
+  var deduct = v('z-deduct');
+  var exemptLeft = Math.max(0, 2440000 - used);
+  var net = Math.max(0, total - exemptLeft - deduct);
+  var tax = 0, rate = '';
+  if (net <= 0) { rate = '免稅'; }
+  else if (net <= 28110000) { tax = net * 0.10; rate = '10%'; }
+  else if (net <= 56210000) { tax = 28110000 * 0.10 + (net - 28110000) * 0.15; rate = '10% / 15%'; }
+  else { tax = 28110000 * 0.10 + 28100000 * 0.15 + (net - 56210000) * 0.20; rate = '10% / 15% / 20%'; }
+  set('z-r-total', fmt(total));
+  set('z-r-exempt', fmt(exemptLeft));
+  set('z-r-net', fmt(net));
+  set('z-r-rate', rate);
+  set('z-r-tax', net <= 0 ? '0 元（免稅）' : fmt(tax));
+  showResult('z-result');
+}
+
+function calcYichan() {
+  var total = v('y-total');
+  var deductSum = v('y-spouse') + v('y-child') + v('y-parent') + v('y-funeral') + v('y-other');
+  var exempt = 13330000;
+  var net = Math.max(0, total - exempt - deductSum);
+  var tax = 0, rate = '';
+  if (net <= 0) { rate = '免稅'; }
+  else if (net <= 56210000) { tax = net * 0.10; rate = '10%'; }
+  else if (net <= 112420000) { tax = 56210000 * 0.10 + (net - 56210000) * 0.15; rate = '10% / 15%'; }
+  else { tax = 56210000 * 0.10 + 56210000 * 0.15 + (net - 112420000) * 0.20; rate = '10% / 15% / 20%'; }
+  if (!total) return;
+  set('y-r-total', fmt(total));
+  set('y-r-deduct', fmt(deductSum));
+  set('y-r-net', fmt(net));
+  set('y-r-rate', net <= 0 ? '免稅' : rate);
+  set('y-r-tax', net <= 0 ? '0 元（免稅）' : fmt(tax));
+  showResult('y-result');
+}
 </script>
 </body>
 </html>
