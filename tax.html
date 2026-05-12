@@ -77,15 +77,19 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--cream); color:
   margin-bottom: 1.5rem; padding: 1rem 1.2rem; background: var(--white);
   border-radius: 2px; border-left: 2px solid var(--brown-light);
 }
-.calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem; }
-.calc-field { display: flex; flex-direction: column; gap: 0.4rem; }
+.calc-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 1rem; margin-bottom: 1rem; box-sizing: border-box; width: 100%; }
+.calc-grid + .calc-grid { margin-top: 0 !important; }
+.calc-grid > .calc-field { width: 100% !important; min-width: 0; box-sizing: border-box; }
+.calc-field { display: flex !important; flex-direction: column !important; gap: 0.4rem; width: 100% !important; box-sizing: border-box !important; }
 .calc-label { font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-mid); }
 .calc-label span { font-size: 0.6rem; color: var(--text-light); margin-left: 0.3rem; }
+.calc-grid .calc-field .calc-input,
+.calc-grid .calc-field .calc-select,
 .calc-input, .calc-select {
   background: var(--white); border: 0.5px solid var(--cream-darker);
   color: var(--text-dark); padding: 0.7rem 0.9rem; font-size: 0.85rem;
   font-family: 'Noto Sans TC',sans-serif; outline: none; border-radius: 2px;
-  transition: border-color 0.2s; width: 100%;
+  transition: border-color 0.2s; width: 100% !important;
 }
 .calc-input:focus, .calc-select:focus { border-color: var(--brown-light); }
 .calc-btn {
