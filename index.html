@@ -70,27 +70,7 @@ section { padding: 6rem 4rem; }
 .about-card-sub { font-size: 0.75rem; color: var(--text-light); margin-top: 0.2rem; letter-spacing: 0.05em; }
 
 .services { background: var(--cream); }
-.fee-table-wrap { max-width: 1000px; margin: 0 auto; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.fee-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-.fee-table thead tr { background: var(--brown-dark); }
-.fee-table thead th { padding: 1rem 1.2rem; text-align: left; color: var(--cream); font-weight: 400; letter-spacing: 0.1em; font-family: 'Noto Sans TC',sans-serif; font-size: 0.75rem; white-space: nowrap; }
-.fee-table thead th span { font-size: 0.65rem; color: rgba(240,237,230,0.55); display: block; font-weight: 300; margin-top: 0.2rem; letter-spacing: 0.05em; }
-.fee-table tbody tr { border-bottom: 0.5px solid var(--cream-darker); transition: background 0.2s; }
-.fee-table tbody tr:hover { background: var(--white); }
-.fee-table tbody td { padding: 1.1rem 1.2rem; vertical-align: top; color: var(--text-mid); line-height: 1.8; }
-.fee-name { font-family: 'Noto Serif TC',serif; font-weight: 400; color: var(--brown-dark) !important; letter-spacing: 0.08em; white-space: nowrap; }
-.fee-price { color: var(--brown-dark) !important; font-family: 'Noto Serif TC',serif; }
-.fee-price span { font-size: 0.7rem; color: var(--text-light); font-family: 'Noto Sans TC',sans-serif; }
-.fee-gov { font-size: 0.75rem; color: var(--text-light) !important; }
-.fee-time { white-space: nowrap; font-size: 0.8rem; }
-.fee-note { font-size: 0.75rem; color: var(--text-light) !important; }
-.fee-other-row { background: var(--cream-dark) !important; }
-.fee-other-row:hover { background: var(--cream-darker) !important; }
-@media (max-width: 768px) {
-  .fee-table { font-size: 0.75rem; }
-  .fee-table thead th, .fee-table tbody td { padding: 0.8rem 0.7rem; }
-  .fee-note { display: none; }
-}
+
 .services-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: var(--cream-darker); border: 0.5px solid var(--cream-darker); }
 .service-item { background: var(--cream); padding: 2rem 1rem; text-align: center; transition: background 0.3s; cursor: default; }
 .service-item:hover { background: var(--brown-dark); }
@@ -205,6 +185,30 @@ footer { background: #2A1F1B; padding: 3rem 4rem; text-align: center; }
   footer { padding: 2rem 1.5rem; }
   .calc-grid { grid-template-columns: 1fr; }
 }
+.fee-wrap { max-width: 980px; margin: 0 auto; }
+.fee-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 2px; border: 0.5px solid var(--cream-darker); }
+.fee-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; table-layout: fixed; }
+.fee-th-cat  { width: 10%; }
+.fee-th-name { width: 32%; }
+.fee-th-price{ width: 16%; }
+.fee-th-note { width: 42%; }
+.fee-table thead tr { background: var(--brown-dark); }
+.fee-table thead th { padding: 0.9rem 1.1rem; text-align: left; color: var(--cream); font-weight: 400; letter-spacing: 0.1em; font-size: 0.75rem; }
+.fee-table tbody tr { border-bottom: 0.5px solid var(--cream-darker); transition: background 0.15s; }
+.fee-table tbody tr:last-child { border-bottom: none; }
+.fee-table tbody tr:hover { background: rgba(61,47,42,0.03); }
+.fee-table tbody td { padding: 0.85rem 1.1rem; vertical-align: middle; color: var(--text-mid); line-height: 1.7; font-size: 0.8rem; }
+.fee-cat { background: var(--cream-dark); font-family: 'Noto Serif TC',serif; font-size: 0.78rem; letter-spacing: 0.1em; color: var(--brown-dark); text-align: center; border-right: 0.5px solid var(--cream-darker); font-weight: 400; }
+.fee-name { color: var(--text-dark); letter-spacing: 0.04em; }
+.fee-price { font-family: 'Noto Serif TC',serif; color: var(--brown-dark); white-space: nowrap; font-size: 0.82rem; }
+.fee-note-cell { color: var(--text-light); font-size: 0.75rem; }
+.fee-row-consult { background: var(--cream-dark); }
+.fee-disclaimer { font-size: 0.7rem; color: var(--text-light); line-height: 2; margin-top: 1.2rem; letter-spacing: 0.05em; text-align: center; }
+@media (max-width: 768px) {
+  .fee-table { table-layout: auto; min-width: 560px; }
+  .fee-table tbody td, .fee-table thead th { padding: 0.7rem 0.7rem; font-size: 0.72rem; }
+  .fee-cat { font-size: 0.7rem; padding: 0.5rem; }
+}
 /* 強制移除所有 list marker */
 li, li::marker { list-style: none !important; list-style-type: none !important; color: transparent !important; }
 ul { list-style: none !important; }
@@ -282,93 +286,170 @@ ul { list-style: none !important; }
     <p class="section-label">Fee Schedule</p>
     <h2 class="section-title">收 費 標 準</h2>
     <div class="section-divider"></div>
-    <p style="text-align:center;font-size:0.8rem;color:var(--text-light);letter-spacing:0.08em;margin-top:-2rem;margin-bottom:3rem;line-height:2;">
-      以下費用均為概估，實際金額依案件複雜度、土地筆數及政府規費調整。<br>
-      <span style="font-size:0.72rem;">※ 規費及稅費由政府收取，代書費為本所服務費用，兩者分開計算。</span>
+    <p style="text-align:center;font-size:0.8rem;color:var(--text-light);letter-spacing:0.06em;margin-top:-2.5rem;margin-bottom:3rem;line-height:2.2;">
+      以下均為代書服務費，不含政府規費及各項稅費。<br>
+      <span style="font-size:0.72rem;color:var(--text-light);">實際費用依案件複雜度及筆數調整，正式報價請來電或線上諮詢。</span>
     </p>
   </div>
 
-  <div class="fee-table-wrap fade-in-section">
-    <table class="fee-table">
-      <thead>
-        <tr>
-          <th>服務項目</th>
-          <th>代書服務費<br><span>（本所收取）</span></th>
-          <th>規費 / 稅費<br><span>（政府收取）</span></th>
-          <th>預估流程時間</th>
-          <th>備註</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="fee-name">買賣移轉登記</td>
-          <td class="fee-price">NT$10,000 起<br><span>依土地筆數加計</span></td>
-          <td class="fee-gov">登記規費、土地增值稅、契稅、印花稅</td>
-          <td class="fee-time">7–14 工作天</td>
-          <td class="fee-note">含代辦銀行貸款設定</td>
-        </tr>
-        <tr>
-          <td class="fee-name">贈與移轉登記</td>
-          <td class="fee-price">NT$10,000 起<br><span>依土地筆數加計</span></td>
-          <td class="fee-gov">登記規費、贈與稅、土地增值稅、契稅</td>
-          <td class="fee-time">14–21 工作天</td>
-          <td class="fee-note">需先申報贈與稅</td>
-        </tr>
-        <tr>
-          <td class="fee-name">遺產繼承登記</td>
-          <td class="fee-price">NT$15,000 起<br><span>依繼承人數及土地筆數加計</span></td>
-          <td class="fee-gov">登記規費、遺產稅（視遺產總額）</td>
-          <td class="fee-time">21–30 工作天</td>
-          <td class="fee-note">含遺產稅申報協助</td>
-        </tr>
-        <tr>
-          <td class="fee-name">抵押權設定登記</td>
-          <td class="fee-price">NT$6,000 起</td>
-          <td class="fee-gov">登記規費（依設定金額千分之一計）</td>
-          <td class="fee-time">3–5 工作天</td>
-          <td class="fee-note">銀行貸款或私人借貸均可辦理</td>
-        </tr>
-        <tr>
-          <td class="fee-name">抵押權塗銷登記</td>
-          <td class="fee-price">NT$3,000 起</td>
-          <td class="fee-gov">登記規費</td>
-          <td class="fee-time">3–5 工作天</td>
-          <td class="fee-note">—</td>
-        </tr>
-        <tr>
-          <td class="fee-name">建物第一次登記</td>
-          <td class="fee-price">NT$12,000 起<br><span>依建物棟數加計</span></td>
-          <td class="fee-gov">登記規費、契稅、印花稅</td>
-          <td class="fee-time">14–21 工作天</td>
-          <td class="fee-note">需備建物測量圖及使用執照</td>
-        </tr>
-        <tr>
-          <td class="fee-name">共有物分割登記</td>
-          <td class="fee-price">NT$8,000 起<br><span>依筆數及共有人數加計</span></td>
-          <td class="fee-gov">登記規費、土地增值稅（視情況）</td>
-          <td class="fee-time">14–21 工作天</td>
-          <td class="fee-note">—</td>
-        </tr>
-        <tr>
-          <td class="fee-name">標示變更登記</td>
-          <td class="fee-price">NT$5,000 起</td>
-          <td class="fee-gov">登記規費</td>
-          <td class="fee-time">7–14 工作天</td>
-          <td class="fee-note">含地目變更、門牌整編等</td>
-        </tr>
-        <tr class="fee-other-row">
-          <td class="fee-name">其他特殊案件</td>
-          <td class="fee-price" colspan="4">
-            <a href="#" onclick="window.open('contact.html','_blank','width=860,height=600,scrollbars=yes');return false;"
-               style="color:var(--brown-dark);text-decoration:underline;letter-spacing:0.08em;cursor:pointer;">
-              歡迎來電或線上洽詢，提供免費案件評估 →
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <p style="text-align:center;font-size:0.7rem;color:var(--text-light);margin-top:1.5rem;letter-spacing:0.1em;line-height:1.8;">
-      以上費用均為估算，僅供參考。實際費用依案件性質、產權複雜度、土地建物筆數等因素調整，正式報價請來電或線上詢問。
+  <div class="fee-wrap fade-in-section">
+    <div class="fee-scroll">
+      <table class="fee-table">
+        <thead>
+          <tr>
+            <th class="fee-th-cat">類別</th>
+            <th class="fee-th-name">服務項目</th>
+            <th class="fee-th-price">收費標準</th>
+            <th class="fee-th-note">備註說明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="fee-cat" rowspan="4">所有權移轉登記</td>
+            <td class="fee-name">簽約手續費</td>
+            <td class="fee-price">NT$ 2,000</td>
+            <td class="fee-note-cell">買賣雙方各半負擔</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">買賣／贈與移轉登記（土地／建物）</td>
+            <td class="fee-price">NT$ 14,000</td>
+            <td class="fee-note-cell">基本一地一建，增加一筆加收 2,000 元</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">實價登錄申報</td>
+            <td class="fee-price">NT$ 3,000</td>
+            <td class="fee-note-cell">買賣雙方各半負擔</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">贈與稅申報</td>
+            <td class="fee-price">NT$ 6,000</td>
+            <td class="fee-note-cell">繁複案件另議</td>
+          </tr>
+          <tr>
+            <td class="fee-cat" rowspan="3">他項權利登記</td>
+            <td class="fee-name">抵押權設定登記</td>
+            <td class="fee-price">NT$ 5,000</td>
+            <td class="fee-note-cell">土地、建物各1筆為計收單位，每增加1筆加收 1,000 元</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">抵押權塗銷登記</td>
+            <td class="fee-price">NT$ 2,000</td>
+            <td class="fee-note-cell">土地、建物各1筆為計收單位，每增加1筆加收 1,000 元</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">其他他項權利設定登記</td>
+            <td class="fee-price">NT$ 8,000</td>
+            <td class="fee-note-cell">繁複案件另議</td>
+          </tr>
+          <tr>
+            <td class="fee-cat" rowspan="4">繼承登記</td>
+            <td class="fee-name">不動產繼承登記</td>
+            <td class="fee-price">NT$ 10,000</td>
+            <td class="fee-note-cell">繁複案件另議</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">遺產稅申報</td>
+            <td class="fee-price">NT$ 6,000</td>
+            <td class="fee-note-cell">繁複案件另議</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">遺產分割協議書</td>
+            <td class="fee-price">NT$ 6,000</td>
+            <td class="fee-note-cell">繁複案件另議</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">拋棄繼承</td>
+            <td class="fee-price">NT$ 6,000</td>
+            <td class="fee-note-cell">繁複案件另議</td>
+          </tr>
+          <tr>
+            <td class="fee-cat" rowspan="1">稅務</td>
+            <td class="fee-name">房地合一稅申報</td>
+            <td class="fee-price">NT$ 6,000 / 每件</td>
+            <td class="fee-note-cell">繁複案件另議</td>
+          </tr>
+          <tr>
+            <td class="fee-cat" rowspan="10">其他服務</td>
+            <td class="fee-name">建物所有權第一次登記</td>
+            <td class="fee-price">NT$ 12,000</td>
+            <td class="fee-note-cell">整棟或複雜案件另議</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">預告登記</td>
+            <td class="fee-price">NT$ 5,000</td>
+            <td class="fee-note-cell">基本一地一建，增加一筆加收 1,000 元</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">土地、建物分割 / 合併</td>
+            <td class="fee-price">NT$ 10,000</td>
+            <td class="fee-note-cell">人數超過2人或超過2筆合併者另計</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">書狀補換發</td>
+            <td class="fee-price">NT$ 5,000</td>
+            <td class="fee-note-cell">每增加一筆加收費用</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">農業使用證明</td>
+            <td class="fee-price">NT$ 6,000</td>
+            <td class="fee-note-cell">外縣市另計車馬費，每增加一筆加收 1,000 元</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">土地鑑界</td>
+            <td class="fee-price">NT$ 4,000</td>
+            <td class="fee-note-cell">外縣市另計車馬費，多人多筆另計</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">申請謄本 / 地籍圖</td>
+            <td class="fee-price">NT$ 500</td>
+            <td class="fee-note-cell">規費另計</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">申請土地分區 / 稅籍證明</td>
+            <td class="fee-price">NT$ 1,500</td>
+            <td class="fee-note-cell">—</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">撰寫存證信函 / 協議書</td>
+            <td class="fee-price">NT$ 3,000</td>
+            <td class="fee-note-cell">繁複案件另議</td>
+          </tr>
+          <tr>
+            
+            <td class="fee-name">案件諮詢費（每小時）</td>
+            <td class="fee-price">NT$ 2,000</td>
+            <td class="fee-note-cell">委辦後續案件可折抵</td>
+          </tr>
+          <tr class="fee-row-consult">
+            <td colspan="4" style="text-align:center;padding:1.2rem;">
+              <a href="#" onclick="window.open('contact.html','_blank','width=860,height=600,scrollbars=yes');return false;"
+                 style="color:var(--brown-dark);letter-spacing:0.1em;font-size:0.82rem;text-decoration:none;font-family:'Noto Serif TC',serif;">
+                其他特殊案件歡迎洽詢，提供免費案件評估 →
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fee-disclaimer">
+      ※ 上述費用為代書服務費，不含土地增值稅、契稅、贈與稅、遺產稅等政府稅費，亦不含登記規費、地政士代為收取之各項費用。<br>
+      繁複案件（如跨縣市、多人繼承、複雜產權等）以實際評估後報價為準。
     </p>
   </div>
 </section>
