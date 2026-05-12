@@ -495,15 +495,19 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--cream); color:
       <!-- 贈與稅 -->
       <div class="calc-section" id="tab-zengyou">
         <div class="calc-desc">
-          贈與稅由<strong>贈與人</strong>繳納，於贈與行為發生後30日內申報。<br><br>
-          <strong>計算公式：</strong><br>
-          本年度贈與總額 ＝ 本次贈與金額 ＋ 本年度先前贈與總額<br>
-          課稅贈與淨額 ＝ 本年度贈與總額 − 不計入贈與總額 − 扣除額 − 免稅額（244萬）<br>
-          本年度應納稅額 ＝ 課稅贈與淨額 × 稅率 − 累進差額<br>
-          本次應納稅額 ＝ 本年度應納稅額 − 以前各次應納稅額及可扣抵稅額<br><br>
-          <strong>稅率級距（114年）：</strong>課稅淨額2,811萬以下 <strong>10%</strong>；2,811萬～5,621萬 <strong>15%</strong>（累進差額140.55萬）；5,621萬以上 <strong>20%</strong>（累進差額421.6萬）<br><br>
+          贈與稅由<strong>贈與人</strong>繳納，贈與人在同一年度內贈與他人財產總值超過免稅額時，應於贈與日後<strong>30日內</strong>申報。<br><br>
+          <strong>計算公式（114年1月1日起）：</strong><br>
+          ① 本年度贈與總額 ＝ 本次贈與金額 ＋ 本年度先前贈與總額<br>
+          ② 課稅贈與淨額 ＝ 本年度贈與總額 − 不計入贈與總額 − 扣除額 − 年度免稅額（244萬）<br>
+          ③ 本年度應納稅額 ＝ 課稅贈與淨額 × 稅率 − 累進差額<br>
+          ④ 本次應納稅額 ＝ 本年度應納稅額 − 以前各次應納稅額及可扣抵稅額<br><br>
+          <strong>稅率級距（114年起）：</strong><br>
+          課稅淨額 <strong>2,811萬以下</strong> → 稅率10%，累進差額0元<br>
+          課稅淨額 <strong>2,811萬～5,621萬</strong> → 稅率15%，累進差額1,405,500元<br>
+          課稅淨額 <strong>5,621萬以上</strong> → 稅率20%，累進差額4,216,000元<br><br>
+          <strong>常見不計入贈與總額項目：</strong>配偶相互贈與；父母於子女婚嫁時各自贈與不超過100萬元；捐贈各級政府或公益法人；扶養義務人支付受扶養人之生活費、教育費及醫藥費等。<br><br>
           ⚠️ 本試算結果僅供概算參考，實際應納稅額以國稅局核定為準。<br>
-          <span style="font-size:0.65rem;opacity:0.7;">以上計算方式參照財政部贈與稅相關規定，如有疑義請洽轄區國稅局。</span>
+          <span style="font-size:0.65rem;opacity:0.7;">以上計算方式參照財政部遺產及贈與稅法及相關規定，如有疑義請洽轄區國稅局。</span>
         </div>
 
         <!-- 一、贈與金額 -->
@@ -953,24 +957,31 @@ function calcZengyou() {
   var yearTotal = thisGift + prevGift;
   var net = Math.max(0, yearTotal - exemptItem - deduct - annualExempt);
 
+  var rate = 0, diff = 0, yearTax = 0, rateLabel = '';
   var t1 = 0, t2 = 0, t3 = 0;
   var t1tax = 0, t2tax = 0, t3tax = 0;
-  var rate = '', diff = 0, yearTax = 0;
 
   if (net <= 0) {
-    rate = '免稅'; diff = 0; yearTax = 0;
+    rateLabel = '免稅（課稅淨額為0）';
+    diff = 0; yearTax = 0;
   } else if (net <= 28110000) {
-    t1 = net; t1tax = Math.floor(t1 * 0.10);
-    rate = '10%'; diff = 0; yearTax = t1tax;
+    rate = 0.10; diff = 0;
+    rateLabel = '10%';
+    yearTax = Math.floor(net * rate) - diff;
+    t1 = net; t1tax = yearTax;
   } else if (net <= 56210000) {
+    rate = 0.15; diff = 1405500;
+    rateLabel = '15%';
+    yearTax = Math.floor(net * rate) - diff;
     t1 = 28110000; t1tax = Math.floor(t1 * 0.10);
-    t2 = net - 28110000; t2tax = Math.floor(t2 * 0.15);
-    rate = '10% / 15%'; diff = 1405500; yearTax = t1tax + t2tax;
+    t2 = net - 28110000; t2tax = yearTax - t1tax;
   } else {
+    rate = 0.20; diff = 4216000;
+    rateLabel = '20%';
+    yearTax = Math.floor(net * rate) - diff;
     t1 = 28110000; t1tax = Math.floor(t1 * 0.10);
     t2 = 28100000; t2tax = Math.floor(t2 * 0.15);
-    t3 = net - 56210000; t3tax = Math.floor(t3 * 0.20);
-    rate = '10% / 15% / 20%'; diff = 4216000; yearTax = t1tax + t2tax + t3tax;
+    t3 = net - 56210000; t3tax = yearTax - t1tax - t2tax;
   }
 
   var thisTax = Math.max(0, yearTax - prevTax);
@@ -982,9 +993,13 @@ function calcZengyou() {
   set('z-r-deduct',      deduct > 0 ? deduct.toLocaleString() + ' 元' : '0 元');
   set('z-r-exempt',      annualExempt.toLocaleString() + ' 元');
   set('z-r-net',         net <= 0 ? '0 元（免稅）' : net.toLocaleString() + ' 元');
-  set('z-r-rate',        rate);
+  set('z-r-rate',        rateLabel);
   set('z-r-diff',        diff > 0 ? diff.toLocaleString() + ' 元' : '0 元');
-  set('z-r-year-tax',    yearTax.toLocaleString() + ' 元');
+  if (net > 0) {
+    set('z-r-year-tax', net.toLocaleString() + ' × ' + (rate * 100).toFixed(0) + '% − ' + diff.toLocaleString() + ' ＝ ' + yearTax.toLocaleString() + ' 元');
+  } else {
+    set('z-r-year-tax', '0 元');
+  }
   set('z-r-prev-tax',    prevTax > 0 ? prevTax.toLocaleString() + ' 元' : '0 元');
   set('z-t1-base',       t1 > 0 ? t1.toLocaleString() + ' 元' : '0 元');
   set('z-t1-tax',        t1tax > 0 ? t1tax.toLocaleString() + ' 元' : '0 元');
