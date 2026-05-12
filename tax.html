@@ -411,6 +411,8 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--cream); color:
               <label class="calc-label">地方稅稽徵機關核准減除之改良土地費用<span>元（無則填0）</span></label>
               <input type="number" class="calc-input" id="f-improve" placeholder="0" value="0" oninput="calcFangdi()">
             </div>
+          </div>
+          <div class="calc-grid">
             <div class="calc-field">
               <label class="calc-label">移轉費用<span>元（未提憑證按成交價3%，上限300,000元）</span></label>
               <input type="number" class="calc-input" id="f-sfee" placeholder="例：300,000" oninput="updateSfeeHint()">
@@ -606,78 +608,149 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--cream); color:
       <!-- 遺產稅 -->
       <div class="calc-section" id="tab-yichan">
         <div class="calc-desc">
-          遺產稅免稅額 <strong>1,333 萬元</strong>。課稅級距（114年起）：遺產淨額 5,621 萬以下 10%；5,621 萬～1 億 1,242 萬 15%；超過 1 億 1,242 萬 20%。
+          遺產稅由<strong>繼承人、受遺贈人或遺產管理人</strong>為納稅義務人。應於被繼承人死亡之日起<strong>6個月內</strong>申報（死亡時在國外者延為9個月）。<br><br>
+          <strong>計算公式（114年1月1日起）：</strong><br>
+          ① 課稅遺產淨額 ＝ 遺產總額 − 不計入遺產總額 − 免稅額 − 各項扣除額<br>
+          ② 應納稅額 ＝ 課稅遺產淨額 × 稅率 − 累進差額 − 可扣抵稅額<br><br>
+          <strong>稅率級距（114年起）：</strong><br>
+          課稅淨額 <strong>5,621萬以下</strong> → 稅率10%，累進差額0元<br>
+          課稅淨額 <strong>5,621萬～1億1,242萬</strong> → 稅率15%，累進差額2,810,500元<br>
+          課稅淨額 <strong>1億1,242萬以上</strong> → 稅率20%，累進差額8,431,500元<br><br>
+          ⚠️ 本試算結果僅供概算參考，實際應納稅額以國稅局核定為準。<br>
+          <span style="font-size:0.65rem;opacity:0.7;">以上計算方式參照財政部遺產及贈與稅法及相關規定，如有疑義請洽轄區國稅局。</span>
         </div>
-        <div class="calc-grid">
-          <div class="calc-field">
-            <label class="calc-label">遺產總額<span>元</span></label>
-            <input type="number" class="calc-input" id="y-total" placeholder="例：30000000" oninput="calcYichan()">
-          </div>
-          <div class="calc-field">
-            <label class="calc-label">配偶扣除額<span>元（有配偶填 5,530,000）</span></label>
-            <input type="number" class="calc-input" id="y-spouse" placeholder="0" oninput="calcYichan()">
-          </div>
-          <div class="calc-field">
-            <label class="calc-label">直系血親卑親屬扣除額<span>元（每人 560,000）</span></label>
-            <input type="number" class="calc-input" id="y-child" placeholder="0" oninput="calcYichan()">
-          </div>
-          <div class="calc-field">
-            <label class="calc-label">父母扣除額<span>元（每人 1,380,000）</span></label>
-            <input type="number" class="calc-input" id="y-parent" placeholder="0" oninput="calcYichan()">
-          </div>
-          <div class="calc-field">
-            <label class="calc-label">喪葬費扣除額<span>元（定額 1,380,000）</span></label>
-            <input type="number" class="calc-input" id="y-funeral" value="1380000" oninput="calcYichan()">
-          </div>
-          <div class="calc-field">
-            <label class="calc-label">其他扣除額（殘障、重病等）<span>元</span></label>
-            <input type="number" class="calc-input" id="y-other" placeholder="0" oninput="calcYichan()">
+
+        <!-- 一、遺產總額 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">一、遺產總額</div>
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">遺產總額<span>元（含動產、不動產、債權等全部財產）</span></label>
+              <input type="number" class="calc-input" id="y-total" placeholder="例：50,000,000">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">不計入遺產總額<span>元（日常用品100萬以下、職業工具56萬以下等）</span></label>
+              <input type="number" class="calc-input" id="y-exempt-item" placeholder="0" value="0">
+            </div>
           </div>
         </div>
+
+        <!-- 二、免稅額 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">二、免稅額</div>
+          <div class="calc-grid" style="grid-template-columns:1fr;">
+            <div class="calc-field">
+              <label class="calc-label">被繼承人身分</label>
+              <div style="display:flex;gap:1.5rem;margin-top:0.3rem;">
+                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:var(--text-mid);cursor:pointer;">
+                  <input type="radio" name="y-identity" value="13330000" checked onchange="updateYichanExempt()"> 一般（1,333萬元）
+                </label>
+                <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.8rem;color:var(--text-mid);cursor:pointer;">
+                  <input type="radio" name="y-identity" value="26660000" onchange="updateYichanExempt()"> 軍警公教人員因執行職務死亡（2,666萬元）
+                </label>
+              </div>
+            </div>
+            <div class="calc-field" style="margin-top:0.4rem;">
+              <label class="calc-label">免稅額<span>元（依上方身分自動帶入）</span></label>
+              <input type="number" class="calc-input" id="y-exempt" value="13330000" readonly
+                style="background:var(--cream-dark);cursor:not-allowed;opacity:0.8;">
+            </div>
+          </div>
+        </div>
+
+        <!-- 三、各項扣除額 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">三、各項扣除額</div>
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">配偶扣除額<span>元（有配偶填5,530,000）</span></label>
+              <input type="number" class="calc-input" id="y-spouse" placeholder="0" value="0">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">直系血親卑親屬扣除額<span>元（每人56萬；未成年者每年加扣56萬）</span></label>
+              <input type="number" class="calc-input" id="y-child" placeholder="0" value="0">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">父母扣除額<span>元（每人138萬）</span></label>
+              <input type="number" class="calc-input" id="y-parent" placeholder="0" value="0">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">重度以上身心障礙特別扣除額<span>元（每人693萬）</span></label>
+              <input type="number" class="calc-input" id="y-disability" placeholder="0" value="0">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">受扶養之兄弟姊妹、祖父母扣除額<span>元（每人56萬）</span></label>
+              <input type="number" class="calc-input" id="y-sibling" placeholder="0" value="0">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">喪葬費扣除額<span>元（定額138萬）</span></label>
+              <input type="number" class="calc-input" id="y-funeral" value="1380000">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">其他扣除額<span>元（執行遺囑費用、未償債務等）</span></label>
+              <input type="number" class="calc-input" id="y-other" placeholder="0" value="0">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">可扣抵稅額<span>元（已繳境外遺產稅等；無則填0）</span></label>
+              <input type="number" class="calc-input" id="y-credit" placeholder="0" value="0">
+            </div>
+          </div>
+        </div>
+
+        <!-- 估算按鈕 -->
+        <button class="calc-btn" onclick="calcYichan()" style="margin-bottom:0;">遺產稅估算</button>
+
+        <!-- 結果 -->
         <div class="calc-result" id="y-result">
           <div class="calc-result-title">試算結果 — Estimation Result</div>
           <div class="calc-result-rows">
             <div class="calc-result-row"><span class="calc-result-key">遺產總額</span><span class="calc-result-val" id="y-r-total">—</span></div>
-            <div class="calc-result-row"><span class="calc-result-key">免稅額</span><span class="calc-result-val" id="y-r-exempt">1,333 萬元</span></div>
-            <div class="calc-result-row"><span class="calc-result-key">各項扣除額合計</span><span class="calc-result-val" id="y-r-deduct">—</span></div>
-            <div class="calc-result-row"><span class="calc-result-key">課稅遺產淨額</span><span class="calc-result-val" id="y-r-net">—</span></div>
-            <div class="calc-result-row"><span class="calc-result-key">適用稅率</span><span class="calc-result-val" id="y-r-rate">—</span></div>
-            <div class="calc-result-row calc-result-total"><span class="calc-result-key">應繳遺產稅（概估）</span><span class="calc-result-val" id="y-r-tax">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：不計入遺產總額</span><span class="calc-result-val" id="y-r-exempt-item">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：免稅額</span><span class="calc-result-val" id="y-r-exempt">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：各項扣除額合計</span><span class="calc-result-val" id="y-r-deduct">—</span></div>
+            <div class="calc-result-row calc-result-total" style="border-top:0.5px solid rgba(240,237,230,0.15);padding-top:0.6rem;margin-top:0.2rem;">
+              <span class="calc-result-key">課稅遺產淨額</span><span class="calc-result-val" id="y-r-net">—</span>
+            </div>
           </div>
-          <div class="calc-note">※ 114年課稅級距：遺產淨額 5,621 萬元以下稅率 10%，超過 5,621 萬至 1 億 1,242 萬稅率 15%，超過 1 億 1,242 萬稅率 20%。免稅額 1,333 萬元，配偶扣除額 553 萬元，直系血親卑親屬每人 56 萬元，父母每人 138 萬元，喪葬費 138 萬元。實際稅額以國稅局核定為準。</div>
+          <div style="border-top:0.5px solid rgba(240,237,230,0.15);margin:0.8rem 0;"></div>
+          <div style="font-size:0.62rem;letter-spacing:0.2em;color:rgba(240,237,230,0.4);margin-bottom:0.5rem;font-family:'Cormorant Garamond',serif;font-style:italic;">累進稅率計算</div>
+          <table style="width:100%;border-collapse:collapse;font-size:0.75rem;margin-bottom:0.8rem;">
+            <thead>
+              <tr style="border-bottom:0.5px solid rgba(240,237,230,0.2);">
+                <th style="text-align:left;padding:0.3rem 0.5rem;color:rgba(240,237,230,0.5);font-weight:400;">級距</th>
+                <th style="text-align:right;padding:0.3rem 0.5rem;color:rgba(240,237,230,0.5);font-weight:400;">課稅金額</th>
+                <th style="text-align:center;padding:0.3rem 0.5rem;color:rgba(240,237,230,0.5);font-weight:400;">稅率</th>
+                <th style="text-align:right;padding:0.3rem 0.5rem;color:rgba(240,237,230,0.5);font-weight:400;">稅額</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding:0.3rem 0.5rem;color:rgba(240,237,230,0.6);">5,621萬以下</td><td style="text-align:right;padding:0.3rem 0.5rem;color:var(--cream);" id="y-t1-base">—</td><td style="text-align:center;padding:0.3rem 0.5rem;color:rgba(240,237,230,0.6);">10%</td><td style="text-align:right;padding:0.3rem 0.5rem;color:var(--cream);" id="y-t1-tax">—</td></tr>
+              <tr><td style="padding:0.3rem 0.5rem;color:rgba(240,237,230,0.6);">5,621萬～1億1,242萬</td><td style="text-align:right;padding:0.3rem 0.5rem;color:var(--cream);" id="y-t2-base">—</td><td style="text-align:center;padding:0.3rem 0.5rem;color:rgba(240,237,230,0.6);">15%</td><td style="text-align:right;padding:0.3rem 0.5rem;color:var(--cream);" id="y-t2-tax">—</td></tr>
+              <tr><td style="padding:0.3rem 0.5rem;color:rgba(240,237,230,0.6);">1億1,242萬以上</td><td style="text-align:right;padding:0.3rem 0.5rem;color:var(--cream);" id="y-t3-base">—</td><td style="text-align:center;padding:0.3rem 0.5rem;color:rgba(240,237,230,0.6);">20%</td><td style="text-align:right;padding:0.3rem 0.5rem;color:var(--cream);" id="y-t3-tax">—</td></tr>
+            </tbody>
+          </table>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">應納稅額（課稅淨額×稅率−累進差額）</span><span class="calc-result-val" id="y-r-tax-before">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：可扣抵稅額</span><span class="calc-result-val" id="y-r-credit">—</span></div>
+            <div class="calc-result-row calc-result-total"><span class="calc-result-key">本次應納遺產稅額（概估）</span><span class="calc-result-val" id="y-r-tax">—</span></div>
+          </div>
+          <div class="calc-note">※ 114年各項數字：免稅額1,333萬元（軍警公教執行職務死亡者2,666萬元）；配偶扣除額553萬元；直系血親卑親屬每人56萬元（未成年者每年加扣56萬元）；父母每人138萬元；重度身心障礙每人693萬元；兄弟姊妹/祖父母每人56萬元；喪葬費138萬元。115年各項金額與114年相同，維持不變。本表估算之稅額，係依遺產及贈與稅法及相關規定估算，僅供概算之用，實際應納稅額仍應以申報時國稅局核定為準。</div>
         </div>
       </div>
 
-    
+    </div>
   </div>
 </main>
 
 <script>
-function fmt(n) { return Math.round(n).toLocaleString('zh-TW') + ' 元'; }
-function v(id) { var el = document.getElementById(id); return el ? (parseFloat(el.value) || 0) : 0; }
-function set(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; }
-function showResult(id) { var el = document.getElementById(id); if (el) el.classList.add('show'); }
-
 function switchTab(name) {
   document.querySelectorAll('.calc-tab').forEach(function(t) { t.classList.remove('active'); });
   document.querySelectorAll('.calc-section').forEach(function(s) { s.classList.remove('active'); });
   document.getElementById('tab-' + name).classList.add('active');
   document.querySelectorAll('.calc-tab').forEach(function(t) {
-    if (t.getAttribute('onclick') && t.getAttribute('onclick').indexOf("'" + name + "'") >= 0) {
-      t.classList.add('active');
-    }
+    if (t.getAttribute('onclick') && t.getAttribute('onclick').indexOf("'"+name+"'") >= 0) t.classList.add('active');
   });
 }
-
-function fmt(n) { return Math.round(n).toLocaleString('zh-TW') + ' 元'; }
-function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
-function set(id, val) { document.getElementById(id).textContent = val; }
-function showResult(id) { document.getElementById(id).classList.add('show'); }
-
-var observer = new IntersectionObserver(function(entries) {
-  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.fade-in-section').forEach(function(el) { observer.observe(el); });
 
 function calcQiyue() {
   var price = v('q-price');
@@ -792,15 +865,8 @@ function updateSfeeHint() {
   var income = parseFloat(document.getElementById('f-income').value) || 0;
   var hint = document.getElementById('f-sfee-hint');
   if (income > 0) {
-    var calc3pct = Math.floor(income * 0.03);
-    var capped = Math.min(calc3pct, 300000);
-    var msg = '※ 未輸入移轉費用時自動帶入：' + capped.toLocaleString() + ' 元（成交價3%';
-    if (calc3pct > 300000) {
-      msg += '，已依規定上限為 300,000 元';
-    }
-    msg += '）';
     hint.style.display = 'block';
-    hint.textContent = msg;
+    hint.textContent = '※ 成交價 3% = ' + Math.floor(income * 0.03).toLocaleString() + ' 元';
   }
 }
 
@@ -817,12 +883,7 @@ function calcFangdi() {
   var income     = parseFloat(document.getElementById('f-income').value)     || 0;
   var nec        = parseFloat(document.getElementById('f-nec').value)        || 0;
   var improve    = parseFloat(document.getElementById('f-improve').value)    || 0;
-  var sfee_raw   = parseFloat(document.getElementById('f-sfee').value) || 0;
-  // 移轉費用：若未輸入，自動以成交價3%計，最高不超過300,000元
-  var sfee_3pct  = income > 0 ? Math.min(Math.floor(income * 0.03), 300000) : 0;
-  var sfee       = sfee_raw > 0
-    ? Math.min(sfee_raw, 300000)   // 有輸入：不超過上限
-    : sfee_3pct;                    // 未輸入：自動帶入3%上限值
+  var sfee       = parseFloat(document.getElementById('f-sfee').value)       || 0;
   var lvt        = parseFloat(document.getElementById('f-lvt').value)        || 0;
   var loss       = parseFloat(document.getElementById('f-loss').value)       || 0;
   var repurchase = parseFloat(document.getElementById('f-repurchase').value) || 0;
@@ -914,7 +975,7 @@ function calcFangdi() {
   set('f-r-cost-base',  Math.floor(costBase).toLocaleString() + ' 元');
   set('f-r-nec',        nec > 0     ? nec.toLocaleString()     + ' 元' : '0 元');
   set('f-r-improve',    improve > 0 ? improve.toLocaleString() + ' 元' : '0 元');
-  set('f-r-sfee',       sfee.toLocaleString() + ' 元' + (sfee_raw === 0 ? '（自動帶入成交價3%，上限30萬）' : ''));
+  set('f-r-sfee',       sfee > 0    ? sfee.toLocaleString()    + ' 元' : '0 元');
   set('f-r-gain',       gain < 0
     ? '損失 ' + Math.abs(gain).toLocaleString() + ' 元'
     : gain.toLocaleString() + ' 元');
@@ -944,88 +1005,103 @@ function importFromLVT() {
   }
 }
 
+function fmt(n) { return Math.round(n).toLocaleString('zh-TW') + ' 元'; }
+function v(id) { var el = document.getElementById(id); return el ? (parseFloat(el.value) || 0) : 0; }
+function set(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; }
+function showResult(id) { var el = document.getElementById(id); if (el) el.classList.add('show'); }
+
+
 function calcZengyou() {
-  var thisGift     = v('z-this');
-  var prevGift     = v('z-prev');
-  var exemptItem   = v('z-exempt-item');
-  var deduct       = v('z-deduct');
-  var annualExempt = v('z-annual-exempt') || 2440000;
-  var prevTax      = v('z-prev-tax');
+  var total = v('z-total');
+  var used = v('z-used');
+  var deduct = v('z-deduct');
+  var exemptLeft = Math.max(0, 2440000 - used);
+  var net = Math.max(0, total - exemptLeft - deduct);
+  var tax = 0, rate = '';
+  if (net <= 0) { rate = '免稅'; }
+  else if (net <= 28110000) { tax = net * 0.10; rate = '10%'; }
+  else if (net <= 56210000) { tax = 28110000 * 0.10 + (net - 28110000) * 0.15; rate = '10% / 15%'; }
+  else { tax = 28110000 * 0.10 + 28100000 * 0.15 + (net - 56210000) * 0.20; rate = '10% / 15% / 20%'; }
+  set('z-r-total', fmt(total));
+  set('z-r-exempt', fmt(exemptLeft));
+  set('z-r-net', fmt(net));
+  set('z-r-rate', rate);
+  set('z-r-tax', net <= 0 ? '0 元（免稅）' : fmt(tax));
+  showResult('z-result');
+}
 
-  if (!thisGift) return;
+function updateYichanExempt() {
+  var val = document.querySelector('input[name="y-identity"]:checked').value;
+  document.getElementById('y-exempt').value = val;
+}
 
-  var yearTotal = thisGift + prevGift;
-  var net = Math.max(0, yearTotal - exemptItem - deduct - annualExempt);
+function calcYichan() {
+  var total      = parseFloat(document.getElementById('y-total').value)      || 0;
+  var exemptItem = parseFloat(document.getElementById('y-exempt-item').value) || 0;
+  var exempt     = parseFloat(document.getElementById('y-exempt').value)      || 13330000;
+  var spouse     = parseFloat(document.getElementById('y-spouse').value)     || 0;
+  var child      = parseFloat(document.getElementById('y-child').value)      || 0;
+  var parent     = parseFloat(document.getElementById('y-parent').value)     || 0;
+  var disability = parseFloat(document.getElementById('y-disability').value) || 0;
+  var sibling    = parseFloat(document.getElementById('y-sibling').value)    || 0;
+  var funeral    = parseFloat(document.getElementById('y-funeral').value)    || 1380000;
+  var other      = parseFloat(document.getElementById('y-other').value)      || 0;
+  var credit     = parseFloat(document.getElementById('y-credit').value)     || 0;
 
-  var rate = 0, diff = 0, yearTax = 0, rateLabel = '';
+  if (!total) return;
+
+  var deductSum = spouse + child + parent + disability + sibling + funeral + other;
+
+  // 課稅遺產淨額（負數以0計）
+  var net = Math.max(0, total - exemptItem - exempt - deductSum);
+
+  // 累進稅率計算（財政部公式：淨額×稅率−累進差額）
+  // 114年級距：5,621萬 / 1億1,242萬
+  var T1 = 56210000;
+  var T2 = 112420000;
+  var rate = 0, diff = 0, taxBefore = 0, rateLabel = '';
   var t1 = 0, t2 = 0, t3 = 0;
   var t1tax = 0, t2tax = 0, t3tax = 0;
 
   if (net <= 0) {
-    rateLabel = '免稅（課稅淨額為0）';
-    diff = 0; yearTax = 0;
-  } else if (net <= 28110000) {
-    rate = 0.10; diff = 0;
-    rateLabel = '10%';
-    yearTax = Math.floor(net * rate) - diff;
-    t1 = net; t1tax = yearTax;
-  } else if (net <= 56210000) {
-    rate = 0.15; diff = 1405500;
-    rateLabel = '15%';
-    yearTax = Math.floor(net * rate) - diff;
-    t1 = 28110000; t1tax = Math.floor(t1 * 0.10);
-    t2 = net - 28110000; t2tax = yearTax - t1tax;
+    rateLabel = '免稅'; diff = 0; taxBefore = 0;
+  } else if (net <= T1) {
+    rate = 0.10; diff = 0; rateLabel = '10%';
+    taxBefore = Math.floor(net * rate) - diff;
+    t1 = net; t1tax = taxBefore;
+  } else if (net <= T2) {
+    rate = 0.15; diff = 2810500; rateLabel = '15%';
+    taxBefore = Math.floor(net * rate) - diff;
+    t1 = T1; t1tax = Math.floor(T1 * 0.10);
+    t2 = net - T1; t2tax = taxBefore - t1tax;
   } else {
-    rate = 0.20; diff = 4216000;
-    rateLabel = '20%';
-    yearTax = Math.floor(net * rate) - diff;
-    t1 = 28110000; t1tax = Math.floor(t1 * 0.10);
-    t2 = 28100000; t2tax = Math.floor(t2 * 0.15);
-    t3 = net - 56210000; t3tax = yearTax - t1tax - t2tax;
+    rate = 0.20; diff = 8431500; rateLabel = '20%';
+    taxBefore = Math.floor(net * rate) - diff;
+    t1 = T1; t1tax = Math.floor(T1 * 0.10);
+    t2 = T2 - T1; t2tax = Math.floor(t2 * 0.15);
+    t3 = net - T2; t3tax = taxBefore - t1tax - t2tax;
   }
 
-  var thisTax = Math.max(0, yearTax - prevTax);
+  var taxFinal = Math.max(0, taxBefore - credit);
 
-  set('z-r-this',        thisGift.toLocaleString() + ' 元');
-  set('z-r-prev',        prevGift > 0 ? prevGift.toLocaleString() + ' 元' : '0 元');
-  set('z-r-total',       yearTotal.toLocaleString() + ' 元');
-  set('z-r-exempt-item', exemptItem > 0 ? exemptItem.toLocaleString() + ' 元' : '0 元');
-  set('z-r-deduct',      deduct > 0 ? deduct.toLocaleString() + ' 元' : '0 元');
-  set('z-r-exempt',      annualExempt.toLocaleString() + ' 元');
-  set('z-r-net',         net <= 0 ? '0 元（免稅）' : net.toLocaleString() + ' 元');
-  set('z-r-rate',        rateLabel);
-  set('z-r-diff',        diff > 0 ? diff.toLocaleString() + ' 元' : '0 元');
+  set('y-r-total',       total.toLocaleString() + ' 元');
+  set('y-r-exempt-item', exemptItem > 0 ? exemptItem.toLocaleString() + ' 元' : '0 元');
+  set('y-r-exempt',      exempt.toLocaleString() + ' 元');
+  set('y-r-deduct',      deductSum.toLocaleString() + ' 元');
+  set('y-r-net',         net <= 0 ? '0 元（免稅）' : net.toLocaleString() + ' 元');
+  set('y-t1-base',       t1 > 0 ? t1.toLocaleString() + ' 元' : '0 元');
+  set('y-t1-tax',        t1tax > 0 ? t1tax.toLocaleString() + ' 元' : '0 元');
+  set('y-t2-base',       t2 > 0 ? t2.toLocaleString() + ' 元' : '0 元');
+  set('y-t2-tax',        t2tax > 0 ? t2tax.toLocaleString() + ' 元' : '0 元');
+  set('y-t3-base',       t3 > 0 ? t3.toLocaleString() + ' 元' : '0 元');
+  set('y-t3-tax',        t3tax > 0 ? t3tax.toLocaleString() + ' 元' : '0 元');
   if (net > 0) {
-    set('z-r-year-tax', net.toLocaleString() + ' × ' + (rate * 100).toFixed(0) + '% − ' + diff.toLocaleString() + ' ＝ ' + yearTax.toLocaleString() + ' 元');
+    set('y-r-tax-before', net.toLocaleString() + ' × ' + (rate*100).toFixed(0) + '% − ' + diff.toLocaleString() + ' ＝ ' + taxBefore.toLocaleString() + ' 元');
   } else {
-    set('z-r-year-tax', '0 元');
+    set('y-r-tax-before', '0 元');
   }
-  set('z-r-prev-tax',    prevTax > 0 ? prevTax.toLocaleString() + ' 元' : '0 元');
-  set('z-t1-base',       t1 > 0 ? t1.toLocaleString() + ' 元' : '0 元');
-  set('z-t1-tax',        t1tax > 0 ? t1tax.toLocaleString() + ' 元' : '0 元');
-  set('z-t2-base',       t2 > 0 ? t2.toLocaleString() + ' 元' : '0 元');
-  set('z-t2-tax',        t2tax > 0 ? t2tax.toLocaleString() + ' 元' : '0 元');
-  set('z-t3-base',       t3 > 0 ? t3.toLocaleString() + ' 元' : '0 元');
-  set('z-t3-tax',        t3tax > 0 ? t3tax.toLocaleString() + ' 元' : '0 元');
-  set('z-r-tax',         thisTax.toLocaleString() + ' 元');
-  showResult('z-result');
-}
-function calcYichan() {
-  var total = v('y-total');
-  var deductSum = v('y-spouse') + v('y-child') + v('y-parent') + v('y-funeral') + v('y-other');
-  var exempt = 13330000;
-  var net = Math.max(0, total - exempt - deductSum);
-  var tax = 0, rate = '';
-  if (net <= 0) { rate = '免稅'; }
-  else if (net <= 56210000) { tax = net * 0.10; rate = '10%'; }
-  else if (net <= 112420000) { tax = 56210000 * 0.10 + (net - 56210000) * 0.15; rate = '10% / 15%'; }
-  else { tax = 56210000 * 0.10 + 56210000 * 0.15 + (net - 112420000) * 0.20; rate = '10% / 15% / 20%'; }
-  if (!total) return;
-  set('y-r-total', fmt(total));
-  set('y-r-deduct', fmt(deductSum));
-  set('y-r-net', fmt(net));
-  set('y-r-rate', net <= 0 ? '免稅' : rate);
-  set('y-r-tax', net <= 0 ? '0 元（免稅）' : fmt(tax));
+  set('y-r-credit',      credit > 0 ? credit.toLocaleString() + ' 元' : '0 元');
+  set('y-r-tax',         taxFinal.toLocaleString() + ' 元');
   showResult('y-result');
 }
 </script>
