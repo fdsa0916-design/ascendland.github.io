@@ -405,16 +405,16 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--cream); color:
           <div class="calc-grid">
             <div class="calc-field">
               <label class="calc-label">取得房地達可供使用狀態前支付之必要費用<span>元（契稅、印花稅、代書費、規費等）</span></label>
-              <input type="number" class="calc-input" id="f-nec" placeholder="例：200,000">
-            </div>
-            <div class="calc-field">
-              <label class="calc-label">移轉費用<span>元（仲介費、廣告費等；未提憑證得按成交價3%）</span></label>
-              <input type="number" class="calc-input" id="f-sfee" placeholder="例：360,000" oninput="updateSfeeHint()">
-              <span id="f-sfee-hint" style="font-size:0.62rem;color:var(--brown-light);margin-top:0.2rem;display:none;"></span>
+              <input type="number" class="calc-input" id="f-nec" placeholder="例：200,000" oninput="calcFangdi()">
             </div>
             <div class="calc-field">
               <label class="calc-label">地方稅稽徵機關核准減除之改良土地費用<span>元（無則填0）</span></label>
-              <input type="number" class="calc-input" id="f-improve" placeholder="0" value="0">
+              <input type="number" class="calc-input" id="f-improve" placeholder="0" value="0" oninput="calcFangdi()">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">移轉費用<span>元（未提憑證按成交價3%，上限300,000元）</span></label>
+              <input type="number" class="calc-input" id="f-sfee" placeholder="例：300,000" oninput="updateSfeeHint()">
+              <span id="f-sfee-hint" style="font-size:0.62rem;color:var(--brown-light);margin-top:0.2rem;display:none;"></span>
             </div>
           </div>
         </div>
@@ -714,8 +714,15 @@ function updateSfeeHint() {
   var income = parseFloat(document.getElementById('f-income').value) || 0;
   var hint = document.getElementById('f-sfee-hint');
   if (income > 0) {
+    var calc3pct = Math.floor(income * 0.03);
+    var capped = Math.min(calc3pct, 300000);
+    var msg = '※ 未輸入移轉費用時自動帶入：' + capped.toLocaleString() + ' 元（成交價3%';
+    if (calc3pct > 300000) {
+      msg += '，已依規定上限為 300,000 元';
+    }
+    msg += '）';
     hint.style.display = 'block';
-    hint.textContent = '※ 成交價 3% = ' + Math.floor(income * 0.03).toLocaleString() + ' 元';
+    hint.textContent = msg;
   }
 }
 
@@ -732,7 +739,12 @@ function calcFangdi() {
   var income     = parseFloat(document.getElementById('f-income').value)     || 0;
   var nec        = parseFloat(document.getElementById('f-nec').value)        || 0;
   var improve    = parseFloat(document.getElementById('f-improve').value)    || 0;
-  var sfee       = parseFloat(document.getElementById('f-sfee').value)       || 0;
+  var sfee_raw   = parseFloat(document.getElementById('f-sfee').value) || 0;
+  // 移轉費用：若未輸入，自動以成交價3%計，最高不超過300,000元
+  var sfee_3pct  = income > 0 ? Math.min(Math.floor(income * 0.03), 300000) : 0;
+  var sfee       = sfee_raw > 0
+    ? Math.min(sfee_raw, 300000)   // 有輸入：不超過上限
+    : sfee_3pct;                    // 未輸入：自動帶入3%上限值
   var lvt        = parseFloat(document.getElementById('f-lvt').value)        || 0;
   var loss       = parseFloat(document.getElementById('f-loss').value)       || 0;
   var repurchase = parseFloat(document.getElementById('f-repurchase').value) || 0;
@@ -824,7 +836,7 @@ function calcFangdi() {
   set('f-r-cost-base',  Math.floor(costBase).toLocaleString() + ' 元');
   set('f-r-nec',        nec > 0     ? nec.toLocaleString()     + ' 元' : '0 元');
   set('f-r-improve',    improve > 0 ? improve.toLocaleString() + ' 元' : '0 元');
-  set('f-r-sfee',       sfee > 0    ? sfee.toLocaleString()    + ' 元' : '0 元');
+  set('f-r-sfee',       sfee.toLocaleString() + ' 元' + (sfee_raw === 0 ? '（自動帶入成交價3%，上限30萬）' : ''));
   set('f-r-gain',       gain < 0
     ? '損失 ' + Math.abs(gain).toLocaleString() + ' 元'
     : gain.toLocaleString() + ' 元');
