@@ -495,33 +495,107 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--cream); color:
       <!-- 贈與稅 -->
       <div class="calc-section" id="tab-zengyou">
         <div class="calc-desc">
-          贈與稅由<strong>贈與人</strong>繳納。每人每年免稅額 <strong>244 萬元</strong>（113年起適用）。<br>
-          課稅級距（114年起）：贈與淨額 2,811 萬以下 10%；2,811 萬～5,621 萬 15%；5,621 萬以上 20%。
+          贈與稅由<strong>贈與人</strong>繳納，於贈與行為發生後30日內申報。<br><br>
+          <strong>計算公式：</strong><br>
+          本年度贈與總額 ＝ 本次贈與金額 ＋ 本年度先前贈與總額<br>
+          課稅贈與淨額 ＝ 本年度贈與總額 − 不計入贈與總額 − 扣除額 − 免稅額（244萬）<br>
+          本年度應納稅額 ＝ 課稅贈與淨額 × 稅率 − 累進差額<br>
+          本次應納稅額 ＝ 本年度應納稅額 − 以前各次應納稅額及可扣抵稅額<br><br>
+          <strong>稅率級距（114年）：</strong>課稅淨額2,811萬以下 <strong>10%</strong>；2,811萬～5,621萬 <strong>15%</strong>（累進差額140.55萬）；5,621萬以上 <strong>20%</strong>（累進差額421.6萬）<br><br>
+          ⚠️ 本試算結果僅供概算參考，實際應納稅額以國稅局核定為準。<br>
+          <span style="font-size:0.65rem;opacity:0.7;">以上計算方式參照財政部贈與稅相關規定，如有疑義請洽轄區國稅局。</span>
         </div>
-        <div class="calc-grid">
-          <div class="calc-field">
-            <label class="calc-label">本年度贈與總額<span>元</span></label>
-            <input type="number" class="calc-input" id="z-total" placeholder="例：5000000" oninput="calcZengyou()">
-          </div>
-          <div class="calc-field">
-            <label class="calc-label">本年度已用免稅額<span>元（未用填0）</span></label>
-            <input type="number" class="calc-input" id="z-used" placeholder="0" oninput="calcZengyou()">
-          </div>
-          <div class="calc-field">
-            <label class="calc-label">扣除額（負擔贈與等）<span>元</span></label>
-            <input type="number" class="calc-input" id="z-deduct" placeholder="0" oninput="calcZengyou()">
+
+        <!-- 一、贈與金額 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">一、贈與金額</div>
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">本次贈與總額<span>元</span></label>
+              <input type="number" class="calc-input" id="z-this" placeholder="例：5,000,000">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">本年度先前贈與總額<span>元（本年度第一次填0）</span></label>
+              <input type="number" class="calc-input" id="z-prev" placeholder="0" value="0">
+            </div>
           </div>
         </div>
+
+        <!-- 二、減除項目 -->
+        <div style="margin-bottom:1.2rem;">
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">二、減除項目</div>
+          <div class="calc-grid">
+            <div class="calc-field">
+              <label class="calc-label">不計入贈與總額<span>元（符合免稅項目或依法可排除之金額）</span></label>
+              <input type="number" class="calc-input" id="z-exempt-item" placeholder="0" value="0">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">扣除額<span>元（受贈人負擔費用等）</span></label>
+              <input type="number" class="calc-input" id="z-deduct" placeholder="0" value="0">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">年度免稅額<span>元（114年：2,440,000元）</span></label>
+              <input type="number" class="calc-input" id="z-annual-exempt" value="2440000">
+            </div>
+            <div class="calc-field">
+              <label class="calc-label">本年度內以前各次應納稅額及可扣抵稅額<span>元（第一次填0）</span></label>
+              <input type="number" class="calc-input" id="z-prev-tax" placeholder="0" value="0">
+            </div>
+          </div>
+        </div>
+
+        <!-- 估算按鈕 -->
+        <button class="calc-btn" onclick="calcZengyou()" style="margin-bottom:0;">贈與稅估算</button>
+
+        <!-- 結果 -->
         <div class="calc-result" id="z-result">
           <div class="calc-result-title">試算結果 — Estimation Result</div>
           <div class="calc-result-rows">
-            <div class="calc-result-row"><span class="calc-result-key">贈與總額</span><span class="calc-result-val" id="z-r-total">—</span></div>
-            <div class="calc-result-row"><span class="calc-result-key">免稅額（剩餘）</span><span class="calc-result-val" id="z-r-exempt">—</span></div>
-            <div class="calc-result-row"><span class="calc-result-key">課稅贈與淨額</span><span class="calc-result-val" id="z-r-net">—</span></div>
-            <div class="calc-result-row"><span class="calc-result-key">適用稅率</span><span class="calc-result-val" id="z-r-rate">—</span></div>
-            <div class="calc-result-row calc-result-total"><span class="calc-result-key">應繳贈與稅（概估）</span><span class="calc-result-val" id="z-r-tax">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">本次贈與總額</span><span class="calc-result-val" id="z-r-this">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">本年度先前贈與</span><span class="calc-result-val" id="z-r-prev">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">本年度贈與總額</span><span class="calc-result-val" id="z-r-total">—</span></div>
           </div>
-          <div class="calc-note">※ 114年課稅級距：贈與淨額 2,811 萬元以下稅率 10%，超過 2,811 萬至 5,621 萬稅率 15%，超過 5,621 萬稅率 20%。免稅額每人每年 244 萬元，配偶贈與免稅。實際稅額以國稅局核定為準。</div>
+          <div style="border-top:0.5px solid rgba(240,237,230,0.15);margin:0.6rem 0;"></div>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">　減：不計入贈與總額</span><span class="calc-result-val" id="z-r-exempt-item">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：扣除額</span><span class="calc-result-val" id="z-r-deduct">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：年度免稅額</span><span class="calc-result-val" id="z-r-exempt">—</span></div>
+            <div class="calc-result-row calc-result-total" style="border-top:0.5px solid rgba(240,237,230,0.15);padding-top:0.6rem;margin-top:0.2rem;">
+              <span class="calc-result-key">課稅贈與淨額</span><span class="calc-result-val" id="z-r-net">—</span>
+            </div>
+          </div>
+          <div style="border-top:0.5px solid rgba(240,237,230,0.15);margin:0.6rem 0;"></div>
+          <div class="calc-result-rows">
+            <div class="calc-result-row"><span class="calc-result-key">適用稅率</span><span class="calc-result-val" id="z-r-rate">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">累進差額</span><span class="calc-result-val" id="z-r-diff">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">本年度應納稅額</span><span class="calc-result-val" id="z-r-year-tax">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">　減：以前各次應納稅額</span><span class="calc-result-val" id="z-r-prev-tax">—</span></div>
+          </div>
+
+          <!-- 稅率級距分配表 -->
+          <div style="margin-top:1rem;">
+            <div style="font-size:0.62rem;letter-spacing:0.2em;color:rgba(240,237,230,0.4);margin-bottom:0.5rem;font-family:'Cormorant Garamond',serif;font-style:italic;">稅率級距分配</div>
+            <table style="width:100%;border-collapse:collapse;font-size:0.75rem;">
+              <thead>
+                <tr style="border-bottom:0.5px solid rgba(240,237,230,0.2);">
+                  <th style="text-align:left;padding:0.3rem 0.5rem;color:rgba(240,237,230,0.5);font-weight:400;">級距</th>
+                  <th style="text-align:right;padding:0.3rem 0.5rem;color:rgba(240,237,230,0.5);font-weight:400;">課稅金額</th>
+                  <th style="text-align:center;padding:0.3rem 0.5rem;color:rgba(240,237,230,0.5);font-weight:400;">稅率</th>
+                  <th style="text-align:right;padding:0.3rem 0.5rem;color:rgba(240,237,230,0.5);font-weight:400;">稅額</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td style="padding:0.3rem 0.5rem;color:rgba(240,237,230,0.6);">2,811萬以下</td><td style="text-align:right;padding:0.3rem 0.5rem;color:var(--cream);" id="z-t1-base">—</td><td style="text-align:center;padding:0.3rem 0.5rem;color:rgba(240,237,230,0.6);">10%</td><td style="text-align:right;padding:0.3rem 0.5rem;color:var(--cream);" id="z-t1-tax">—</td></tr>
+                <tr><td style="padding:0.3rem 0.5rem;color:rgba(240,237,230,0.6);">2,811萬～5,621萬</td><td style="text-align:right;padding:0.3rem 0.5rem;color:var(--cream);" id="z-t2-base">—</td><td style="text-align:center;padding:0.3rem 0.5rem;color:rgba(240,237,230,0.6);">15%</td><td style="text-align:right;padding:0.3rem 0.5rem;color:var(--cream);" id="z-t2-tax">—</td></tr>
+                <tr><td style="padding:0.3rem 0.5rem;color:rgba(240,237,230,0.6);">5,621萬以上</td><td style="text-align:right;padding:0.3rem 0.5rem;color:var(--cream);" id="z-t3-base">—</td><td style="text-align:center;padding:0.3rem 0.5rem;color:rgba(240,237,230,0.6);">20%</td><td style="text-align:right;padding:0.3rem 0.5rem;color:var(--cream);" id="z-t3-tax">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="calc-result-rows" style="margin-top:0.8rem;">
+            <div class="calc-result-row calc-result-total"><span class="calc-result-key">本次應自行繳納贈與稅（概估）</span><span class="calc-result-val" id="z-r-tax">—</span></div>
+          </div>
+          <div class="calc-note">※ 114年免稅額每人每年244萬元。課稅級距：淨額2,811萬以下稅率10%；超過2,811萬至5,621萬稅率15%，累進差額1,405,500元；超過5,621萬稅率20%，累進差額4,216,000元。配偶相互贈與之財產不計入贈與總額。本表估算之稅額，係依遺產及贈與稅法及相關規定估算，僅供概算之用，實際應納稅額仍應以申報時國稅局核定為準。相關規定參照財政部稅務入口網公告內容。</div>
         </div>
       </div>
 
@@ -867,24 +941,60 @@ function importFromLVT() {
 }
 
 function calcZengyou() {
-  var total = v('z-total');
-  var used = v('z-used');
-  var deduct = v('z-deduct');
-  var exemptLeft = Math.max(0, 2440000 - used);
-  var net = Math.max(0, total - exemptLeft - deduct);
-  var tax = 0, rate = '';
-  if (net <= 0) { rate = '免稅'; }
-  else if (net <= 28110000) { tax = net * 0.10; rate = '10%'; }
-  else if (net <= 56210000) { tax = 28110000 * 0.10 + (net - 28110000) * 0.15; rate = '10% / 15%'; }
-  else { tax = 28110000 * 0.10 + 28100000 * 0.15 + (net - 56210000) * 0.20; rate = '10% / 15% / 20%'; }
-  set('z-r-total', fmt(total));
-  set('z-r-exempt', fmt(exemptLeft));
-  set('z-r-net', fmt(net));
-  set('z-r-rate', rate);
-  set('z-r-tax', net <= 0 ? '0 元（免稅）' : fmt(tax));
+  var thisGift     = v('z-this');
+  var prevGift     = v('z-prev');
+  var exemptItem   = v('z-exempt-item');
+  var deduct       = v('z-deduct');
+  var annualExempt = v('z-annual-exempt') || 2440000;
+  var prevTax      = v('z-prev-tax');
+
+  if (!thisGift) return;
+
+  var yearTotal = thisGift + prevGift;
+  var net = Math.max(0, yearTotal - exemptItem - deduct - annualExempt);
+
+  var t1 = 0, t2 = 0, t3 = 0;
+  var t1tax = 0, t2tax = 0, t3tax = 0;
+  var rate = '', diff = 0, yearTax = 0;
+
+  if (net <= 0) {
+    rate = '免稅'; diff = 0; yearTax = 0;
+  } else if (net <= 28110000) {
+    t1 = net; t1tax = Math.floor(t1 * 0.10);
+    rate = '10%'; diff = 0; yearTax = t1tax;
+  } else if (net <= 56210000) {
+    t1 = 28110000; t1tax = Math.floor(t1 * 0.10);
+    t2 = net - 28110000; t2tax = Math.floor(t2 * 0.15);
+    rate = '10% / 15%'; diff = 1405500; yearTax = t1tax + t2tax;
+  } else {
+    t1 = 28110000; t1tax = Math.floor(t1 * 0.10);
+    t2 = 28100000; t2tax = Math.floor(t2 * 0.15);
+    t3 = net - 56210000; t3tax = Math.floor(t3 * 0.20);
+    rate = '10% / 15% / 20%'; diff = 4216000; yearTax = t1tax + t2tax + t3tax;
+  }
+
+  var thisTax = Math.max(0, yearTax - prevTax);
+
+  set('z-r-this',        thisGift.toLocaleString() + ' 元');
+  set('z-r-prev',        prevGift > 0 ? prevGift.toLocaleString() + ' 元' : '0 元');
+  set('z-r-total',       yearTotal.toLocaleString() + ' 元');
+  set('z-r-exempt-item', exemptItem > 0 ? exemptItem.toLocaleString() + ' 元' : '0 元');
+  set('z-r-deduct',      deduct > 0 ? deduct.toLocaleString() + ' 元' : '0 元');
+  set('z-r-exempt',      annualExempt.toLocaleString() + ' 元');
+  set('z-r-net',         net <= 0 ? '0 元（免稅）' : net.toLocaleString() + ' 元');
+  set('z-r-rate',        rate);
+  set('z-r-diff',        diff > 0 ? diff.toLocaleString() + ' 元' : '0 元');
+  set('z-r-year-tax',    yearTax.toLocaleString() + ' 元');
+  set('z-r-prev-tax',    prevTax > 0 ? prevTax.toLocaleString() + ' 元' : '0 元');
+  set('z-t1-base',       t1 > 0 ? t1.toLocaleString() + ' 元' : '0 元');
+  set('z-t1-tax',        t1tax > 0 ? t1tax.toLocaleString() + ' 元' : '0 元');
+  set('z-t2-base',       t2 > 0 ? t2.toLocaleString() + ' 元' : '0 元');
+  set('z-t2-tax',        t2tax > 0 ? t2tax.toLocaleString() + ' 元' : '0 元');
+  set('z-t3-base',       t3 > 0 ? t3.toLocaleString() + ' 元' : '0 元');
+  set('z-t3-tax',        t3tax > 0 ? t3tax.toLocaleString() + ' 元' : '0 元');
+  set('z-r-tax',         thisTax.toLocaleString() + ' 元');
   showResult('z-result');
 }
-
 function calcYichan() {
   var total = v('y-total');
   var deductSum = v('y-spouse') + v('y-child') + v('y-parent') + v('y-funeral') + v('y-other');
