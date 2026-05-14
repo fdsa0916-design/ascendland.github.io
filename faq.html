@@ -288,7 +288,7 @@ ul { list-style: none !important; }
     <h2 class="section-title" style="color:var(--cream);">聯 絡 我 們</h2>
     <div class="section-divider"></div>
   </div>
-  <div class="contact-inner fade-in-section">
+  <div class="contact-inner">
     <div class="contact-info">
       <div class="contact-item"><span class="contact-item-label">Address</span><span class="contact-item-value">新竹市北區竹光路 345 號 2 樓</span></div>
       <div class="contact-item"><span class="contact-item-label">Phone</span><span class="contact-item-value"><a href="tel:0988119532">0988-119-532</a></span></div>
@@ -349,6 +349,17 @@ function toggleFaq(el) {
   document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
   if (!isOpen) item.classList.add('open');
 }
+
+// 觸發 fade-in-section 動畫
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.05 });
+document.querySelectorAll('.fade-in-section').forEach(function(el) { observer.observe(el); });
+// 立即顯示已在視窗內的元素
+document.querySelectorAll('.fade-in-section').forEach(function(el) {
+  var rect = el.getBoundingClientRect();
+  if (rect.top < window.innerHeight) el.classList.add('visible');
+});
 </script>
 </body>
 </html>

@@ -677,104 +677,89 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--cream); color:
 
         <!-- 三、各項扣除額（人數 × 定額） -->
         <div style="margin-bottom:1.2rem;">
-          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">三、各項扣除額</div>
+          <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.8rem;font-family:'Cormorant Garamond',serif;font-style:italic;">三、各項扣除額</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
 
-          <!-- 配偶 -->
-          <div class="yichan-deduct-row">
-            <div class="yichan-deduct-label">
-              <span class="yichan-deduct-title">配偶扣除額</span>
-              <span class="yichan-deduct-note">被繼承人遺有配偶者</span>
+            <!-- 配偶 -->
+            <div style="background:var(--cream);border-radius:2px;padding:1rem;">
+              <div style="font-size:0.75rem;color:var(--brown-dark);letter-spacing:0.05em;margin-bottom:0.5rem;font-weight:400;">配偶扣除額</div>
+              <div style="font-size:0.65rem;color:var(--text-light);margin-bottom:0.6rem;">被繼承人遺有配偶者</div>
+              <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;">
+                <input type="number" class="calc-input" id="y-n-spouse" placeholder="0" value="0" min="0" max="1" oninput="calcYichanDeduct()" style="width:60px;text-align:center;padding:0.5rem;">
+                <span style="font-size:0.72rem;color:var(--text-mid);">人 × 5,530,000</span>
+                <span style="font-size:0.75rem;color:var(--brown-dark);font-family:'Noto Serif TC',serif;min-width:80px;" id="y-d-spouse">＝ 0 元</span>
+              </div>
             </div>
-            <div class="yichan-deduct-input">
-              <input type="number" class="calc-input yichan-count" id="y-n-spouse" placeholder="0" value="0" min="0" max="1" oninput="calcYichanDeduct()">
-              <span class="yichan-unit">人 × 5,530,000 元</span>
-              <span class="yichan-result" id="y-d-spouse">＝ 0 元</span>
+
+            <!-- 直系血親卑親屬 -->
+            <div style="background:var(--cream);border-radius:2px;padding:1rem;">
+              <div style="font-size:0.75rem;color:var(--brown-dark);letter-spacing:0.05em;margin-bottom:0.5rem;font-weight:400;">直系血親卑親屬扣除額</div>
+              <div style="font-size:0.65rem;color:var(--text-light);margin-bottom:0.6rem;">每人56萬；未成年者每年加扣56萬</div>
+              <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;">
+                <input type="number" class="calc-input" id="y-n-child" placeholder="0" value="0" min="0" oninput="calcYichanDeduct()" style="width:60px;text-align:center;padding:0.5rem;">
+                <span style="font-size:0.72rem;color:var(--text-mid);">人 × 560,000</span>
+                <span style="font-size:0.75rem;color:var(--brown-dark);font-family:'Noto Serif TC',serif;min-width:80px;" id="y-d-child">＝ 0 元</span>
+              </div>
             </div>
+
+            <!-- 父母 -->
+            <div style="background:var(--cream);border-radius:2px;padding:1rem;">
+              <div style="font-size:0.75rem;color:var(--brown-dark);letter-spacing:0.05em;margin-bottom:0.5rem;font-weight:400;">父母扣除額</div>
+              <div style="font-size:0.65rem;color:var(--text-light);margin-bottom:0.6rem;">每人1,380,000元</div>
+              <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;">
+                <input type="number" class="calc-input" id="y-n-parent" placeholder="0" value="0" min="0" max="2" oninput="calcYichanDeduct()" style="width:60px;text-align:center;padding:0.5rem;">
+                <span style="font-size:0.72rem;color:var(--text-mid);">人 × 1,380,000</span>
+                <span style="font-size:0.75rem;color:var(--brown-dark);font-family:'Noto Serif TC',serif;min-width:80px;" id="y-d-parent">＝ 0 元</span>
+              </div>
+            </div>
+
+            <!-- 重度身心障礙 -->
+            <div style="background:var(--cream);border-radius:2px;padding:1rem;">
+              <div style="font-size:0.75rem;color:var(--brown-dark);letter-spacing:0.05em;margin-bottom:0.5rem;font-weight:400;">重度以上身心障礙特別扣除額</div>
+              <div style="font-size:0.65rem;color:var(--text-light);margin-bottom:0.6rem;">每人6,930,000元</div>
+              <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;">
+                <input type="number" class="calc-input" id="y-n-disability" placeholder="0" value="0" min="0" oninput="calcYichanDeduct()" style="width:60px;text-align:center;padding:0.5rem;">
+                <span style="font-size:0.72rem;color:var(--text-mid);">人 × 6,930,000</span>
+                <span style="font-size:0.75rem;color:var(--brown-dark);font-family:'Noto Serif TC',serif;min-width:80px;" id="y-d-disability">＝ 0 元</span>
+              </div>
+            </div>
+
+            <!-- 受扶養兄弟姊妹/祖父母 -->
+            <div style="background:var(--cream);border-radius:2px;padding:1rem;">
+              <div style="font-size:0.75rem;color:var(--brown-dark);letter-spacing:0.05em;margin-bottom:0.5rem;font-weight:400;">受扶養之兄弟姊妹、祖父母扣除額</div>
+              <div style="font-size:0.65rem;color:var(--text-light);margin-bottom:0.6rem;">每人560,000元</div>
+              <div style="display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap;">
+                <input type="number" class="calc-input" id="y-n-sibling" placeholder="0" value="0" min="0" oninput="calcYichanDeduct()" style="width:60px;text-align:center;padding:0.5rem;">
+                <span style="font-size:0.72rem;color:var(--text-mid);">人 × 560,000</span>
+                <span style="font-size:0.75rem;color:var(--brown-dark);font-family:'Noto Serif TC',serif;min-width:80px;" id="y-d-sibling">＝ 0 元</span>
+              </div>
+            </div>
+
+            <!-- 喪葬費 -->
+            <div style="background:var(--cream);border-radius:2px;padding:1rem;">
+              <div style="font-size:0.75rem;color:var(--brown-dark);letter-spacing:0.05em;margin-bottom:0.5rem;font-weight:400;">喪葬費扣除額</div>
+              <div style="font-size:0.65rem;color:var(--text-light);margin-bottom:0.6rem;">定額1,380,000元（固定）</div>
+              <div style="display:flex;align-items:center;gap:0.4rem;">
+                <span style="font-size:0.78rem;color:var(--brown-dark);font-family:'Noto Serif TC',serif;">1,380,000 元</span>
+                <input type="hidden" id="y-funeral" value="1380000">
+              </div>
+            </div>
+
+            <!-- 其他扣除額（跨兩欄） -->
+            <div style="background:var(--cream);border-radius:2px;padding:1rem;grid-column:1/-1;">
+              <div style="font-size:0.75rem;color:var(--brown-dark);letter-spacing:0.05em;margin-bottom:0.5rem;font-weight:400;">其他扣除額</div>
+              <div style="font-size:0.65rem;color:var(--text-light);margin-bottom:0.6rem;">未償債務、執行遺囑費用等</div>
+              <input type="number" class="calc-input" id="y-other" placeholder="0" value="0" oninput="calcYichanDeduct()" style="max-width:200px;">
+            </div>
+
           </div>
 
-          <!-- 直系血親卑親屬 -->
-          <div class="yichan-deduct-row">
-            <div class="yichan-deduct-label">
-              <span class="yichan-deduct-title">直系血親卑親屬扣除額</span>
-              <span class="yichan-deduct-note">每人560,000元；未成年者，每年加扣560,000元（請含加計部分一併計入）</span>
-            </div>
-            <div class="yichan-deduct-input">
-              <input type="number" class="calc-input yichan-count" id="y-n-child" placeholder="0" value="0" min="0" oninput="calcYichanDeduct()">
-              <span class="yichan-unit">人 × 560,000 元</span>
-              <span class="yichan-result" id="y-d-child">＝ 0 元</span>
-            </div>
-          </div>
-
-          <!-- 父母 -->
-          <div class="yichan-deduct-row">
-            <div class="yichan-deduct-label">
-              <span class="yichan-deduct-title">父母扣除額</span>
-              <span class="yichan-deduct-note">每人1,380,000元</span>
-            </div>
-            <div class="yichan-deduct-input">
-              <input type="number" class="calc-input yichan-count" id="y-n-parent" placeholder="0" value="0" min="0" max="2" oninput="calcYichanDeduct()">
-              <span class="yichan-unit">人 × 1,380,000 元</span>
-              <span class="yichan-result" id="y-d-parent">＝ 0 元</span>
-            </div>
-          </div>
-
-          <!-- 身心障礙 -->
-          <div class="yichan-deduct-row">
-            <div class="yichan-deduct-label">
-              <span class="yichan-deduct-title">重度以上身心障礙特別扣除額</span>
-              <span class="yichan-deduct-note">每人6,930,000元</span>
-            </div>
-            <div class="yichan-deduct-input">
-              <input type="number" class="calc-input yichan-count" id="y-n-disability" placeholder="0" value="0" min="0" oninput="calcYichanDeduct()">
-              <span class="yichan-unit">人 × 6,930,000 元</span>
-              <span class="yichan-result" id="y-d-disability">＝ 0 元</span>
-            </div>
-          </div>
-
-          <!-- 受扶養兄弟姊妹/祖父母 -->
-          <div class="yichan-deduct-row">
-            <div class="yichan-deduct-label">
-              <span class="yichan-deduct-title">受扶養之兄弟姊妹、祖父母扣除額</span>
-              <span class="yichan-deduct-note">每人560,000元</span>
-            </div>
-            <div class="yichan-deduct-input">
-              <input type="number" class="calc-input yichan-count" id="y-n-sibling" placeholder="0" value="0" min="0" oninput="calcYichanDeduct()">
-              <span class="yichan-unit">人 × 560,000 元</span>
-              <span class="yichan-result" id="y-d-sibling">＝ 0 元</span>
-            </div>
-          </div>
-
-          <!-- 喪葬費 -->
-          <div class="yichan-deduct-row">
-            <div class="yichan-deduct-label">
-              <span class="yichan-deduct-title">喪葬費扣除額</span>
-              <span class="yichan-deduct-note">定額1,380,000元</span>
-            </div>
-            <div class="yichan-deduct-input">
-              <input type="number" class="calc-input" id="y-funeral" value="1380000" readonly style="background:var(--cream-dark);opacity:0.8;max-width:140px;">
-              <span class="yichan-unit" style="margin-left:0.5rem;">元（固定）</span>
-            </div>
-          </div>
-
-          <!-- 其他 -->
-          <div class="yichan-deduct-row">
-            <div class="yichan-deduct-label">
-              <span class="yichan-deduct-title">其他扣除額</span>
-              <span class="yichan-deduct-note">未償債務、執行遺囑費用等</span>
-            </div>
-            <div class="yichan-deduct-input">
-              <input type="number" class="calc-input yichan-count" id="y-other" placeholder="0" value="0" oninput="calcYichanDeduct()">
-              <span class="yichan-unit">元</span>
-            </div>
-          </div>
-
-          <!-- 扣除額合計顯示 -->
-          <div style="display:flex;justify-content:flex-end;margin-top:0.8rem;padding-top:0.8rem;border-top:0.5px solid var(--cream-darker);">
+          <!-- 扣除額合計 -->
+          <div style="display:flex;justify-content:flex-end;align-items:center;margin-top:0.8rem;padding-top:0.8rem;border-top:0.5px solid var(--cream-darker);">
             <span style="font-size:0.75rem;color:var(--text-mid);letter-spacing:0.05em;">扣除額合計：</span>
-            <span style="font-size:0.85rem;color:var(--brown-dark);font-family:'Noto Serif TC',serif;margin-left:0.8rem;" id="y-deduct-total">0 元</span>
+            <span style="font-size:0.9rem;color:var(--brown-dark);font-family:'Noto Serif TC',serif;margin-left:0.8rem;font-weight:500;" id="y-deduct-total">0 元</span>
           </div>
         </div>
-
         <!-- 四、扣抵稅額 -->
         <div style="margin-bottom:1.2rem;">
           <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">四、扣抵稅額及利息</div>
