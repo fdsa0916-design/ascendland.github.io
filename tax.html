@@ -550,10 +550,6 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--cream); color:
               <label class="calc-label">本次贈與總額<span>元</span></label>
               <input type="number" class="calc-input" id="z-this" placeholder="例：5,000,000">
             </div>
-            <div class="calc-field">
-              <label class="calc-label">本年度先前贈與總額<span>元（本年度第一次填0）</span></label>
-              <input type="number" class="calc-input" id="z-prev" placeholder="0" value="0">
-            </div>
           </div>
         </div>
 
@@ -588,8 +584,7 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--cream); color:
           <div class="calc-result-title">試算結果 — Estimation Result</div>
           <div class="calc-result-rows">
             <div class="calc-result-row"><span class="calc-result-key">本次贈與總額</span><span class="calc-result-val" id="z-r-this">—</span></div>
-            <div class="calc-result-row"><span class="calc-result-key">本年度先前贈與</span><span class="calc-result-val" id="z-r-prev">—</span></div>
-            <div class="calc-result-row"><span class="calc-result-key">本年度贈與總額</span><span class="calc-result-val" id="z-r-total">—</span></div>
+            <div class="calc-result-row"><span class="calc-result-key">本次贈與總額</span><span class="calc-result-val" id="z-r-total">—</span></div>
           </div>
           <div style="border-top:0.5px solid rgba(240,237,230,0.15);margin:0.6rem 0;"></div>
           <div class="calc-result-rows">
@@ -1105,7 +1100,6 @@ function showResult(id) { var el = document.getElementById(id); if (el) el.class
 
 function calcZengyou() {
   var thisGift     = v('z-this');
-  var prevGift     = v('z-prev');
   var exemptItem   = v('z-exempt-item');
   var deduct       = v('z-deduct');
   var annualExempt = v('z-annual-exempt') || 2440000;
@@ -1113,8 +1107,9 @@ function calcZengyou() {
 
   if (!thisGift) return;
 
-  var yearTotal = thisGift + prevGift;
-  var net = Math.max(0, yearTotal - exemptItem - deduct - annualExempt);
+  // 財政部公式：課稅贈與淨額 = 贈與總額 - 免稅額 - 扣除額
+  // 「不計入贈與總額」不參與課稅淨額計算（僅列報用）
+  var net = Math.max(0, thisGift - annualExempt - deduct);
 
   var rate = 0, diff = 0, yearTax = 0, rateLabel = '';
   var t1 = 0, t2 = 0, t3 = 0, t1tax = 0, t2tax = 0, t3tax = 0;
@@ -1141,9 +1136,8 @@ function calcZengyou() {
   var thisTax = Math.max(0, yearTax - prevTax);
 
   set('z-r-this',        thisGift.toLocaleString() + ' 元');
-  set('z-r-prev',        prevGift > 0 ? prevGift.toLocaleString() + ' 元' : '0 元');
-  set('z-r-total',       yearTotal.toLocaleString() + ' 元');
-  set('z-r-exempt-item', exemptItem > 0 ? exemptItem.toLocaleString() + ' 元' : '0 元');
+  set('z-r-total',       thisGift.toLocaleString() + ' 元');
+  set('z-r-exempt-item', exemptItem > 0 ? exemptItem.toLocaleString() + ' 元（列報，不影響課稅淨額）' : '0 元');
   set('z-r-deduct',      deduct > 0 ? deduct.toLocaleString() + ' 元' : '0 元');
   set('z-r-exempt',      annualExempt.toLocaleString() + ' 元');
   set('z-r-net',         net <= 0 ? '0 元（免稅）' : net.toLocaleString() + ' 元');
