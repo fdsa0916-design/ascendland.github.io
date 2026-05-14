@@ -267,7 +267,7 @@ ul { list-style: none !important; }
 </div>
 <div class="subpage-body">
 <p style="text-align:center;font-size:0.85rem;color:var(--text-light);letter-spacing:0.08em;margin-bottom:3rem;line-height:2;">
-  宇陞地政士事務所提供以下不動產登記服務，<br>以新竹地區為主，全台執業。
+  宇陞地政士事務所提供以下不動產登記服務，以新竹地區為主，全台執業。
 </p>
 <div class="services-grid" style="margin-bottom:5rem;">
     <div class="service-item"><div class="service-name">繼承登記</div><div class="service-en">Inheritance</div></div>
@@ -280,20 +280,47 @@ ul { list-style: none !important; }
     <a href="#" onclick="window.open('contact.html','_blank','width=860,height=600,scrollbars=yes');return false;" class="service-item" style="text-decoration:none;border:0.5px solid var(--brown-dark);cursor:pointer;"><div class="service-name">其他事項</div><div class="service-en" style="color:var(--text-light);">歡迎洽詢</div></a>
   </div>
 
-  <div>
-    <p class="section-label">Fee Schedule</p>
-    <h2 class="section-title">收 費 標 準</h2>
-    <div class="section-divider"></div>
-    <p style="text-align:center;font-size:0.8rem;color:var(--text-light);letter-spacing:0.06em;margin-top:-2.5rem;margin-bottom:3rem;line-height:2.2;">
-      以下均為代書服務費，不含政府規費及各項稅費。<br>
-      <span style="font-size:0.72rem;color:var(--text-light);">實際費用依案件複雜度及筆數調整，正式報價請來電或線上諮詢。</span>
-    </p>
-  </div>
+  
 <div style="text-align:center;margin-top:3rem;">
   <a href="contact.html" target="_blank" class="btn-primary" style="display:inline-block;">預約諮詢</a>
   <a href="fees.html" class="btn-outline" style="display:inline-block;margin-left:1rem;">查看收費標準</a>
 </div>
 </div>
+
+<footer>
+  <p class="footer-logo-text">宇 陞 地 政 士 事 務 所</p>
+  <p class="footer-cert">地政士證書：(114)台內地登字第029887號　｜　地政士：陳祈翰</p>
+  <p class="footer-copy">© 2025 Ascend Land Administration Agents Office. All Rights Reserved.</p>
+</footer>
+
+<script>
+function toggleMenu() {
+  var links = document.querySelector('.nav-links');
+  if (links.style.display === 'flex') {
+    links.style.display = 'none';
+  } else {
+    links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:rgba(240,237,230,0.98);padding:1.5rem 2rem;gap:1.5rem;border-bottom:0.5px solid rgba(61,47,42,0.12);z-index:99;backdrop-filter:blur(12px);list-style:none;';
+  }
+}
+window.addEventListener('scroll', function() {
+  document.querySelector('nav').style.boxShadow = window.scrollY > 50 ? '0 1px 20px rgba(61,47,42,0.08)' : 'none';
+});
+function toggleFaq(el) {
+  var item = el.parentElement;
+  var isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+  if (!isOpen) item.classList.add('open');
+}
+</script>
+</body>
+
+</html
+<div style="text-align:center;margin-top:3rem;">
+  <a href="contact.html" target="_blank" class="btn-primary" style="display:inline-block;">預約諮詢</a>
+  <a href="fees.html" class="btn-outline" style="display:inline-block;margin-left:1rem;">查看收費標準</a>
+</div>
+</div>
+
 <footer>
   <p class="footer-logo-text">宇 陞 地 政 士 事 務 所</p>
   <p class="footer-cert">地政士證書：(114)台內地登字第029887號　｜　地政士：陳祈翰</p>
