@@ -432,21 +432,19 @@ body { font-family: 'Noto Sans TC', sans-serif; background: var(--cream); color:
         <!-- 四、可減除項目 -->
         <div style="margin-bottom:1.2rem;">
           <div style="font-size:0.65rem;letter-spacing:0.25em;color:var(--brown-light);margin-bottom:0.6rem;font-family:'Cormorant Garamond',serif;font-style:italic;">四、可減除項目（取得成本以外）</div>
-          <div class="calc-grid" style="grid-template-columns:1fr 1fr;gap:1rem;width:100%;box-sizing:border-box;">
-            <div class="calc-field" style="width:100%;min-width:0;box-sizing:border-box;">
+          <div style="display:flex;flex-direction:column;gap:0.8rem;width:100%;">
+            <div class="calc-field" style="width:100%;">
               <label class="calc-label">取得房地達可供使用狀態前支付之必要費用<span>元（契稅、印花稅、代書費、規費等）</span></label>
               <input type="number" class="calc-input" id="f-nec" placeholder="例：200,000" oninput="calcFangdi()" style="width:100%;box-sizing:border-box;">
             </div>
-            <div class="calc-field" style="width:100%;min-width:0;box-sizing:border-box;">
-              <label class="calc-label">地方稅稽徵機關核准減除之改良土地費用<span>元（無重劃填0）</span></label>
-              <input type="number" class="calc-input" id="f-improve" placeholder="0" value="0" oninput="calcFangdi()" style="width:100%;box-sizing:border-box;">
-            </div>
-          </div>
-          <div class="calc-grid" style="grid-template-columns:1fr;gap:1rem;width:100%;box-sizing:border-box;margin-top:0;">
-            <div class="calc-field" style="width:100%;min-width:0;box-sizing:border-box;">
+            <div class="calc-field" style="width:100%;">
               <label class="calc-label">移轉費用<span>元（未提憑證按成交價3%，上限300,000元）</span></label>
               <input type="number" class="calc-input" id="f-sfee" placeholder="例：300,000" oninput="updateSfeeHint()" style="width:100%;box-sizing:border-box;">
-              <span id="f-sfee-hint" style="font-size:0.62rem;color:var(--brown-light);margin-top:0.2rem;display:block;"></span>
+              <span id="f-sfee-hint" style="font-size:0.62rem;color:var(--brown-light);margin-top:0.2rem;display:none;"></span>
+            </div>
+            <div class="calc-field" style="width:100%;">
+              <label class="calc-label">地方稅稽徵機關核准減除之改良土地費用<span>元（無重劃填0）</span></label>
+              <input type="number" class="calc-input" id="f-improve" placeholder="0" value="0" oninput="calcFangdi()" style="width:100%;box-sizing:border-box;">
             </div>
           </div>
         </div>
