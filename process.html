@@ -238,6 +238,16 @@ ul { list-style: none !important; }
   .subpage-hero { padding: 6rem 1.5rem 3rem; }
   .subpage-body { padding: 3rem 1.5rem 4rem; }
 }
+
+/* contact section 全寬修正 */
+.subpage-body + section.contact,
+section.contact { padding: 0 !important; }
+section.contact .fade-in-section { padding: 4rem 4rem 1rem; }
+section.contact .contact-inner { padding: 0 4rem 5rem; }
+@media (max-width: 768px) {
+  section.contact .fade-in-section { padding: 3rem 1.5rem 1rem; }
+  section.contact .contact-inner { padding: 0 1.5rem 3rem; }
+}
 </style>
 </head>
 <body class="subpage">
@@ -252,14 +262,14 @@ ul { list-style: none !important; }
     </svg>
     <span class="nav-logo-text">宇陞地政士事務所</span>
   </a>
-      <ul class="nav-links">
+        <ul class="nav-links">
     <li><a href="about.html">關於事務所</a></li>
     <li><a href="services.html">服務項目</a></li>
     <li><a href="fees.html">收費標準</a></li>
     <li><a href="process.html" class="nav-active">辦理流程</a></li>
     <li><a href="faq.html">常見問題</a></li>
-    <li><a href="contact.html">聯絡我們</a></li>
     <li><a href="tax.html" target="_blank" class="nav-calc">稅費試算</a></li>
+    <li><a href="contact.html" target="_blank" class="nav-cta">立即諮詢</a></li>
   </ul>
   <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
 </nav>
