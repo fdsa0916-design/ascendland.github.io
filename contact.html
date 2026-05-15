@@ -403,39 +403,53 @@ footer { flex-shrink:0; }
       </div>
     </div>
 
-    <!-- 右側：表單 -->
-    <div class="cp-form">
-      <div class="cp-form-row">
-        <div class="cp-form-group">
-          <label class="cp-form-label">姓名<span class="cp-req">＊</span></label>
-          <input type="text" class="cp-input" id="cp-name" placeholder="您的姓名">
+    <!-- 右側：LINE 引導 -->
+    <div style="display:flex; flex-direction:column; justify-content:center; gap:2.5rem;">
+
+      <div>
+        <p style="font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.7rem; letter-spacing:0.35em; color:var(--text-light); margin-bottom:0.8rem;">How to reach us</p>
+        <h2 style="font-family:'Noto Serif TC',serif; font-size:1.3rem; font-weight:400; letter-spacing:0.12em; color:var(--brown-dark); margin-bottom:1.2rem; line-height:1.8;">
+          所有諮詢事項<br>歡迎透過官方 LINE 聯繫
+        </h2>
+        <p style="font-size:0.85rem; color:var(--text-mid); line-height:2.2; letter-spacing:0.05em;">
+          加入好友後，請告知您的姓名及諮詢事項，<br>
+          我們將於上班時間內盡快回覆。<br><br>
+          <span style="font-size:0.78rem; color:var(--text-light);">服務時間：週一至週五　09:00 – 18:00</span>
+        </p>
+      </div>
+
+      <!-- LINE 大按鈕 -->
+      <a href="https://lin.ee/XreOsM3k" target="_blank"
+         style="display:flex; align-items:center; justify-content:center; gap:1rem;
+                background:var(--brown-dark); color:var(--cream); text-decoration:none;
+                padding:1.2rem 2rem; border-radius:4px;
+                font-family:'Noto Sans TC',sans-serif; font-size:0.95rem; letter-spacing:0.15em;
+                transition:opacity 0.2s;"
+         onmouseover="this.style.opacity='0.88'" onmouseout="this.style.opacity='1'">
+        <svg width="28" height="28" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2"><path d="M506 102.186v307.628C506 462.9 462.9 506 409.814 506H102.186C49.1 506 6 462.9 6 409.814V102.186C6 49.1 49.1 6 102.186 6h307.628C462.9 6 506 49.1 506 102.186z" fill="#3D2F2A"/><path d="M422.656 232.437c0-74.593-74.781-135.28-166.703-135.28S89.25 157.843 89.25 232.436c0 66.875 59.375 122.891 139.406 133.47 5.438 1.171 12.828 3.577 14.688 8.218 1.687 4.219 1.11 10.828.547 15.078 0 0-1.953 11.766-2.375 14.266-.735 4.218-3.36 16.484 14.437 9 17.797-7.485 96-56.531 130.969-96.797 24.156-26.485 35.734-53.422 35.734-83.235z" fill="#F0EDE6" fill-rule="nonzero"/><path d="M367.188 275.516h-46.875a3.14 3.14 0 01-3.125-3.125v-72.735a3.14 3.14 0 013.125-3.125h46.875a3.14 3.14 0 013.125 3.125v11.828a3.14 3.14 0 01-3.125 3.125h-31.829v12.266h31.829a3.14 3.14 0 013.125 3.125v11.938a3.14 3.14 0 01-3.125 3.125h-31.829v12.28h31.829a3.14 3.14 0 013.125 3.126v11.812l.001.11a3.14 3.14 0 01-3.125 3.125h-.001zM193.953 275.516a3.14 3.14 0 003.125-3.125v-11.813a3.14 3.14 0 00-3.125-3.125h-31.828v-57.812a3.14 3.14 0 00-3.125-3.125h-11.875A3.14 3.14 0 00144 199.64v72.703a3.14 3.14 0 003.125 3.125H194l-.047.047z" fill="#3D2F2A" fill-rule="nonzero"/><path d="M225.328 199.11v73.685a2.721 2.721 0 01-2.72 2.72H209.86a2.721 2.721 0 01-2.72-2.72v-73.684a2.721 2.721 0 012.72-2.72h12.747a2.721 2.721 0 012.72 2.72z" fill="#3D2F2A"/><path d="M302.625 196.39h-11.813a3.14 3.14 0 00-3.125 3.126v43.218l-33.28-44.953a1.922 1.922 0 00-.266-.328l-.188-.187-.172-.141h-.093l-.172-.125h-.094l-.172-.094h-13.234a3.14 3.14 0 00-3.125 3.125v72.75a3.14 3.14 0 003.125 3.125h11.828a3.14 3.14 0 003.125-3.125v-43.64l33.328 45c.219.318.494.593.812.812l.188.125h.094l.156.078h.484c.277.069.56.105.844.11h11.75a3.14 3.14 0 003.125-3.125v-72.563-.062a3.14 3.14 0 00-3.125-3.125z" fill="#3D2F2A" fill-rule="nonzero"/></svg>
+        加入官方 LINE 好友
+      </a>
+
+      <div style="display:flex; align-items:center; gap:1rem; color:var(--text-light);">
+        <div style="flex:1; height:0.5px; background:var(--cream-darker);"></div>
+        <span style="font-size:0.7rem; letter-spacing:0.2em;">或直接掃描</span>
+        <div style="flex:1; height:0.5px; background:var(--cream-darker);"></div>
+      </div>
+
+      <!-- LINE ID + 二維碼提示 -->
+      <div style="display:flex; align-items:center; gap:1.5rem; padding:1.2rem 1.5rem;
+                  background:var(--cream-dark); border-radius:4px; border:0.5px solid var(--cream-darker);">
+        <div style="text-align:center;">
+          <div style="font-size:0.65rem; letter-spacing:0.2em; color:var(--text-light); margin-bottom:0.4rem;">LINE ID</div>
+          <div style="font-family:'Noto Serif TC',serif; font-size:1.1rem; color:var(--brown-dark); letter-spacing:0.1em;">@256lcaid</div>
         </div>
-        <div class="cp-form-group">
-          <label class="cp-form-label">聯絡電話<span class="cp-req">＊</span></label>
-          <input type="tel" class="cp-input" id="cp-phone" placeholder="09xx-xxx-xxx">
-        </div>
+        <div style="width:0.5px; height:40px; background:var(--cream-darker);"></div>
+        <p style="font-size:0.78rem; color:var(--text-mid); line-height:1.9; margin:0;">
+          在 LINE App 搜尋 <strong style="color:var(--brown-dark);">@256lcaid</strong><br>
+          或點擊上方按鈕直接加入
+        </p>
       </div>
-      <div class="cp-form-group">
-        <label class="cp-form-label">Email</label>
-        <input type="email" class="cp-input" id="cp-email" placeholder="your@email.com">
-      </div>
-      <div class="cp-form-group">
-        <label class="cp-form-label">諮詢項目<span class="cp-req">＊</span></label>
-        <select class="cp-select" id="cp-subject">
-          <option value="" disabled selected>請選擇服務項目</option>
-          <option>繼承登記</option><option>贈與登記</option><option>買賣登記</option>
-          <option>建物第一次登記</option><option>抵押權設定登記</option>
-          <option>共有物分割登記</option><option>標示變更登記</option>
-          <option>房地合一稅申報</option><option>遺產稅申報</option>
-          <option>贈與稅申報</option><option>其他事項</option>
-        </select>
-      </div>
-      <div class="cp-form-group">
-        <label class="cp-form-label">問題描述</label>
-        <textarea class="cp-textarea" id="cp-message" placeholder="請簡述您的需求或問題，如土地地號、面積、目前狀況等，我們將於上班時間內盡快與您聯繫…"></textarea>
-      </div>
-      <button class="cp-btn" onclick="submitForm()">送出諮詢</button>
-      <p class="cp-note">＊ 為必填欄位。送出後我們將於 1–2 個上班日內與您聯繫。<br>如需緊急協助，請直接致電 0988-119-532。</p>
+
     </div>
 
   </div>
@@ -456,13 +470,7 @@ function toggleMenu() {
 window.addEventListener('scroll', function() {
   document.querySelector('nav').style.boxShadow = window.scrollY > 50 ? '0 1px 20px rgba(61,47,42,0.08)' : 'none';
 });
-function submitForm() {
-  var name = document.getElementById('cp-name').value.trim();
-  var phone = document.getElementById('cp-phone').value.trim();
-  var subject = document.getElementById('cp-subject').value;
-  if (!name || !phone || !subject) { alert('請填寫姓名、聯絡電話及諮詢項目。'); return; }
-  alert('感謝您的諮詢！\n\n我們將於 1–2 個上班日內主動與您聯繫。\n如需緊急協助，請直接致電 0988-119-532。');
-}
+
 </script>
 </body>
 </html>
