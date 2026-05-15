@@ -22,7 +22,7 @@ a:active { color: inherit; }
   --white: #FAF8F5; --text-dark: #2A1F1B; --text-mid: #5C4A43; --text-light: #8B7B75;
 }
 html { scroll-behavior: smooth; }
-body { font-family: 'Noto Sans TC', sans-serif; -webkit-font-smoothing: antialiased; background: var(--cream); color: var(--text-dark); font-weight: 300; overflow-x: hidden; }
+body { font-family: 'Noto Sans TC', sans-serif; -webkit-font-smoothing: antialiased; background: var(--cream); color: var(--text-dark); font-weight: 300; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
 
 nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.2rem 4rem; display: flex; align-items: center; justify-content: space-between; background: rgba(240,237,230,0.92); backdrop-filter: blur(12px); border-bottom: 0.5px solid rgba(61,47,42,0.12); transition: all 0.3s ease; }
 .nav-logo { display: flex; align-items: center; gap: 0.8rem; text-decoration: none; }
@@ -211,6 +211,9 @@ footer { background: #2A1F1B; padding: 3rem 4rem; text-align: center; }
 /* 強制移除所有 list marker */
 li, li::marker { list-style: none !important; list-style-type: none !important; color: transparent !important; }
 ul { list-style: none !important; }
+
+section.contact { flex: 1 0 auto; }
+nav, .subpage-hero, .subpage-body, footer { flex-shrink: 0; }
 </style>
 <style>
 .subpage body, body.subpage { padding-top: 0; }
@@ -248,7 +251,11 @@ section.contact .contact-inner { padding: 0 4rem 5rem; }
   section.contact .fade-in-section { padding: 3rem 1.5rem 1rem; }
   section.contact .contact-inner { padding: 0 1.5rem 3rem; }
 }
-</style>
+
+/* 頁面填滿 - flex 子元素 */
+nav, .subpage-hero, .subpage-body, footer { flex-shrink: 0; }
+section.contact { flex: 1 0 auto; }
+
 </head>
 <body class="subpage">
 
